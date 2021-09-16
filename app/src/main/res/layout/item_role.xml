@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="role"
+            type="com.app.bluelimits.model.Resort" />
+
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btn_role"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rectangle"
+        android:fontFamily="@font/jura_demi_bold"
+        android:paddingLeft="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="@{role.name}"
+        android:textAllCaps="false"
+        android:textColor="@color/grey_text"></Button>
+</RelativeLayout>
+</layout>

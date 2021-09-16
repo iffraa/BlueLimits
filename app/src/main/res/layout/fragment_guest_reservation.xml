@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
+    tools:context=".view.fragment.GHReservationFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_logos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:id="@+id/iv_oia"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/oia_logo"></ImageView>
+
+            <ImageView
+                android:id="@+id/iv_boho"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/boho_logo"></ImageView>
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/ll_logos"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey_text" />
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/jura_semi_bold"
+            android:text="@string/reservation"
+            android:textColor="@color/grey_text"
+            android:textSize="18sp"
+            android:textStyle="bold"></TextView>
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/select_resort"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/check_in"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/check_out"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/available_units"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/price"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <TextView
+                    android:layout_width="108dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/guests"
+                    android:textColor="@color/grey_text"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/sp_resorts"
+                    android:layout_width="230dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/grey_text"></Spinner>
+
+
+                <EditText
+                    android:id="@+id/et_chk_in"
+                    android:layout_width="230dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:textSize="16sp"
+                    android:inputType="none"
+                    android:focusableInTouchMode="false"
+                    android:textColor="@android:color/black"
+                    ></EditText>
+
+
+                <EditText
+                    android:id="@+id/et_chk_out"
+                    android:layout_width="230dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:focusableInTouchMode="false"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    ></EditText>
+
+
+                <Spinner
+                    android:id="@+id/sp_units"
+                    android:layout_width="230dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:inputType="date">
+                    ></Spinner>
+
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="230dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <EditText
+                    android:id="@+id/et_guests_no"
+                    android:layout_width="230dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:inputType="number"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    ></EditText>
+
+                <TextView
+                    android:id="@+id/tv_max_guests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:textColor="@color/grey_text"></TextView>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/ll_main"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/jura_demi_bold"
+            android:gravity="center_vertical"
+            android:text="@string/payable"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/grey_text"></TextView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_guest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_payment"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"></androidx.recyclerview.widget.RecyclerView>
+
+        <include layout="@layout/progress_bar"
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></include>
+
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="240dp"
+            android:layout_height="55dp"
+            android:background="@drawable/btn_bg"
+            android:layout_marginTop="20dp"
+            android:text="@string/submit"
+            android:layout_below="@+id/rv_guest"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:fontFamily="@font/jura_demi_bold"
+            android:textColor="@color/white"></Button>
+
+
+    </RelativeLayout>
+</ScrollView>

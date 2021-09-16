@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressbar"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:indeterminate="true"
+        android:max="100"
+        android:animationResolution="@android:integer/config_mediumAnimTime"
+        android:backgroundTint="@color/navy_blue"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/navy_blue"
+        app:indicatorColor="@color/navy_blue"
+        android:layout_marginTop="-7dp"/>
+
+</RelativeLayout>

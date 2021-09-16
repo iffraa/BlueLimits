@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_start_login"
+    app:startDestination="@+id/nav_login">
+
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.app.bluelimits.view.fragment.LoginFragment"
+        android:label=""
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+
+        <action
+            android:id="@+id/action_nav_login_frag_to_userDashboardFragment"
+            app:destination="@id/userDashboardFragment">
+            <argument
+                android:name="user_data"
+                app:argType="com.app.bluelimits.model.User" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/userDashboardFragment"
+        android:name="com.app.bluelimits.view.fragment.UserDashboardFragment"
+        android:label="@string/my_dashboard"
+        tools:layout="@layout/fragment_user_dashboard">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.app.bluelimits.view.fragment.HomeFragment"
+        android:label=""
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+
+        <action
+            android:id="@+id/action_nav_home_to_ResortInfoFrag"
+            app:destination="@id/ResortInfoFragment">
+            <argument
+                android:name="type"
+                app:argType="com.app.bluelimits.model.Resort" />
+        </action>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_invite"
+        android:name="com.app.bluelimits.view.fragment.VisitorInviteFragment"
+        android:label=""
+        tools:layout="@layout/fragment_visitor_invite">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.app.bluelimits.view.fragment.AboutUsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_about_us">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_contact"
+        android:name="com.app.bluelimits.view.fragment.ContactUsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_contact_us">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_reservation"
+        android:name="com.app.bluelimits.view.fragment.GHReservationFragment"
+        android:label=""
+        tools:layout="@layout/fragment_guest_reservation">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.app.bluelimits.view.fragment.ProfileFragment"
+        android:label=""
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+
+        <action
+            android:id="@+id/action_resortInfo_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ResortInfoFragment"
+        android:name="com.app.bluelimits.view.fragment.ResortInfoFragment"
+        android:label=""
+        tools:layout="@layout/fragment_resort_info">
+
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+
+        <action
+            android:id="@+id/action_resortInfo_to_home"
+            app:destination="@id/nav_dashboard"></action>
+
+        <action
+            android:id="@+id/action_ResortInfo_to_ResortFacilitiesFrag"
+            app:destination="@id/resortFacilityFragment">
+            <argument
+                android:name="type"
+                app:argType="com.app.bluelimits.model.Resort" />
+        </action>
+
+        <action
+            android:id="@+id/action_resortInfo_to_marineForm"
+            app:destination="@id/marineFormFragment"></action>
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/resortFacilityFragment"
+        android:name="com.app.bluelimits.view.fragment.ResortFacilitiesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_resort_facilities">
+
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+
+        <action
+            android:id="@+id/action_ResortFacilitiesFrag_to_unitFormFragment"
+            app:destination="@id/unitFormFragment">
+            <argument
+                android:name="type"
+                app:argType="com.app.bluelimits.model.Resort" />
+
+            <argument
+                android:name="facility"
+                app:argType="com.app.bluelimits.model.Resort" />
+
+        </action>
+
+    </fragment>
+    <fragment
+        android:id="@+id/unitFormFragment"
+        android:name="com.app.bluelimits.view.fragment.UnitFormFragment"
+        android:label=""
+        tools:layout="@layout/fragment_unit_form">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/marineFormFragment"
+        android:name="com.app.bluelimits.view.fragment.MarineFormFragment"
+        android:label=""
+        tools:layout="@layout/fragment_marine_form">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/nav_logout"
+        android:name="com.app.bluelimits.view.fragment.LogoutFragment"
+        tools:layout="@layout/fragment_logout" />
+
+</navigation>

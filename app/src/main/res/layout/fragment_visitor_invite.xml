@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
+    tools:context=".view.fragment.VisitorInviteFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/oia_logo" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="250dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey_text" />
+
+
+        <TextView
+            android:id="@+id/tv_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/jura_semi_bold"
+            android:text="@string/invite"
+            android:textColor="@color/grey_text"
+            android:textSize="18sp"
+            android:textStyle="bold"></TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="101dp"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/visitors"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <TextView
+                    android:layout_width="101dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/visiting_date"
+                    android:textColor="@color/grey_text"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_visitors_num"
+                    android:layout_width="235dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:inputType="number"
+                    android:lines="1"></EditText>
+
+
+                <EditText
+                    android:id="@+id/et_visitors_time"
+                    android:layout_width="235dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:focusableInTouchMode="false"
+                    android:lines="1"></EditText>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_include"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            >
+
+            <include layout="@layout/progress_bar"
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ></include>
+
+        </RelativeLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_visitor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true">
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="240dp"
+            android:layout_height="55dp"
+            android:background="@drawable/btn_bg"
+            android:layout_marginTop="20dp"
+            android:text="@string/submit"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:fontFamily="@font/jura_demi_bold"
+            android:textColor="@color/white"></Button>
+
+
+
+    </LinearLayout>
+</ScrollView>

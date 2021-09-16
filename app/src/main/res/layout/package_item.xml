@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="service_package"
+            type="com.app.bluelimits.model.ServicePackage" />
+
+     <!--   <variable
+            name="listener"
+            type="com.app.bluelimits.view.ResortClickListener" />-->
+
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_vertical"
+        >
+
+        <CheckedTextView
+            android:id="@+id/ctv_pckgs"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:drawableTint="@color/grey_text"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="5dip"
+            android:text="@{service_package.service_name}"
+            android:layout_alignParentLeft="true"
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/grey_text"
+            android:fontFamily="@font/jura_demi_bold"
+            android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"></CheckedTextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_text"
+            android:text="@{service_package.price}"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/jura_demi_bold"></TextView>
+
+    </RelativeLayout>
+</layout>

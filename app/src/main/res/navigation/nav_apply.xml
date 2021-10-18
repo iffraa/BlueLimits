@@ -75,7 +75,14 @@
             <argument
                 android:name="facility"
                 app:argType="com.app.bluelimits.model.Resort" />
+        </action>
 
+        <action
+            android:id="@+id/action_ResortFacilitiesFrag_to_guestFragment"
+            app:destination="@id/guestUnitFragment">
+            <argument
+                android:name="resort"
+                app:argType="com.app.bluelimits.model.Resort" />
         </action>
 
     </fragment>
@@ -83,10 +90,10 @@
         android:id="@+id/unitFormFragment"
         android:name="com.app.bluelimits.view.fragment.UnitFormFragment"
         android:label=""
-        tools:layout="@layout/fragment_unit_form" >
-    <action
-        android:id="@+id/action_nav_to_home"
-        app:destination="@id/nav_home"></action>
+        tools:layout="@layout/fragment_unit_form">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
     </fragment>
 
     <fragment
@@ -99,17 +106,17 @@
         android:id="@+id/nav_invite"
         android:name="com.app.bluelimits.view.fragment.VisitorInviteFragment"
         android:label=""
-        tools:layout="@layout/fragment_visitor_invite" >
-    <action
-        android:id="@+id/action_nav_to_home"
-        app:destination="@id/nav_home"></action>
+        tools:layout="@layout/fragment_visitor_invite">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
     </fragment>
 
     <fragment
         android:id="@+id/nav_about"
         android:name="com.app.bluelimits.view.fragment.AboutUsFragment"
         android:label=""
-        tools:layout="@layout/fragment_about_us" >
+        tools:layout="@layout/fragment_about_us">
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
@@ -120,7 +127,7 @@
         android:id="@+id/nav_contact"
         android:name="com.app.bluelimits.view.fragment.ContactUsFragment"
         android:label=""
-        tools:layout="@layout/fragment_contact_us" >
+        tools:layout="@layout/fragment_contact_us">
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
@@ -131,7 +138,7 @@
         android:id="@+id/nav_reservation"
         android:name="com.app.bluelimits.view.fragment.GHReservationFragment"
         android:label=""
-        tools:layout="@layout/fragment_guest_reservation" >
+        tools:layout="@layout/fragment_guest_reservation">
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
@@ -147,7 +154,7 @@
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
 
-    <action
+        <action
             android:id="@+id/action_nav_login_frag_to_userDashboardFragment"
             app:destination="@id/userDashboardFragment">
             <argument
@@ -160,7 +167,7 @@
         android:id="@+id/userDashboardFragment"
         android:name="com.app.bluelimits.view.fragment.UserDashboardFragment"
         android:label="@string/my_dashboard"
-        tools:layout="@layout/fragment_user_dashboard" >
+        tools:layout="@layout/fragment_user_dashboard">
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
@@ -176,7 +183,36 @@
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
 
-</fragment>
+    </fragment>
+
+    <fragment
+        android:id="@+id/guestUnitFragment"
+        android:name="com.app.bluelimits.view.fragment.GuestRegistrationFragment"
+        android:label=""
+        tools:layout="@layout/fragment_guest_registration">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+
+        <action
+            android:id="@+id/action_nav_to_brochure"
+            app:destination="@id/webViewFragment">
+            <argument
+                android:name="url"
+                app:argType="string" />
+
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.app.bluelimits.view.fragment.WebViewFragment"
+        android:label=""
+        tools:layout="@layout/fragment_webview">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+    </fragment>
 
 
     <dialog

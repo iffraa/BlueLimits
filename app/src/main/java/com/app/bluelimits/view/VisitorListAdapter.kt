@@ -3,6 +3,8 @@ package com.app.bluelimits.view
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
@@ -27,6 +29,9 @@ import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
+
+
+
 class VisitorListAdapter(
     val visitorList: ArrayList<Visitor>,
     mContext: Context,
@@ -42,7 +47,7 @@ class VisitorListAdapter(
     private lateinit var prefsHelper: SharedPreferencesHelper
     private lateinit var data: Data
     private lateinit var dateTime: String
-    private lateinit var servicePackage: ServicePackage
+    //private var servicePackage: ServicePackage? = null
 
 
     fun setVisitorList(newFamList: ArrayList<Visitor>) {
@@ -75,6 +80,7 @@ class VisitorListAdapter(
         val et_name: EditText = holder.view.etVisitorsName
         val et_id: EditText = holder.view.etVisitorsId
         val et_mobile: EditText = holder.view.etVisitorsMobile
+        val price: EditText = holder.view.etPay
 
         val cb_male: CheckBox = holder.view.checkboxMale
         val cb_female: CheckBox = holder.view.checkboxFemale
@@ -82,6 +88,8 @@ class VisitorListAdapter(
 
         val btn_visitor: Button = holder.view.btnVisitor
         btn_visitor.setText(context.getString(R.string.visitor) + " " + (position + 1))
+
+        price.setText(visitor.price)
 
         et_name.textChanges()
             .debounce(3, TimeUnit.SECONDS)
@@ -106,13 +114,14 @@ class VisitorListAdapter(
             }
 
 
-        fetchGenderPackage(cb_female,cb_male,visitor)
+        fetchGenderPackage(cb_female,cb_male,visitor,price,position, holder)
         visitor.who_will_pay = getWhoWillPay(cb_pay)
         enteredData.add(visitor)
     }
 
-    fun fetchGenderPackage(femaleChkBx: CheckBox, maleChkBx: CheckBox,visitor: Visitor): String {
-        var gender = Constants.MALE
+    fun fetchGenderPackage(femaleChkBx: CheckBox, maleChkBx: CheckBox,visitor: Visitor, price: EditText, position: Int,
+                           holder: VisitorViewHolder): String {
+        var gender = Constants.FEMALE
         val viewModel = ViewModelProvider(visitorFrag).get(VisitorInviteViewModel::class.java)
         var isChkBoxChkd = false
 
@@ -122,7 +131,7 @@ class VisitorListAdapter(
                 gender = Constants.FEMALE
                 visitor.gender = gender
                 data.token?.let { viewModel.getPackages(it,gender,dateTime, data.user?.resort_id.toString()) }
-                observeViewModel(viewModel,visitor)
+                observeViewModel(viewModel,visitor,price, position, holder)
             }
 
         })
@@ -133,7 +142,7 @@ class VisitorListAdapter(
                 gender = Constants.MALE
                 visitor.gender = gender
                 data.token?.let { viewModel.getPackages(it,gender,dateTime, data.user?.resort_id.toString()) }
-                observeViewModel(viewModel,visitor)
+                observeViewModel(viewModel,visitor, price, position,holder)
             }
         })
 
@@ -147,8 +156,8 @@ class VisitorListAdapter(
                     data.user?.resort_id.toString()
                 )
             }
-            observeViewModel(viewModel, visitor)
 
+            observeViewModel(viewModel, visitor, price, position,holder)
         }
 
         return gender
@@ -160,7 +169,7 @@ class VisitorListAdapter(
         return enteredData
     }
 
-    fun observeViewModel(viewModel: VisitorInviteViewModel, visitor: Visitor) {
+    fun observeViewModel(viewModel: VisitorInviteViewModel, visitor: Visitor, price: EditText,position: Int,holder: VisitorViewHolder ) {
 
         viewModel.loadError.observe(visitorFrag, Observer { isError ->
             isError?.let {
@@ -178,7 +187,12 @@ class VisitorListAdapter(
         viewModel.packages.observe(visitorFrag, Observer { sPackage ->
             sPackage?.let {
                 visitor.package_id = sPackage.id.toString()
-                servicePackage = sPackage
+                visitor.servicePackage = sPackage
+                visitor.price = sPackage.price
+
+                holder.onBind(sPackage.price)
+
+              //  visitorList[position] = visitor
 
             }
 
@@ -199,11 +213,20 @@ class VisitorListAdapter(
         return who_will_pay
     }
 
-    fun getPackage() = servicePackage
+  //  fun getPackage() = servicePackage
 
     override fun getItemCount() = visitorList.size
 
     class VisitorViewHolder(val view: ItemVisitorBinding) : RecyclerView.ViewHolder(view.root)
+    {
+
+
+        fun onBind(price: String) {
+            view.etPay.setText(price)
+        }
+
+
+    }
 
 
 }

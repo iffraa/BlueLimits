@@ -22,6 +22,7 @@
     <string name="units">Units</string>
     <string name="guest_house">Guest House</string>
     <string name="locker_membership">Locker Membership</string>
+    <string name="locker_member">Locker Member</string>
     <string name="oia_form_text">OIA RESORT APPLICATION FORM</string>
     <string name="boho_form_text">BOHO RESORT APPLICATION FORM</string>
     <string name="marine_form_text">Marine Services Application</string>
@@ -125,6 +126,7 @@
     <string name="max_guests">guests are allowed</string>
     <string name="max">Max</string>
     <string name="select_resort">Select Resort</string>
+    <string name="select_role">Select Role</string>
     <string name="check_in">Check In Date</string>
     <string name="check_out">Check out Date</string>
     <string name="guest">Guest</string>
@@ -153,6 +155,7 @@
     <string name="adding_guest_error">Sorry.Cannot add guest</string>
     <string name="facility">facility</string>
     <string name="booking_unavailable">Sorry. Booking not avaialble.</string>
+    <string name="brochure">BROCHURE</string>
 
     <string name="reserv_date">Reservation date</string>
     <string name="full_name">Full Name</string>
@@ -164,6 +167,14 @@
     <string name="booking_unavialble">Booking not avialble.Choose another date.</string>
     <string name="select_date">Select date</string>
     <string name="hours">Hours</string>
+    <string name="max_visitors">visitors are allowed</string>
+    <string name="empty_name">Please enter visitor name.</string>
 
+    <string name="contact_error">Contact number should be of atleast 8 digits.</string>
+    <string name="email_error">Invalid email.</string>
+    <string name="id_error">Please enter id.</string>
+    <string name="lname_error">Please enter last name.</string>
+    <string name="fname_error">Please enter first name.</string>
+    <string name="guest_visitor">guest house visitor</string>
 
 </resources>

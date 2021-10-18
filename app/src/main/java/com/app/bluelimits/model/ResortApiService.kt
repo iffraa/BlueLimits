@@ -4,6 +4,7 @@ import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Header
 
 
 class ResortApiService {
@@ -92,6 +93,17 @@ class ResortApiService {
     {
         return api.getUserRoles()
     }
+
+    fun getNoOfVisitors(token: String,
+                        visiting_date_time: String,
+                        resort_id: String): Single<TotalVisitorsResponse> {
+        return api.getNoOfVisitors(token, visiting_date_time, resort_id)
+    }
+
+    fun getGuestUnits(resort_id: String): Single<GuestRegistrationResponse> {
+        return api.getGuestUnits(resort_id)
+    }
+
 
 
 }

@@ -143,7 +143,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/grey_text"
-                    android:checked="true"
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="@string/male"
                     android:textColor="@color/grey_text" />
@@ -152,6 +151,7 @@
                     android:id="@+id/checkbox_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:layout_marginLeft="30dp"
                     android:buttonTint="@color/grey_text"
                     android:fontFamily="@font/jura_demi_bold"
@@ -167,6 +167,8 @@
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="number|text"
+                android:clickable="false"
+                android:focusable="false"
                 android:lines="1"></EditText>
 
 

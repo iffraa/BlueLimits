@@ -3,41 +3,34 @@ package com.app.bluelimits.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.app.bluelimits.model.APIResponse
+import com.app.bluelimits.model.GuestRegistrationResponse
 import com.app.bluelimits.model.ResortApiService
-import com.app.bluelimits.model.User
-import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
-class LoginViewModel(application: Application): BaseViewModel(application) {
+class GuestUnitsViewModel(application: Application): BaseViewModel(application) {
 
-    private var prefsHelper = SharedPreferencesHelper(getApplication())
     private val resortService = ResortApiService()
     private val disposable = CompositeDisposable()
 
-    var user = MutableLiveData<User>()
+    var units = MutableLiveData<GuestRegistrationResponse>()
     val loadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
 
-    fun loginUser(user_name: String, pwd: String, type: String)
+    fun getGuestUnits(resortId: String)
     {
         loading.value = true
-        resortService.login(user_name,pwd,type)
+        resortService.getGuestUnits(resortId)
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())?.let {
                 disposable.add(
                 it
-                    .subscribeWith(object : DisposableSingleObserver<APIResponse>() {
-                        override fun onSuccess(response: APIResponse) {
-                            val gson = Gson()
-                            val user_data = gson.toJson(response.data)
-                            prefsHelper.saveData(user_data,Constants.USER_DATA)
-                            response.data.user?.let { it1 -> userRetrieved(it1) }
+                    .subscribeWith(object : DisposableSingleObserver<GuestRegistrationResponse>() {
+                        override fun onSuccess(response: GuestRegistrationResponse) {
+                            unitsRetrieved(response)
                         }
 
                         override fun onError(e: Throwable) {
@@ -53,9 +46,9 @@ class LoginViewModel(application: Application): BaseViewModel(application) {
 
 
 
-    private fun userRetrieved(user: User)
+    private fun unitsRetrieved(data: GuestRegistrationResponse)
     {
-        this.user.value = user
+        this.units.value = data
         loadError.value = false
         loading.value = false
 

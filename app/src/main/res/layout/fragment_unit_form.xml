@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="10dp"
     tools:context=".view.fragment.UnitFormFragment">
 
@@ -41,6 +41,7 @@
             android:textSize="16sp"></TextView>
 
         <TextView
+            android:id="@+id/tv_membership"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -52,25 +53,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="20dp"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/jura_demi_bold"
-                android:text="@string/select_service"
+                android:text="@string/select_role"
                 android:textColor="@color/grey_text"
                 android:textSize="16sp"></TextView>
 
-            <include layout="@layout/progress_bar"
+            <include
                 android:id="@+id/progressBar"
-                android:layout_gravity="center"
+                layout="@layout/progress_bar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></include>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"></include>
 
             <EditText
                 android:id="@+id/tv_service"
@@ -78,20 +79,42 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rectangle"
+                android:editable="false"
                 android:fontFamily="@font/jura_demi_bold"
                 android:paddingLeft="10dp"
-                android:editable="false"
                 android:textColor="@android:color/black"></EditText>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:text="@string/select_service"
+                android:textColor="@color/grey_text"
+                android:textSize="16sp"></TextView>
+
+            <Spinner
+                android:id="@+id/sp_service"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle"
+                android:fontFamily="@font/jura_demi_bold"
+                android:inputType="text"
+                android:lines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@android:color/black"></Spinner>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_pckgs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
-                android:layout_centerInParent="true">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
 
 
             <TextView
@@ -214,8 +237,8 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rectangle"
-                android:fontFamily="@font/jura_demi_bold"
                 android:focusableInTouchMode="false"
+                android:fontFamily="@font/jura_demi_bold"
                 android:lines="1"
                 android:paddingLeft="10dp"
                 android:textColor="@android:color/black"></EditText>
@@ -230,29 +253,29 @@
                 android:textSize="16sp"></TextView>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                >
-                <CheckBox android:id="@+id/cb_male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/male"
-                    android:buttonTint="@color/grey_text"
-                    android:textColor="@color/grey_text"
-                    android:fontFamily="@font/jura_demi_bold"
-                    />
+                android:orientation="horizontal">
 
-                <CheckBox android:id="@+id/cb_female"
+                <CheckBox
+                    android:id="@+id/cb_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/female"
+                    android:buttonTint="@color/grey_text"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/male"
+                    android:textColor="@color/grey_text" />
+
+                <CheckBox
+                    android:id="@+id/cb_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:buttonTint="@color/grey_text"
-                    android:textColor="@color/grey_text"
                     android:fontFamily="@font/jura_demi_bold"
-                    />
+                    android:text="@string/female"
+                    android:textColor="@color/grey_text" />
             </LinearLayout>
 
             <TextView
@@ -266,22 +289,21 @@
 
             <include
                 android:id="@+id/layout_mobile"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
                 layout="@layout/layout_contact_number"
-                android:layout_marginTop="10dp"
-                ></include>
-      <!--      <EditText
-                android:id="@+id/et_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rectangle"
-                android:fontFamily="@font/jura_demi_bold"
-                android:inputType="text"
-                android:lines="1"
-                android:paddingLeft="10dp"
-                android:textColor="@android:color/black"></EditText>-->
+                android:layout_marginTop="10dp"></include>
+            <!--      <EditText
+                      android:id="@+id/et_mobile"
+                      android:layout_width="match_parent"
+                      android:layout_height="40dp"
+                      android:layout_marginTop="10dp"
+                      android:background="@drawable/rectangle"
+                      android:fontFamily="@font/jura_demi_bold"
+                      android:inputType="text"
+                      android:lines="1"
+                      android:paddingLeft="10dp"
+                      android:textColor="@android:color/black"></EditText>-->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -318,15 +340,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:ccp_showFullName="true"
-                app:ccp_showPhoneCode="false"
-                app:ccp_showNameCode="false"
-                app:ccp_textGravity="LEFT"
-                app:ccp_textSize="16sp"
+                android:background="@drawable/rectangle"
+                android:paddingStart="10dp"
                 android:textColor="@android:color/black"
                 app:ccp_defaultNameCode="SA"
-                android:background="@drawable/rectangle"
-                android:paddingStart="10dp" />
+                app:ccp_showFullName="true"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="false"
+                app:ccp_textGravity="LEFT"
+                app:ccp_textSize="16sp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_pb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone">
+
+                <include
+                    layout="@layout/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"></include>
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -363,15 +401,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:ccp_showFullName="true"
-                app:ccp_showPhoneCode="false"
-                app:ccp_showNameCode="false"
-                app:ccp_textGravity="LEFT"
-                app:ccp_defaultNameCode="SA"
-                app:ccp_textSize="16sp"
-                android:textColor="@android:color/black"
                 android:background="@drawable/rectangle"
-                android:paddingStart="10dp" />
+                android:paddingStart="10dp"
+                android:textColor="@android:color/black"
+                app:ccp_defaultNameCode="SA"
+                app:ccp_showFullName="true"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="false"
+                app:ccp_textGravity="LEFT"
+                app:ccp_textSize="16sp" />
 
 
             <!--   <EditText
@@ -408,8 +446,9 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -423,9 +462,9 @@
                     android:id="@+id/tv_browse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:layout_marginLeft="15dp"
                     android:text="@string/browse"
                     android:textColor="@color/grey"
                     android:textSize="16sp"></TextView>
@@ -458,22 +497,21 @@
                 android:id="@+id/rv_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
-                android:layout_centerInParent="true">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
 
 
             <Button
                 android:id="@+id/btn_apply"
                 android:layout_width="240dp"
                 android:layout_height="55dp"
-                android:textColor="@color/white"
-                android:layout_marginTop="25dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/btn_bg"
-                android:text="@string/apply">
+                android:text="@string/apply"
+                android:textColor="@color/white">
 
             </Button>
 

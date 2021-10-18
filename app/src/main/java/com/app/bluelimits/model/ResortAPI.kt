@@ -102,4 +102,15 @@ interface ResortAPI {
     fun getUserRoles(): Single<ResortResponse?>?
 
 
+    @Headers("Accept: application/json")
+    @GET("customer/guest/invite/visitor?")
+    fun getNoOfVisitors(@Header("Authorization")  token: String,
+                        @Query("visiting_date_time")visiting_date_time: String,
+                        @Query("resort_id") resort_id: String,
+    ): Single<TotalVisitorsResponse>
+
+    @GET("guest/unit/pdfs/{resort_id}")
+    fun getGuestUnits(@Path("resort_id") resortId: String): Single<GuestRegistrationResponse>
+
+
 }

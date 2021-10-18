@@ -2,7 +2,6 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +17,9 @@ import com.app.bluelimits.databinding.FragmentLoginBinding
 import com.app.bluelimits.viewmodel.LoginViewModel
 
 import androidx.navigation.NavOptions
+import com.app.bluelimits.model.User
 import com.app.bluelimits.util.*
 import com.app.bluelimits.view.activity.DashboardActivity
-import com.bumptech.glide.util.Util
-import com.google.gson.Gson
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,8 +68,9 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener(View.OnClickListener {
 
             if (context?.let { it1 -> ConnectivityUtils.isConnected(it1) } == true) {
-//               binding.etEmail.setText("warsi@gmail.com")
-//                binding.etPwd.setText("12345678")
+                binding.etEmail.setText("warsi@gmail.com")
+             //   binding.etEmail.setText("test@gmail.com")
+                binding.etPwd.setText("12345678")
 
                 if (!binding.etEmail.text.isEmpty() && !binding.etPwd.text.isEmpty()) {
                     binding.rlInclude.visibility = View.VISIBLE
@@ -152,6 +151,8 @@ class LoginFragment : Fragment() {
         viewModel.user.observe(viewLifecycleOwner, Observer { user ->
             user?.let {
                 Constants.isLoggedIn = true
+
+                setPermissions(user)
                 openUserDashboard(view)
             }
 
@@ -163,7 +164,6 @@ class LoginFragment : Fragment() {
 
         activity?.let { hideKeyboard(it) }
         (activity as DashboardActivity).makeUserDashboardStart()
-        (activity as DashboardActivity).changeLoginDisplay(true)
 
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.nav_login, true)
@@ -174,7 +174,7 @@ class LoginFragment : Fragment() {
                 it
             )
         }
-        action?.let { Navigation.findNavController(view).navigate(it,navOptions) }
+        action?.let { Navigation.findNavController(view).navigate(it, navOptions) }
     }
 
     fun EditText.removeUnderline() {
@@ -186,5 +186,26 @@ class LoginFragment : Fragment() {
         ViewCompat.setPaddingRelative(this, paddingStart, paddingTop, paddingEnd, paddingBottom)
     }
 
+    private fun setPermissions(user: User)
+    {
+        val permissions = user.permissions
+        var guestCheck  = false
+        var visitorCheck = false
+
+        for(value in permissions)
+        {
+            val permission = value.name
+            if(!guestCheck)
+                guestCheck = Constants.PERMISSION_GUEST in permission
+
+            if(!visitorCheck)
+                visitorCheck = Constants.PERMISSION_VISITOR in permission
+        }
+
+        (activity as DashboardActivity).changeLoginDisplay(true)
+
+        (activity as DashboardActivity).setPermissions(guestCheck, true)
+        (activity as DashboardActivity).setPermissions(visitorCheck, false)
+    }
 
 }

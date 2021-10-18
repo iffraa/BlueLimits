@@ -58,16 +58,27 @@
                     android:layout_height="40dp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:text="@string/visitors"
+                    android:text="@string/visiting_date"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <TextView
+                    android:id="@+id/tv_resorts"
+                    android:layout_width="101dp"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/select_resort"
                     android:textColor="@color/grey_text"></TextView>
 
                 <TextView
                     android:layout_width="101dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:text="@string/visiting_date"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/visitors"
                     android:textColor="@color/grey_text"></TextView>
 
             </LinearLayout>
@@ -78,25 +89,53 @@
                 android:layout_marginLeft="8dp"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/et_visitors_num"
-                    android:layout_width="235dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/rectangle"
-                    android:fontFamily="@font/jura_demi_bold"
-                    android:inputType="number"
-                    android:lines="1"></EditText>
-
 
                 <EditText
                     android:id="@+id/et_visitors_time"
                     android:layout_width="235dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:focusableInTouchMode="false"
                     android:lines="1"></EditText>
+
+                <Spinner
+                    android:id="@+id/sp_resorts"
+                    android:layout_width="235dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:textColor="@color/grey_text"></Spinner>
+
+
+                <EditText
+                    android:id="@+id/et_visitors_num"
+                    android:layout_width="235dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:inputType="number"
+                    android:lines="1"></EditText>
+
+                <TextView
+                    android:id="@+id/tv_total_visitors"
+                    android:layout_width="235dp"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:textSize="12sp"
+                    android:text="@string/max_visitors"
+                    android:textColor="@color/grey_text"></TextView>
+
+
+
             </LinearLayout>
 
         </LinearLayout>

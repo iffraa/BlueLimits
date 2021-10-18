@@ -24,6 +24,7 @@ import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.CountDownTimer
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 
 import android.widget.DatePicker
@@ -35,6 +36,8 @@ import java.lang.reflect.Array.newInstance
 import com.app.bluelimits.view.activity.MainActivity
 import com.app.bluelimits.view.fragment.ResortInfoFragmentDirections
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
+import org.json.JSONException
+import org.json.JSONObject
 import java.text.ParseException
 
 
@@ -150,6 +153,46 @@ fun getGender(femaleChkBx: CheckBox, maleChkBx: CheckBox): String {
 fun setHomeNavigation(activity: Activity, action: NavDirections) {
     (activity as DashboardActivity).onCustomTBIconClick(action)
 
+}
+
+fun displayServerErrors(errorJson: String, context: Context) {
+    var message = ""
+    try {
+        val json = JSONObject(errorJson)
+        var errors: ArrayList<String> = arrayListOf()
+        val iter: Iterator<String> = json.keys()
+        while (iter.hasNext()) {
+            val key = iter.next()
+            try {
+                var value = json.get(key)
+
+                val filtered = "[]\""
+                value = value.toString().filterNot { filtered.indexOf(it) > -1 }
+
+                errors.add(value)
+            } catch (e: JSONException) {
+                // Something went wrong!
+            }
+        }
+
+        for (error in errors) {
+            message += error + "\n"
+        }
+
+        showAlertDialog(
+            context as Activity,
+            context.getString(R.string.app_name), message
+        )
+    } catch (ex: JSONException) {
+        showAlertDialog(
+            context as Activity,
+            context.getString(R.string.app_name), ex.toString()
+        )
+    }
+}
+
+fun String.isEmailValid(): Boolean {
+    return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
 
 fun showDateTime(context: Context, editText: EditText) {

@@ -121,12 +121,11 @@ class ResortFacilitiesFragment : Fragment() {
 
     private fun setRolesList(roles: ArrayList<Resort>) {
 
-        roleListAdapter = RoleListAdapter(arrayListOf())
+        roleListAdapter = RoleListAdapter(arrayListOf(),requireContext())
 
         binding.rvRoles.visibility = View.VISIBLE
         binding.rvRoles.apply {
             layoutManager = LinearLayoutManager(context)
-
 
             adapter = roleListAdapter
             roleListAdapter.setRoleList(roles,type)

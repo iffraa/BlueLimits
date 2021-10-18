@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-
 data class User(
     val user_type: String?,
     val email: String?,
@@ -56,11 +55,12 @@ data class User(
     val contract_end_date: String?,
     val contract_remaining_days: String?,
     val invite_visitor_discount_percentage: String?,
-    val guest_house_discount_percentage: Int?,
+    val guest_house_discount_percentage: String?,
     val loyalty_points: String?,
     val no_of_family_member: Int?,
     val no_of_extra_family_member: Int?,
-    val invitees: ArrayList<Invitee>?
+    val invitees: ArrayList<Invitee>?,
+    val permissions: ArrayList<Permission>
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -108,11 +108,12 @@ data class User(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
-        TODO("invitees")
+        TODO("invitees"),
+        TODO("permissions")
     ) {
     }
 
@@ -183,6 +184,7 @@ data class User(
     }
 }
 
+
 data class Data(var token: String?, var user: User?) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -222,7 +224,7 @@ data class VisitorRequest(var no_of_visitor: String,
                           var visitor: ArrayList<Visitor>
                           )
 
-data class Errors(val visitor: ArrayList<String>)
+data class Permission(val id: String, val name: String)
 
 data class Invitee(
     val id: Int,
@@ -246,11 +248,11 @@ data class Visitor(
    // val status: String,
     var package_id: String,
 
-  //  @SerializedName("package")
-  //  var packagee: ServicePackage?,
+    @SerializedName("package")
+    var servicePackage: ServicePackage?,
     var who_will_pay: String,
   //  val qr_code: String,
- //   val qr_code_download: String
+    var price: String
 
 )
 
@@ -406,3 +408,32 @@ data class MarineServiceRequest(var service_id: String,
                                 )
 
 data class MarineBookingResponse(var is_booked: Boolean, var total_price: Int)
+
+data class TotalVisitorsResponse(
+    val status: Boolean,
+    val message: String,
+    val data : TotalVisitors
+)
+
+data class TotalVisitors(
+    val visitor_policy_exist: Boolean,
+    val available: Int,
+    val total_allow: Int,
+    val each_time_limit: Int,
+    val male: Int,
+    val female: Int,
+)
+
+
+data class GuestRegistrationResponse(
+    val status: Boolean,
+    val message: String,
+    val data : ArrayList<GuestUnit>
+)
+
+data class GuestUnit(
+    val id: Int,
+    val units: String,
+    val description: String,
+    val pdf: String,
+)

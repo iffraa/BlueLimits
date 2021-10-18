@@ -2,7 +2,6 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,8 +26,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 
 
@@ -48,7 +45,7 @@ class GHReservationFragment : Fragment() {
     private var resortId = ""
     private lateinit var obj: Data
     private lateinit var selectedUnit: AvailableUnit
-    private var guests_limit = 0
+    private var guestsLimit = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -322,7 +319,7 @@ class GHReservationFragment : Fragment() {
                 R.string.max_guests
             )
         )
-        guests_limit = selectedUnit.no_of_guest.toInt()
+        guestsLimit = selectedUnit.no_of_guest.toInt()
         binding.tvPayment.setText(getString(R.string.payable) + " " + selectedUnit.total_price)
     }
 
@@ -394,7 +391,7 @@ class GHReservationFragment : Fragment() {
                     activity?.let { hideKeyboard(it) }
 
                     val no_of_entered_guests: Int = enteredGuestTxt.toInt()
-                    if (no_of_entered_guests > 0 && no_of_entered_guests < guests_limit) {
+                    if (no_of_entered_guests > 0 && no_of_entered_guests < guestsLimit) {
                         val visitors = ArrayList<Guest>(no_of_entered_guests)
                         for (i in 1..no_of_entered_guests) {
                             val person = Guest("", "", "", "")
@@ -406,7 +403,7 @@ class GHReservationFragment : Fragment() {
                             visitors, requireContext()
                         )
 
-                    } else if (no_of_entered_guests > guests_limit) {
+                    } else if (no_of_entered_guests > guestsLimit) {
                         showAlertDialog(
                             requireContext() as Activity,
                             getString(R.string.app_name),

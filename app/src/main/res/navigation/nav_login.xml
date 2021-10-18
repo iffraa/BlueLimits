@@ -165,6 +165,16 @@
 
         </action>
 
+        <action
+            android:id="@+id/action_ResortFacilitiesFrag_to_guestFragment"
+            app:destination="@id/guestUnitFragment">
+            <argument
+                android:name="resort"
+                app:argType="com.app.bluelimits.model.Resort" />
+
+        </action>
+
+
     </fragment>
     <fragment
         android:id="@+id/unitFormFragment"
@@ -176,6 +186,34 @@
             app:destination="@id/nav_dashboard"></action>
     </fragment>
 
+    <fragment
+        android:id="@+id/guestUnitFragment"
+        android:name="com.app.bluelimits.view.fragment.GuestRegistrationFragment"
+        android:label=""
+        tools:layout="@layout/fragment_guest_registration">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+        <action
+            android:id="@+id/action_nav_to_brochure"
+            app:destination="@id/webViewFragment">
+            <argument
+                android:name="url"
+                app:argType="string" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.app.bluelimits.view.fragment.WebViewFragment"
+        android:label=""
+        tools:layout="@layout/fragment_webview">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_dashboard"></action>
+      </fragment>
 
     <fragment
         android:id="@+id/marineFormFragment"

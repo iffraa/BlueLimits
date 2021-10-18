@@ -17,5 +17,7 @@ object Constants {
     const val CHKOUT_TIME = "12:00 PM"
     const val unit_membership = "Unit Membership"
     const val locker_membership = "Locker Membership"
+    const val PERMISSION_GUEST = "add guest house reservation"
+    const val PERMISSION_VISITOR = "add invite visitor"
 
 }

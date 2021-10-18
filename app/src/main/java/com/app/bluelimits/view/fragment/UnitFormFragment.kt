@@ -32,11 +32,9 @@ import java.util.concurrent.TimeUnit
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.*
-import com.google.gson.Gson
 import android.content.DialogInterface
-
-
-
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 
 
 /**
@@ -84,41 +82,52 @@ class UnitFormFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
-        val data_string = prefsHelper.getData(Constants.USER_DATA)
+        /*val data_string = prefsHelper.getData(Constants.USER_DATA)
         if (!data_string.isNullOrEmpty()) {
             val gson = Gson()
             val obj: Data = gson?.fromJson(data_string, Data::class.java)
             role_id = obj?.user?.role_id.toString()
-        }
+        }*/
         viewModel = ViewModelProvider(this).get(UnitFormViewModel::class.java)
         binding.progressBar.progressbar.visibility = View.VISIBLE
 
-        binding.tvService.setText(role?.name)
-
-        setLogo()
+        setRoleUI()
         selectPicture()
         getPackages()
+        getServices()
 
-       binding.etDob.setOnClickListener(View.OnClickListener {
-           showDate(requireContext(),binding.etDob)
-       })
+        binding.etDob.setOnClickListener(View.OnClickListener {
+            showDate(requireContext(), binding.etDob)
+        })
 
         getGender(binding.cbFemale, binding.cbMale)
         setFamilyList()
         applyForMembership()
     }
 
-    private fun getServices() {
-        viewModel.getServices(resortType.id.toString())
-        observeViewModel(true)
+    private fun setRoleUI() {
+        setLogo()
+
+        role_id = role?.id.toString()
+        binding.tvService.setText(role?.name)
+
+        if (role?.name?.equals(getString(R.string.locker_member)) == true) {
+            binding.tvMembership.setText(getString(R.string.locker_membership))
+        }
+
     }
 
-    fun observeViewModel(isServices: Boolean) {
+    private fun getServices() {
+        viewModel.getServices(resortType.id.toString())
+        observeDataVM(true)
+    }
+
+    fun observeDataVM(isServices: Boolean) {
 
         if (isServices) {
             viewModel.services.observe(viewLifecycleOwner, Observer { services ->
                 services?.let {
-                 //   populateServices()
+                    populateServices()
                 }
                 binding.progressBar.progressbar.visibility = View.GONE
 
@@ -154,7 +163,7 @@ class UnitFormFragment : Fragment() {
         })
     }
 
-   /* private fun populateServices() {
+    private fun populateServices() {
 
         var services: ArrayList<String>? = arrayListOf<String>()
 
@@ -198,13 +207,6 @@ class UnitFormFragment : Fragment() {
                 viewModel.services.value!!.forEachIndexed { index, e ->
                     if (viewModel.services.value!!.get(index).name?.equals(selectedItem) == true) {
                         service_id = viewModel.services.value!!.get(index).id.toString()
-
-                        /*    if (!role_id?.isEmpty())
-                                viewModel.getMemberPackages(resortType.id.toString(), role_id)
-                            else
-                                viewModel.getGuestPackages(service_id)
-
-                            observeViewModel(false)*/
                     }
 
                 }
@@ -213,15 +215,16 @@ class UnitFormFragment : Fragment() {
 
         }
 
-    }*/
+    }
 
     private fun getPackages() {
-        if (!role_id?.isEmpty())
+        /*if (!role_id?.isEmpty())
             viewModel.getMemberPackages(resortType.id.toString(), role_id)
         else
-            viewModel.getGuestPackages(service_id)
+            viewModel.getGuestPackages(service_id)*/
 
-        observeViewModel(false)
+        viewModel.getMemberPackages(resortType.id.toString(), role_id)
+        observeDataVM(false)
 
     }
 
@@ -253,7 +256,7 @@ class UnitFormFragment : Fragment() {
                         members.add(person)
                     }
                     binding.rvFamily.visibility = View.VISIBLE
-                    familyListAdapter.setFamilyList(members,requireContext())
+                    familyListAdapter.setFamilyList(members, requireContext())
 
                 }
             }
@@ -266,12 +269,12 @@ class UnitFormFragment : Fragment() {
         binding.rvPckgs.apply {
             layoutManager = LinearLayoutManager(context)
 
-                addItemDecoration(
-                    DividerItemDecoration(
-                        binding.rvFamily.getContext(),
-                        DividerItemDecoration.VERTICAL
-                    )
+            addItemDecoration(
+                DividerItemDecoration(
+                    binding.rvFamily.getContext(),
+                    DividerItemDecoration.VERTICAL
                 )
+            )
 
             packageListAdapter = PackageListAdapter(arrayListOf(), object :
                 PackageListAdapter.OnItemCheckListener {
@@ -371,78 +374,85 @@ class UnitFormFragment : Fragment() {
 
             val family_data: ArrayList<FamilyMemberRequest> = familyListAdapter.getData()
             Log.i("family_data", family_data.toString())
-            binding.progressBar.progressbar.visibility = View.VISIBLE
+            binding.rlPb.visibility = View.VISIBLE
 
-            if(role_id.isNullOrEmpty())
+            if (role_id.isNullOrEmpty())
                 role_id = role?.id.toString()
 
-            val request = RegisterMemberRequest(
-                role_id,
-                resortType.id.toString(),
-                service_id,
-                package_id,
-                firstName,
-                lastName,
-                member_id,
-                email,
-                dob,
-                gender,
-                getString(R.string.number_code) + contact,
-                city_home,
-                country_home,
-                city_offc,
-                country_offc,
-                "",
-                no_of_fam_member,
-                family_data
-            )
+            val errorMsg = getEmptyFieldsMsg()
+            if (errorMsg.isNullOrEmpty()) {
 
-            if (!package_id.isEmpty()) {
-                viewModel.addMember(request, requireContext())
+                val request = RegisterMemberRequest(
+                    role_id,
+                    resortType.id.toString(),
+                    service_id,
+                    package_id,
+                    firstName,
+                    lastName,
+                    member_id,
+                    email,
+                    dob,
+                    gender,
+                    getString(R.string.number_code) + contact,
+                    city_home,
+                    country_home,
+                    city_offc,
+                    country_offc,
+                    "",
+                    no_of_fam_member,
+                    family_data
+                )
 
+                if (!package_id.isEmpty()) {
+
+                    hideKeyboard(requireActivity())
+                    viewModel.addMember(request, requireContext())
+                    observeAddMemberViewModel()
+
+                } else {
+                    showAlertDialog(
+                        context as Activity,
+                        getString(R.string.app_name),
+                        getString(R.string.no_pckg_error)
+                    )
+                }
             } else {
                 showAlertDialog(
                     context as Activity,
-                    getString(R.string.app_name),
-                    getString(R.string.no_pckg_error)
+                    getString(R.string.app_name), errorMsg
                 )
             }
-
         })
 
-        observeAddMemberViewModel()
 
     }
 
 
     fun observeAddMemberViewModel() {
 
-        viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
-            isError?.let {
-                if (it) {
-                    binding.progressBar.progressbar.visibility = View.GONE
-                    showAlertDialog(
-                        context as Activity,
-                        getString(R.string.app_name),
-                        getString(R.string.adding_member_error)
-                    )
+        viewModel.errorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
+            errorMsg?.let {
+                if (!it.isNullOrEmpty()) {
+                    binding.rlPb.visibility = View.GONE
+                    displayServerErrors(viewModel.errorMsg.value.toString(), requireContext())
+
                 }
             }
         })
 
         viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading.let {
-                binding.progressBar.progressbar.visibility = if (it) View.VISIBLE else View.GONE
+                binding.rlPb.visibility = if (it) View.VISIBLE else View.GONE
 
             }
         })
 
         viewModel.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
-                binding.progressBar.progressbar.visibility = View.GONE
+                binding.rlPb.visibility = View.GONE
                 showAlertDialog(
                     context as Activity,
-                    getString(R.string.app_name), msg
+                    getString(R.string.app_name),msg
                 )
             }
 
@@ -451,18 +461,26 @@ class UnitFormFragment : Fragment() {
     }
 
 
-    class DatePickerFragment(editText: EditText) : DialogFragment(), android.app.DatePickerDialog.OnDateSetListener {
+    class DatePickerFragment(editText: EditText) : DialogFragment(),
+        android.app.DatePickerDialog.OnDateSetListener {
 
         val dateText = editText
         lateinit var dpDialog: DatePickerDialog
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the current date as the default date in the picker
-            val c =  Calendar.getInstance()
+            val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
-            dpDialog = android.app.DatePickerDialog(context as Activity,R.style.DialogTheme, this, year, month, day)
+            dpDialog = android.app.DatePickerDialog(
+                context as Activity,
+                R.style.DialogTheme,
+                this,
+                year,
+                month,
+                day
+            )
 
 
 
@@ -506,7 +524,30 @@ class UnitFormFragment : Fragment() {
         }
 
 
+    }
 
+    private fun getEmptyFieldsMsg(): String {
+        var errorMsg = ""
+        val firstName = binding.etFname.text.toString()
+        val lastName = binding.etLname.text.toString()
+        val member_id: String = binding.etId.text.toString()
+        val email = binding.etEmail.text.toString()
+        val mobile = "9665" + binding.layoutMobile.etMobile.text.toString()
+
+        //employee required fields
+        if (mobile.isNullOrEmpty() || mobile.length < 8) {
+            errorMsg = getString(R.string.contact_error)
+        } else if (email.isNullOrEmpty() || !email.isEmailValid()) {
+            errorMsg = getString(R.string.email_error)
+        } else if (lastName.isNullOrEmpty()) {
+            errorMsg = getString(R.string.lname_error)
+        } else if (firstName.isNullOrEmpty()) {
+            errorMsg = getString(R.string.fname_error)
+        } else if (member_id.isNullOrEmpty()) {
+            errorMsg = getString(R.string.id_error)
+        }
+
+        return errorMsg
     }
 
 

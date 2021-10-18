@@ -211,6 +211,21 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
+    fun setPermissions(isPermitted: Boolean, isGuest: Boolean)
+    {
+        val menu: Menu = binding.navView.getMenu()
+
+        if(isGuest) {
+            val nav_guest = menu.findItem(R.id.nav_reservation)
+            nav_guest.setVisible(isPermitted)
+        }
+        else
+        {
+            val nav_visitor = menu.findItem(R.id.nav_invite)
+            nav_visitor.setVisible(isPermitted)
+        }
+
+    }
 
 }
 

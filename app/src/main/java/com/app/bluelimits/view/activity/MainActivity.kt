@@ -95,7 +95,7 @@ class MainActivity : Activity() {
         super.onResume()
 
         loadGif()
-     //   binding.llBtns.visibility = View.VISIBLE
+        binding.llBtns.visibility = View.VISIBLE
 
     }
 

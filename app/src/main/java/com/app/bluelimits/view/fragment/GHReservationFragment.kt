@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -27,6 +28,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
+import androidx.core.os.HandlerCompat.postDelayed
+
+import android.view.MotionEvent
+
+import android.view.View.OnTouchListener
+import android.widget.Toast
+import androidx.core.os.HandlerCompat
 
 
 /**
@@ -46,6 +54,8 @@ class GHReservationFragment : Fragment() {
     private lateinit var obj: Data
     private lateinit var selectedUnit: AvailableUnit
     private var guestsLimit = 0
+    private var discount = "0"
+    private lateinit var userType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,9 +79,37 @@ class GHReservationFragment : Fragment() {
         binding.progressBar.progressbar.visibility = View.VISIBLE
         prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
 
+        val data_string = prefsHelper.getData(Constants.USER_DATA)
+        val gson = Gson()
+        obj = gson.fromJson(data_string, Data::class.java)
+
+        userType = obj.user?.user_type.toString()
+
         getResorts()
         setReservationDates()
         setGuestList()
+
+        if (userType.equals(Constants.admin)) {
+            showDiscountView()
+
+            binding.etDiscount.setOnTouchListener(OnTouchListener { v, event ->
+                binding.etDiscount.textChanges()
+                    .debounce(2, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { textChanged ->
+                        if (!binding.etChkIn.text.toString()
+                                .isNullOrEmpty() && !binding.etChkOut.text.toString()
+                                .isNullOrEmpty()
+                        ) {
+                            val discount = getDiscount()
+                            getAvailableUnits(discount)
+
+                        }
+                    }
+
+                false
+            })
+        }
 
         binding.btnSubmit.setOnClickListener(View.OnClickListener {
             addGuests()
@@ -109,6 +147,8 @@ class GHReservationFragment : Fragment() {
             )
         }
 
+        hideKeyboard(requireActivity())
+
         obj.token?.let {
             reservationReq?.let { it1 ->
                 viewModel.addGHReservation(
@@ -119,10 +159,51 @@ class GHReservationFragment : Fragment() {
         }
     }
 
+    private fun showDiscountView() {
+        binding.etDiscount.visibility = View.VISIBLE
+        binding.tvDiscountLbl.visibility = View.VISIBLE
+
+        binding.etDiscount.setText(obj.user?.guest_house_discount_percentage)
+    }
+
+    private fun getAdminDiscount(): Int {
+        val discount = binding.etDiscount.text.toString()
+        if (!discount.isNullOrEmpty())
+            return discount.toInt()
+        return 0
+
+    }
+
+    private fun getDiscount(): String {
+        val serverDiscount = obj.user?.guest_house_discount_percentage?.toInt()
+        var discount = ""
+
+        if (obj.user?.user_type.equals(Constants.admin)) {
+            val adminDiscount = getAdminDiscount()
+            if (adminDiscount > serverDiscount!!) {
+                hideKeyboard(requireActivity())
+
+                 showAlertDialog(
+                     requireActivity(),
+                     getString(R.string.app_name),
+                     getString(R.string.discount_msg) + " " + serverDiscount + "%"
+                 )
+              /*  Toast.makeText(
+                    requireContext(),
+                    getString(R.string.discount_msg) + " " + serverDiscount + "%",
+                    Toast.LENGTH_LONG
+                ).show()*/
+
+            } else
+                discount = adminDiscount.toString()
+        } else {
+            discount = serverDiscount.toString()
+        }
+
+        return discount
+    }
 
     private fun setReservationDates() {
-
-
         binding.etChkIn.setOnClickListener(View.OnClickListener {
             showDateTime(binding.etChkIn, Constants.CHKIN_TIME)
         })
@@ -153,62 +234,38 @@ class GHReservationFragment : Fragment() {
                 val sdate = sdf.format(date)
                 editText.setText(sdate + " " + showTime)
 
-                if(!binding.etChkIn.text.toString().isNullOrEmpty() && !binding.etChkOut.text.toString().isNullOrEmpty())
-                {
-                    getAvailableUnits()
+                if (!binding.etChkIn.text.toString()
+                        .isNullOrEmpty() && !binding.etChkOut.text.toString().isNullOrEmpty()
+                ) {
+                    val discount = getDiscount()
+                    getAvailableUnits(discount)
+
                 }
             }.display()
 
 
     }
 
-    private fun setDateTimeField(etField: EditText, appendTxt: String) {
-
-        val newCalendar: Calendar = Calendar.getInstance()
-        var mDatePickerDialog: DatePickerDialog
-        mDatePickerDialog = context?.let {
-            DatePickerDialog(
-                it,
-                { view, year, monthOfYear, dayOfMonth ->
-                    val newDate: Calendar = Calendar.getInstance()
-                    newDate.set(year, monthOfYear, dayOfMonth)
-                    var sd = SimpleDateFormat("dd-MM-yyyy")
-                    val startDate: Date = newDate.getTime()
-                    val fdate: String = sd.format(startDate)
-
-                    etField.setText(fdate + " at " + appendTxt)
-                    hideKeyboard(context as Activity)
-
-                    getAvailableUnits()
-                },
-                newCalendar.get(Calendar.YEAR),
-                newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH)
-            )
-        }!!
-        mDatePickerDialog?.getDatePicker()//?.setMaxDate(System.currentTimeMillis())
-        mDatePickerDialog.show()
-    }
-
     private fun getResorts() {
-        val data_string = prefsHelper.getData(Constants.USER_DATA)
-        val gson = Gson()
-        obj = gson.fromJson(data_string, Data::class.java)
         obj.token?.let { viewModel.getCustomerResorts(it) }
 
         observeViewModel(false)
 
     }
 
-    private fun getAvailableUnits() {
+    private fun getAvailableUnits(discount: String) {
         val chk_in_date = binding.etChkIn.text.toString()
         val chk_out_date = binding.etChkOut.text.toString()
 
         if (!chk_in_date.isNullOrEmpty() && !chk_out_date.isNullOrEmpty()) {
 
-            binding.progressBar.progressbar.visibility = View.VISIBLE
-            obj.token?.let { viewModel.getAvailableUnits(it, resortId, chk_in_date, chk_out_date) }
-            observeViewModel(true)
+            if (!discount.isNullOrEmpty()) {
+                binding.progressBar.progressbar.visibility = View.VISIBLE
+                obj.token?.let {
+                    viewModel.getAvailableUnits(it, resortId, chk_in_date, chk_out_date, discount)
+                }
+                observeViewModel(true)
+            }
         }
     }
 

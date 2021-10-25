@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,6 +51,7 @@ class VisitorInviteFragment : Fragment() {
     private var visitorPolicyPresent = false
     private lateinit var visitorListAdapter: VisitorListAdapter
     private lateinit var data: Data
+    private var packages: HashMap<String, ServicePackage> = hashMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,7 +92,7 @@ class VisitorInviteFragment : Fragment() {
             getResorts(data)
         }
 
-        setVisitorList()
+        //   setVisitorList()
     }
 
     private fun getErrorMsg(visitors: ArrayList<Visitor>): String {
@@ -120,14 +122,10 @@ class VisitorInviteFragment : Fragment() {
 
     }
 
+
     private fun setVisitorList() {
 
         visitorListAdapter = context?.let { VisitorListAdapter(arrayListOf(), it, this) }!!
-
-        binding.rvVisitor.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = visitorListAdapter
-        }
 
         binding.rvVisitor.addItemDecoration(
             DividerItemDecoration(
@@ -135,6 +133,12 @@ class VisitorInviteFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        binding.rvVisitor.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = visitorListAdapter
+
+        }
 
         binding.etVisitorsNum.textChanges()
             .debounce(1, TimeUnit.SECONDS)
@@ -155,14 +159,16 @@ class VisitorInviteFragment : Fragment() {
                         if (no_of_visitors > 0) {
                             val visitors = ArrayList<Visitor>(no_of_visitors)
                             for (i in 1..no_of_visitors) {
-                                val person = Visitor("0", "", "", "", "",
-                                    null,"","")
+                                val person = Visitor(
+                                    "0", "", "", "", "",
+                                    null, "", ""
+                                )
                                 visitors.add(person)
                             }
                             binding.rvVisitor.visibility = View.VISIBLE
                             binding.btnSubmit.visibility = View.VISIBLE
                             visitorListAdapter?.setVisitorList(
-                                visitors
+                                visitors, packages
                             )
 
                         } else {
@@ -177,20 +183,72 @@ class VisitorInviteFragment : Fragment() {
 
     }
 
-    private fun getPriceInfo(visitors: ArrayList<Visitor>): Triple<String, String, String>
-    {
+   /* private fun updateList() {
+        visitorListAdapter.clear()
+
+        val num = binding.etVisitorsNum.text.toString()
+        if (!num.isNullOrEmpty()) {
+            val no_of_visitors = num.toInt()
+            if (no_of_visitors > 0) {
+                val visitors = ArrayList<Visitor>(no_of_visitors)
+                for (i in 1..no_of_visitors) {
+                    val person = Visitor(
+                        "0", "", "", "", "",
+                        null, "", ""
+                    )
+                    visitors.add(person)
+                }
+                visitorListAdapter?.setVisitorList(
+                    visitors, packages
+                )
+
+            } else {
+                binding.rvVisitor.visibility = View.GONE
+                binding.btnSubmit.visibility = View.GONE
+
+            }
+        }
+    }*/
+
+    private fun updateList() {
+        if (visitorListAdapter != null) {
+            val visitors: ArrayList<Visitor> = visitorListAdapter.getData()
+            val num = binding.etVisitorsNum.text.toString()
+            if (visitors.size > 0 && !num.isNullOrEmpty()) {
+                for (i in 0 until num.toInt()) {
+                    val visitor = visitors.get(i)
+                    val gender = visitor.gender
+                    val servicePackage = packages.get(gender)
+                    val price = servicePackage?.price
+
+                    //update list
+                    visitor.servicePackage = servicePackage
+                    visitor.price = price!!
+
+                    visitorListAdapter.notifyItemChanged(i)
+                }
+
+            }
+        }
+
+    }
+
+    private fun getPriceInfo(visitors: ArrayList<Visitor>): Triple<String, String, String> {
         var discount = 0
         var total = 0
         var subTotal = 0
-        val customDiscount = data.user?.invite_visitor_discount_percentage as Int
+        val serverDiscount = data.user?.invite_visitor_discount_percentage
+        var customDiscount: Int = serverDiscount?.toInt()!!
 
-        for(visitor in visitors)
-        {
+        for (visitor in visitors) {
             val servicePackage = visitor.servicePackage
-            subTotal += servicePackage?.price as Int
+            val price = servicePackage?.price
+            subTotal += price?.toInt() ?: 0
         }
 
-        discount = (customDiscount/100) * subTotal
+        if (customDiscount != 0) {
+            discount = (customDiscount / 100) * subTotal
+        }
         total = subTotal - discount
         return Triple(total.toString(), subTotal.toString(), discount.toString())
     }
@@ -209,12 +267,15 @@ class VisitorInviteFragment : Fragment() {
 
         val errorMsg = visitors?.let { getErrorMsg(it) }
         if (errorMsg.isNullOrEmpty()) {
+
+            hideKeyboard(requireActivity())
+
             val visitorReq = visitors?.let {
                 VisitorRequest(
                     no_of_visitors,
                     resortId,
                     visiting_date_time,
-                    customDiscount as Int,
+                    customDiscount,
                     subTotal,
                     discount,
                     total,
@@ -295,6 +356,9 @@ class VisitorInviteFragment : Fragment() {
                                 + ": " + totalMale + " " + Constants.MALE + " & " + totalFemale + " " + Constants.FEMALE
                     )
                 }
+
+                viewModel.totalVisitors.removeObservers(viewLifecycleOwner)
+                getPackages()
             }
 
         })
@@ -431,10 +495,94 @@ class VisitorInviteFragment : Fragment() {
                 val sdate = sdf.format(date)
                 binding.etVisitorsTime.setText(sdate)
 
-                data.token?.let { getTotalVisitors(it, sdate) }
+                data.token?.let {
+                    getTotalVisitors(it, sdate)
+
+                }
             }.display()
 
     }
 
+    private fun getPackages() {
+
+        val visitingDate = binding.etVisitorsTime.text.toString()
+
+        data.token?.let {
+            viewModel.getMalePackage(
+                it, visitingDate,
+                data.user?.resort_id.toString()
+            )
+            observeMalePckgVM()
+
+
+            viewModel.getFemalePackage(
+                it,
+                visitingDate,
+                data.user?.resort_id.toString()
+            )
+            observeFemalePckgVM()
+
+        }
+    }
+
+
+    private fun observeMalePckgVM() {
+
+        viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
+            isError?.let {
+                if (it) {
+                    showAlertDialog(
+                        requireActivity(),
+                        getString(R.string.app_name),
+                        getString(R.string.loading_error)
+                    )
+                }
+            }
+        })
+
+        viewModel.malePackage.observe(viewLifecycleOwner, Observer { sPackage ->
+            sPackage?.let {
+
+                packages.put(Constants.MALE, sPackage)
+
+           //     viewModel.malePackage.removeObservers(viewLifecycleOwner)
+
+            }
+
+        })
+
+    }
+
+    private fun observeFemalePckgVM() {
+
+        viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
+            isError?.let {
+                if (it) {
+                    showAlertDialog(
+                        requireActivity(),
+                        getString(R.string.app_name),
+                        getString(R.string.loading_error)
+                    )
+                }
+            }
+        })
+
+        viewModel.femalePackage.observe(viewLifecycleOwner, Observer { sPackage ->
+            sPackage?.let {
+
+                packages.put(Constants.FEMALE, sPackage)
+
+                val num = binding.etVisitorsNum.text.toString()
+
+                 if(num.isNullOrEmpty())
+                     setVisitorList()
+                 else
+                     updateList()
+
+            }
+
+        })
+
+    }
 
 }

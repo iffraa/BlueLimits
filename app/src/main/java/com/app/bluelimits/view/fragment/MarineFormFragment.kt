@@ -347,7 +347,7 @@ class MarineFormFragment : Fragment() {
                 reserv_date,
                 package_id,
                 hrs,
-                total_price
+                total_price.toString()
             )
 
             viewModel.addApplication(request, requireContext())
@@ -434,7 +434,7 @@ class MarineFormFragment : Fragment() {
             bookingResponse?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (!bookingResponse.is_booked) {
-                    total_price = bookingResponse.total_price
+                    total_price = bookingResponse.total_price as Int
                 } else {
                     showAlertDialog(
                         context as Activity,

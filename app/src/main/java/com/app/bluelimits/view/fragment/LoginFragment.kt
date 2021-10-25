@@ -69,7 +69,7 @@ class LoginFragment : Fragment() {
 
             if (context?.let { it1 -> ConnectivityUtils.isConnected(it1) } == true) {
                 binding.etEmail.setText("warsi@gmail.com")
-             //   binding.etEmail.setText("test@gmail.com")
+             //    binding.etEmail.setText("test@gmail.com")
                 binding.etPwd.setText("12345678")
 
                 if (!binding.etEmail.text.isEmpty() && !binding.etPwd.text.isEmpty()) {

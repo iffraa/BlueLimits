@@ -68,8 +68,8 @@ class ResortApiService {
         return api.getCustomerResorts(token)
     }
 
-    fun getAvailableUnits(token: String, resort_id: String, reservation_date: String,chk_out: String): Single<UnitsResponse?>? {
-        return api.getAvailableUnits(token,resort_id,reservation_date,chk_out)
+    fun getAvailableUnits(token: String, resort_id: String, reservation_date: String,chk_out: String, discount: String): Single<UnitsResponse?>? {
+        return api.getAvailableUnits(token,resort_id,reservation_date,chk_out, discount)
     }
 
     fun addGuestReservation(

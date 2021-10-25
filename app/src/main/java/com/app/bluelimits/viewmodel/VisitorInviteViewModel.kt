@@ -7,7 +7,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.app.bluelimits.R
 import com.app.bluelimits.model.*
-import com.app.bluelimits.util.SharedPreferencesHelper
+import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.showAlertDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,7 +23,8 @@ class VisitorInviteViewModel(application: Application): BaseViewModel(applicatio
     var totalVisitors = MutableLiveData<TotalVisitorsResponse>()
 
     var message = MutableLiveData<String>()
-    var packages = MutableLiveData<ServicePackage>()
+    var malePackage = MutableLiveData<ServicePackage>()
+    var femalePackage = MutableLiveData<ServicePackage>()
     val loadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
 
@@ -57,17 +58,17 @@ class VisitorInviteViewModel(application: Application): BaseViewModel(applicatio
 
     }
 
-    fun getPackages(token: String, gender: String, datetime: String,resort_id: String)
+    fun getMalePackage(token: String, datetime: String, resort_id: String)
     {
         loading.value = true
-        resortService.getVisitorPackages("Bearer " + token,datetime,gender,resort_id)
+        resortService.getVisitorPackages("Bearer " + token,datetime,Constants.MALE,resort_id)
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())?.let {
                 disposable.add(
                     it
                         .subscribeWith(object : DisposableSingleObserver<VisitorPackage>() {
                             override fun onSuccess(response: VisitorPackage) {
-                                packagesRetrieved(response.data)
+                                packagesRetrieved(response.data, Constants.MALE)
                             }
                             override fun onError(e: Throwable) {
                                 loading.value = false
@@ -79,9 +80,35 @@ class VisitorInviteViewModel(application: Application): BaseViewModel(applicatio
 
     }
 
-    private fun packagesRetrieved(servicePackages: ServicePackage)
+    fun getFemalePackage(token: String, datetime: String, resort_id: String)
     {
-        this.packages.value = servicePackages
+        loading.value = true
+        resortService.getVisitorPackages("Bearer " + token,datetime,Constants.FEMALE,resort_id)
+            ?.subscribeOn(Schedulers.newThread())
+            ?.observeOn(AndroidSchedulers.mainThread())?.let {
+                disposable.add(
+                    it
+                        .subscribeWith(object : DisposableSingleObserver<VisitorPackage>() {
+                            override fun onSuccess(response: VisitorPackage) {
+                                packagesRetrieved(response.data, Constants.FEMALE)
+                            }
+                            override fun onError(e: Throwable) {
+                                loading.value = false
+                                e?.printStackTrace()
+                            }
+
+                        }))
+            }
+
+    }
+
+    private fun packagesRetrieved(servicePackages: ServicePackage, gender: String)
+    {
+        if(gender.equals(Constants.MALE))
+             this.malePackage.value = servicePackages
+        else
+            this.femalePackage.value = servicePackages
+
         loadError.value = false
         loading.value = false
 

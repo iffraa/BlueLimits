@@ -60,7 +60,9 @@ data class User(
     val no_of_family_member: Int?,
     val no_of_extra_family_member: Int?,
     val invitees: ArrayList<Invitee>?,
-    val permissions: ArrayList<Permission>
+    val permissions: ArrayList<Permission>,
+    val members: ArrayList<FamilyMember>?
+
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -113,7 +115,9 @@ data class User(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         TODO("invitees"),
-        TODO("permissions")
+        TODO("permissions"),
+        TODO("members")
+
     ) {
     }
 
@@ -214,14 +218,15 @@ data class Data(var token: String?, var user: User?) : Parcelable {
 
 data class APIResponse(val status: Boolean, var message: String, var data: Data)
 
-data class VisitorRequest(var no_of_visitor: String,
-                          var resort_id: String,
-                          var visiting_date_time: String,
-                          var custom_discount_percentage: Int,
-                          var sub_total: String,
-                          var discount: String,
-                          var total_price: String,
-                          var visitor: ArrayList<Visitor>
+data class VisitorRequest(
+    var no_of_visitor: String,
+    var resort_id: String,
+    var visiting_date_time: String,
+    var custom_discount_percentage: String?,
+    var sub_total: String,
+    var discount: String,
+    var total_price: String,
+    var visitor: ArrayList<Visitor>
                           )
 
 data class Permission(val id: String, val name: String)
@@ -234,7 +239,7 @@ data class Invitee(
     val total_payment: Int,
     val sub_total: Int,
     val discount: Int,
-    val total_price: Int,
+    val total_price: String,
     val custom_discount_percentage: Int,
     val visitors: ArrayList<Visitor>
 )
@@ -279,8 +284,9 @@ data class PackageResponse(
 )
 
 data class FamilyMember(
-    var id: Int,
+    var id: String,
     var name: String,
+    var email: String,
     var contact_no: String,
     val profile_image: String,
     var birth_date: String,
@@ -403,11 +409,11 @@ data class MarineServiceRequest(var service_id: String,
                                 var reservation_date_time: String,
                                 var resort_unit_id: String,
                                 var hour: String,
-                                var total_price: Int
+                                var total_price: String
 
                                 )
 
-data class MarineBookingResponse(var is_booked: Boolean, var total_price: Int)
+data class MarineBookingResponse(var is_booked: Boolean, var total_price: String)
 
 data class TotalVisitorsResponse(
     val status: Boolean,

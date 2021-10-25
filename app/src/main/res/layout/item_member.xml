@@ -1,95 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <data>
+        <variable
+            name="familyMember"
+            type="com.app.bluelimits.model.FamilyMember" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp">
 
     <ImageView
         android:id="@+id/iv_profile"
-        android:layout_width="130dp"
-        android:layout_height="90dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@color/navy_blue"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:scaleType="fitXY"
-        android:background="@drawable/round_outline"
-        android:src="@drawable/profile_img" />
+        android:imageUrl="@{familyMember.profile_image}"  />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginLeft="10dp"
         >
         <LinearLayout
-            android:layout_width="140dp"
-            android:layout_height="40dp"
+            android:layout_width="220dp"
+            android:layout_height="25dp"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:background="@drawable/rectangle">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/pwd"></ImageView>
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/id"></ImageView>
 
             <TextView
-                android:id="@+id/tv_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/id_profile"
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/jura_demi_bold"></TextView>
 
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{familyMember.id}"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/jura_demi_bold"></TextView>
+
         </LinearLayout>
 
+
         <LinearLayout
-            android:layout_width="180dp"
-            android:layout_height="40dp"
+            android:layout_width="220dp"
+            android:layout_height="25dp"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:background="@drawable/rectangle">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
                 android:src="@drawable/email"></ImageView>
 
             <TextView
-                android:id="@+id/tv_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/email_profile"
+                android:text="@string/name"
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/jura_demi_bold"></TextView>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{familyMember.name}"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/jura_demi_bold"></TextView>
+
+
         </LinearLayout>
 
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
         <LinearLayout
-            android:layout_width="140dp"
-            android:layout_height="40dp"
+            android:layout_width="220dp"
+            android:layout_height="25dp"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:background="@drawable/rectangle">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/pwd"></ImageView>
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/mobile"></ImageView>
 
             <TextView
-                android:id="@+id/tv_mobile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mobile"
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/jura_demi_bold"></TextView>
 
+            <TextView
+                android:id="@+id/tv_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{familyMember.contact_no}"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/jura_demi_bold"></TextView>
+
+
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="220dp"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/email"></ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email_profile"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/jura_demi_bold"></TextView>
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{familyMember.email}"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/jura_demi_bold"></TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+  <!--  <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="180dp"
@@ -112,7 +184,38 @@
                 android:fontFamily="@font/jura_demi_bold"></TextView>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/pwd"></ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mobile"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/jura_demi_bold"></TextView>
+
+            <TextView
+                android:id="@+id/tv_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{familyMember.contact_no}"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/jura_demi_bold"></TextView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>-->
     </LinearLayout>
 
-
-</LinearLayout>
+</layout>

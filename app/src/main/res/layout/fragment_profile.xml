@@ -53,9 +53,9 @@
             android:background="@drawable/btn_bg"
             android:fontFamily="@font/jura_demi_bold"
             android:text="@string/personal_info"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:textAllCaps="false"
             android:textStyle="bold"></Button>
 
     <LinearLayout
@@ -225,13 +225,22 @@
             android:layout_height="55dp"
             android:layout_below="@+id/ll_info"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:visibility="gone"
             android:background="@drawable/btn_bg"
             android:fontFamily="@font/jura_demi_bold"
             android:text="@string/fam_members"
             android:textColor="@color/white"
             android:textStyle="bold"></Button>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_fam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/btn_family"></androidx.recyclerview.widget.RecyclerView>
+
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressbar"

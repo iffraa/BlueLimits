@@ -72,6 +72,7 @@ interface ResortAPI {
                           @Path("resort_id") resort_id: String,
                           @Query("reservation_date") reservation_date: String,
                           @Query("check_out_date") check_out_date: String,
+                          @Query("custom_discount_percentage") discount: String,
 
                           ): Single<UnitsResponse?>?
 

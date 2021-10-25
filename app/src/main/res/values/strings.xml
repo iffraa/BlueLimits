@@ -88,6 +88,7 @@
     <string name="mobile_visi">Mobile</string>
     <string name="price">Price</string>
     <string name="pay">I will pay</string>
+    <string name="name">Name:</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="my_profile">My Profile</string>
@@ -103,6 +104,9 @@
     <string name="logout_msg">Do you want to logout?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="discount">Discount</string>
+    <string name="discount_msg">Discount should be till</string>
+    <string name="discount_empty">Please enter discount.</string>
 
     <string name="admin">Admin</string>
     <string name="customer">Customer</string>

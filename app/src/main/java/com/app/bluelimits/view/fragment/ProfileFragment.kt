@@ -8,11 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.FragmentProfileBinding
 import com.app.bluelimits.model.Data
+import com.app.bluelimits.model.FamilyMember
 import com.app.bluelimits.model.User
 import com.app.bluelimits.util.*
+import com.app.bluelimits.view.FMemberListAdapter
 import com.app.bluelimits.viewmodel.ProfileViewModel
 import com.google.gson.Gson
 
@@ -108,10 +112,33 @@ class ProfileFragment : Fragment() {
         }
         else
         {
-            binding.tvFamily.setText(user.no_of_family_member.toString())
-            binding.tvUnit.setText(user.unit_no)
+            binding.tvFamily.setText(getString(R.string.total_mems) + " " + user.no_of_family_member.toString())
+            binding.tvUnit.setText(getString(R.string.unit) + " " + user.unit_no)
             context?.let { user.qr_code?.let { it1 -> loadImage(binding.ivBarcode, it1, it) } }
 
+        }
+
+        user.members?.let { it1 -> setFamilyList(it1) }
+
+    }
+
+    private fun setFamilyList(familyMembers: ArrayList<FamilyMember>) {
+        binding.rvFam.visibility = View.VISIBLE
+        binding.btnFamily.visibility = View.VISIBLE
+
+        binding.rvFam.apply {
+            layoutManager = LinearLayoutManager(context)
+
+            addItemDecoration(
+                DividerItemDecoration(
+                    binding.rvFam.getContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+
+            val famListAdapter = FMemberListAdapter(arrayListOf())
+            adapter = famListAdapter
+            famListAdapter.setFamilyList(familyMembers)
         }
 
     }

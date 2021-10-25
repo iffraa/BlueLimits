@@ -78,6 +78,17 @@
                     android:textColor="@color/grey_text"></TextView>
 
                 <TextView
+                    android:id="@+id/tv_discount_lbl"
+                    android:layout_width="108dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:text="@string/discount"
+                    android:textColor="@color/grey_text"></TextView>
+
+                <TextView
                     android:layout_width="108dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
@@ -104,10 +115,11 @@
                     android:text="@string/available_units"
                     android:textColor="@color/grey_text"></TextView>
 
+
                 <TextView
                     android:layout_width="108dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
                     android:text="@string/price"
@@ -140,6 +152,19 @@
                     android:paddingLeft="10dp"
                     android:textSize="16sp"
                     android:textColor="@color/grey_text"></Spinner>
+
+                <EditText
+                    android:id="@+id/et_discount"
+                    android:layout_width="230dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/grey_text"></EditText>
 
 
                 <EditText
@@ -187,7 +212,6 @@
                     android:textColor="@android:color/black"
                     android:inputType="date">
                     ></Spinner>
-
 
                 <TextView
                     android:id="@+id/tv_price"

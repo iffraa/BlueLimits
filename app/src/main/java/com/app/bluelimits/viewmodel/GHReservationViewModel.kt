@@ -46,10 +46,10 @@ class GHReservationViewModel(application: Application): BaseViewModel(applicatio
 
     }
 
-    fun getAvailableUnits(token: String, resort_id: String, reservation_date: String,chk_out: String)
+    fun getAvailableUnits(token: String, resort_id: String, reservation_date: String,chk_out: String, discount: String)
     {
         loading.value = true
-        resortService.getAvailableUnits("Bearer " + token, resort_id, reservation_date,chk_out)
+        resortService.getAvailableUnits("Bearer " + token, resort_id, reservation_date,chk_out,discount)
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())?.let {
                 disposable.add(

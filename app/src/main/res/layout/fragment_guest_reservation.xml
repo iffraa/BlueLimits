@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
+    android:layout_marginTop="@dimen/_40sdp"
+    android:layout_marginBottom="@dimen/_10sdp"
     tools:context=".view.fragment.GHReservationFragment">
 
     <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
 
         <LinearLayout
             android:id="@+id/ll_logos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="@dimen/_5sdp">
 
             <ImageView
                 android:id="@+id/iv_oia"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
                 android:src="@drawable/oia_logo"></ImageView>
 
-            <ImageView
-                android:id="@+id/iv_boho"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/boho_logo"></ImageView>
         </LinearLayout>
 
 
         <View
             android:id="@+id/line"
-            android:layout_width="250dp"
-            android:layout_height="1dp"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_1sdp"
             android:layout_below="@+id/ll_logos"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/grey_text" />
 
 
@@ -47,205 +46,215 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/line"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/jura_semi_bold"
             android:text="@string/reservation"
-            android:textColor="@color/grey_text"
-            android:textSize="18sp"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_18ssp"
             android:textStyle="bold"></TextView>
 
         <LinearLayout
             android:id="@+id/ll_main"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_title"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_centerHorizontal="true"
             android:gravity="center_horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="108dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_95sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
+                    android:textSize="@dimen/_13ssp"
                     android:text="@string/select_resort"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textColor="@color/navy_blue"></TextView>
 
                 <TextView
                     android:id="@+id/tv_discount_lbl"
-                    android:layout_width="108dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_width="@dimen/_95sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
                     android:visibility="gone"
+                    android:textSize="@dimen/_13ssp"
                     android:text="@string/discount"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textColor="@color/navy_blue"></TextView>
 
                 <TextView
-                    android:layout_width="108dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="@dimen/_95sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
                     android:text="@string/check_in"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/navy_blue"></TextView>
 
                 <TextView
-                    android:layout_width="108dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="@dimen/_95sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_13sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
                     android:text="@string/check_out"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/navy_blue"></TextView>
 
                 <TextView
-                    android:layout_width="108dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_95sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="12dp"
                     android:text="@string/available_units"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textSize="@dimen/_13ssp"
+                    android:visibility="gone"
+                    android:textColor="@color/navy_blue"></TextView>
 
 
                 <TextView
-                    android:layout_width="108dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_width="@dimen/_95sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
                     android:text="@string/price"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/navy_blue"></TextView>
 
                 <TextView
-                    android:layout_width="108dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_width="@dimen/_95sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
                     android:text="@string/guests"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/navy_blue"></TextView>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <Spinner
                     android:id="@+id/sp_resorts"
-                    android:layout_width="230dp"
-                    android:layout_height="35dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/navy_blue"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/grey_text"></Spinner>
+                    android:gravity="center_vertical"></Spinner>
 
                 <EditText
                     android:id="@+id/et_discount"
-                    android:layout_width="230dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:textColor="@color/navy_blue"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:textSize="16sp"
-                    android:visibility="gone"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/grey_text"></EditText>
+                    android:visibility="gone"></EditText>
 
 
                 <EditText
                     android:id="@+id/et_chk_in"
-                    android:layout_width="230dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:textColor="@color/navy_blue"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:textSize="16sp"
                     android:inputType="none"
                     android:focusableInTouchMode="false"
-                    android:textColor="@android:color/black"
                     ></EditText>
 
 
                 <EditText
                     android:id="@+id/et_chk_out"
-                    android:layout_width="230dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:textColor="@color/navy_blue"
                     android:focusableInTouchMode="false"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
                     ></EditText>
 
 
                 <Spinner
                     android:id="@+id/sp_units"
-                    android:layout_width="230dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:textColor="@color/navy_blue"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
                     android:text="1"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
+                    android:visibility="gone"
                     android:inputType="date">
                     ></Spinner>
 
                 <TextView
                     android:id="@+id/tv_price"
-                    android:layout_width="230dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:textColor="@color/navy_blue"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/grey_text"></TextView>
+                    ></TextView>
 
                 <EditText
                     android:id="@+id/et_guests_no"
-                    android:layout_width="230dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:textColor="@color/navy_blue"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
                     android:inputType="number"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
                     ></EditText>
 
                 <TextView
                     android:id="@+id/tv_max_guests"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textColor="@color/navy_blue"></TextView>
 
 
             </LinearLayout>
@@ -255,14 +264,13 @@
         <TextView
             android:id="@+id/tv_payment"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/ll_main"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/_15sdp"
             android:fontFamily="@font/jura_demi_bold"
             android:gravity="center_vertical"
             android:text="@string/payable"
-            android:layout_marginLeft="5dp"
-            android:textColor="@color/grey_text"></TextView>
+            android:textColor="@color/navy_blue"></TextView>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -271,8 +279,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_payment"
             android:visibility="gone"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_marginTop="@dimen/_5sdp"></androidx.recyclerview.widget.RecyclerView>
 
         <include layout="@layout/progress_bar"
             android:id="@+id/progressBar"
@@ -283,16 +293,15 @@
 
         <Button
             android:id="@+id/btn_submit"
-            android:layout_width="240dp"
-            android:layout_height="55dp"
-            android:background="@drawable/btn_bg"
-            android:layout_marginTop="20dp"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/btn_form_grey"
+            android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/submit"
-            android:layout_below="@+id/rv_guest"
-            android:visibility="gone"
-            android:layout_centerHorizontal="true"
             android:textStyle="bold"
-            android:textAllCaps="false"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/rv_guest"
+            android:textSize="@dimen/_15ssp"
             android:fontFamily="@font/jura_demi_bold"
             android:textColor="@color/white"></Button>
 

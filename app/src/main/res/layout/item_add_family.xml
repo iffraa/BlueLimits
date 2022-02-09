@@ -1,167 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/_10sdp">
 
-   <!-- <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center_horizontal">-->
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             android:orientation="vertical">
 
 
             <TextView
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/first_name"
-                android:textColor="@color/grey_text"></TextView>
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/navy_blue"></TextView>
 
             <TextView
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/navy_blue"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
-                android:text="@string/last_name"
-                android:textColor="@color/grey_text"></TextView>
-
-
-            <TextView
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/jura_demi_bold"
-                android:gravity="center_vertical"
-                android:text="@string/email"
-                android:textColor="@color/grey_text"></TextView>
-
-            <TextView
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/jura_demi_bold"
-                android:gravity="center_vertical"
-                android:text="@string/id_profile"
-                android:textColor="@color/grey_text"></TextView>
-
-            <TextView
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/jura_demi_bold"
-                android:gravity="center_vertical"
-                android:text="@string/mobile"
-                android:textColor="@color/grey_text"></TextView>
-
-            <TextView
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/jura_demi_bold"
-                android:gravity="center_vertical"
-                android:text="@string/dob"
-                android:textColor="@color/grey_text"></TextView>
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/last_name"></TextView>
 
 
             <TextView
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/navy_blue"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
-                android:text="@string/gender"
-                android:textColor="@color/grey_text"></TextView>
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/email"></TextView>
+
+            <TextView
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/navy_blue"
+                android:fontFamily="@font/jura_demi_bold"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/id_profile"></TextView>
+
+            <TextView
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/navy_blue"
+                android:fontFamily="@font/jura_demi_bold"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/mobile"></TextView>
+
+            <TextView
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_17sdp"
+                android:textColor="@color/navy_blue"
+                android:fontFamily="@font/jura_demi_bold"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/dob"></TextView>
+
+
+            <TextView
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:gravity="center_vertical"
+                android:text="@string/gender"></TextView>
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
 
             <EditText
                 android:id="@+id/et_fname"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/navy_blue"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="text"
-                android:textColor="@android:color/black"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textSize="@dimen/_11ssp"
                 android:lines="1"></EditText>
 
             <EditText
                 android:id="@+id/et_lname"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"
+                android:paddingLeft="@dimen/_10sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="text"
-                android:textColor="@android:color/black"
                 android:lines="1"></EditText>
 
             <EditText
                 android:id="@+id/et_email"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"
+                android:paddingLeft="@dimen/_10sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
-                android:textColor="@android:color/black"
                 android:inputType="textEmailAddress"
                 android:lines="1"></EditText>
 
 
             <EditText
                 android:id="@+id/et_id"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/navy_blue"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
+                android:textSize="@dimen/_11ssp"
+                android:paddingLeft="@dimen/_10sdp"
                 android:inputType="number"
-                android:textColor="@android:color/black"
                 android:lines="1"></EditText>
 
-            <EditText
-                android:id="@+id/et_mobile"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/rectangle"
-                android:fontFamily="@font/jura_demi_bold"
-                android:textColor="@android:color/black"
-                android:inputType="phone"
-                android:lines="1"></EditText>
+            <include
+                android:id="@+id/layout_mobile"
+                layout="@layout/layout_contact_number"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_15sdp"></include>
 
             <EditText
                 android:id="@+id/et_dob"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:focusableInTouchMode="false"
-                android:textColor="@android:color/black"
+                android:textSize="@dimen/_11ssp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"
                 android:lines="1"></EditText>
 
 
             <LinearLayout
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:orientation="horizontal">
 
                 <CheckBox
@@ -170,19 +178,25 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="@string/male"
+                    android:button="@drawable/chkbox_bg"
+                    android:paddingLeft="@dimen/_10sdp"
                     android:buttonTint="@color/grey_text"
                     android:checked="true"
-                    android:textColor="@color/grey_text" />
-
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/navy_blue" />
+s
                 <CheckBox
                     android:id="@+id/checkbox_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:button="@drawable/chkbox_bg"
+                    android:paddingLeft="@dimen/_10sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="@string/female"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="@dimen/_30sdp"
                     android:buttonTint="@color/grey_text"
-                    android:textColor="@color/grey_text" />
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/navy_blue" />
             </LinearLayout>
 
 

@@ -19,5 +19,7 @@ object Constants {
     const val locker_membership = "Locker Membership"
     const val PERMISSION_GUEST = "add guest house reservation"
     const val PERMISSION_VISITOR = "add invite visitor"
+    const val ANNUAL_UNITS = "Annual Units"
+    const val LOCKERS: String = "Lockers"
 
 }

@@ -73,6 +73,7 @@ interface ResortAPI {
                           @Query("reservation_date") reservation_date: String,
                           @Query("check_out_date") check_out_date: String,
                           @Query("custom_discount_percentage") discount: String,
+                          @Query("unit_type_id") unit_type_id: String,
 
                           ): Single<UnitsResponse?>?
 
@@ -113,5 +114,38 @@ interface ResortAPI {
     @GET("guest/unit/pdfs/{resort_id}")
     fun getGuestUnits(@Path("resort_id") resortId: String): Single<GuestRegistrationResponse>
 
+    @Headers("Accept: application/json")
+    @POST("customer/update/password")
+    fun updatePwd(@Header("Authorization")  token: String,
+        @Body request: PwdUpdateReq,
+    ): Single<APIResponse>
+
+
+    @Headers("Accept: application/json")
+    @GET("customer/invite/visitors?")
+    fun getVisitors(
+        @Header("Authorization")  token:String
+    ): Single<VisitorsResponse>
+
+    @Headers("Accept: application/json")
+    @DELETE("customer/invite/visitors/{inviteeID}")
+    fun deleteVisitor(
+        @Header("Authorization")  token:String,
+        @Path("inviteeID") inviteeID: String
+    ): Single<APIResponse>
+
+    @Headers("Accept: application/json")
+    @PUT("customer/invite/visitors/{inviteeID}")
+    fun editVisitor(
+        @Header("Authorization")  token:String,
+        @Path("inviteeID") inviteeID: String,
+        @Body visitor:  EditVisitorRequest,
+    ): Single<APIResponse>
+
+    @Headers("Accept: application/json")
+    @GET("customer/unit/types")
+    fun getUnitTypes(
+        @Header("Authorization")  token:String,
+    ): Single<SpaceResponse>
 
 }

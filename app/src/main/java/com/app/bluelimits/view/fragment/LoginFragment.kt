@@ -56,6 +56,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setHomeNavigation(context as Activity, AboutUsFragmentDirections.actionNavToHome())
+
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         binding.ivBg?.let { context?.let { it1 -> loadGif(it, R.raw.white_bg, it1) } }
@@ -65,11 +67,11 @@ class LoginFragment : Fragment() {
 
         setUserType()
 
-        binding.btnLogin.setOnClickListener(View.OnClickListener {
+        binding.btnLogin.setOnClickListener {
 
             if (context?.let { it1 -> ConnectivityUtils.isConnected(it1) } == true) {
-                binding.etEmail.setText("warsi@gmail.com")
-             //    binding.etEmail.setText("test@gmail.com")
+               binding.etEmail.setText("warsi@gmail.com")
+           //         binding.etEmail.setText("test@gmail.com")
                 binding.etPwd.setText("12345678")
 
                 if (!binding.etEmail.text.isEmpty() && !binding.etPwd.text.isEmpty()) {
@@ -100,7 +102,7 @@ class LoginFragment : Fragment() {
                     )
                 }
             }
-        })
+        }
 
     }
 
@@ -177,14 +179,6 @@ class LoginFragment : Fragment() {
         action?.let { Navigation.findNavController(view).navigate(it, navOptions) }
     }
 
-    fun EditText.removeUnderline() {
-        val paddingBottom = this.paddingBottom
-        val paddingStart = ViewCompat.getPaddingStart(this)
-        val paddingEnd = ViewCompat.getPaddingEnd(this)
-        val paddingTop = this.paddingTop
-        ViewCompat.setBackground(this, null)
-        ViewCompat.setPaddingRelative(this, paddingStart, paddingTop, paddingEnd, paddingBottom)
-    }
 
     private fun setPermissions(user: User)
     {

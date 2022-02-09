@@ -45,7 +45,7 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FamilyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        _binding = ItemAddFamilyBinding.inflate(inflater)
+        _binding = ItemAddFamilyBinding.inflate(inflater,parent,false)
         return FamilyViewHolder(binding)
     }
 
@@ -59,7 +59,7 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
         val et_email: EditText = holder.view.etEmail
         val et_dob: EditText = holder.view.etDob
         val et_id: EditText = holder.view.etId
-        val et_mobile: EditText = holder.view.etMobile
+        val et_mobile: EditText = holder.view.layoutMobile.etMobile
 
         val cb_male: CheckBox = holder.view.checkboxMale
         val cb_female: CheckBox = holder.view.checkboxFemale
@@ -126,6 +126,7 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
             .displayMonth(true)
             .displayYears(true)
             .displayDaysOfMonth(true)
+            .maxDateRange(d)
 
             .backgroundColor(context.getResources().getColor(R.color.white))
             .mainColor(context.getResources().getColor(R.color.blue_text))

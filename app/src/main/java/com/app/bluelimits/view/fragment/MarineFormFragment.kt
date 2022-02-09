@@ -2,6 +2,7 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,9 +11,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ScrollView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.bluelimits.R
@@ -20,6 +24,7 @@ import com.app.bluelimits.databinding.FragmentMarineFormBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.*
 import com.app.bluelimits.view.PackageListAdapter
+import com.app.bluelimits.view.activity.DashboardActivity
 import com.app.bluelimits.viewmodel.MarineFormViewModel
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.google.gson.Gson
@@ -80,11 +85,20 @@ class MarineFormFragment : Fragment() {
         binding.btnSubmit.setOnClickListener(View.OnClickListener {
 
             if (!package_id.isEmpty()) {
-                binding.progressBar.progressbar.visibility = View.VISIBLE
-                hideKeyboard(context as Activity)
-                submitApplication()
-            }
-            else{
+                if(isBookingAvailable) {
+                    binding.progressBar.progressbar.visibility = View.VISIBLE
+                    hideKeyboard(context as Activity)
+                    submitApplication()
+                }
+                else
+                {
+                    showAlertDialog(
+                        context as Activity,
+                        getString(R.string.app_name),
+                        getString(R.string.booking_unavailable)
+                    )
+                }
+            } else {
                 showAlertDialog(
                     context as Activity,
                     getString(R.string.app_name),
@@ -203,7 +217,7 @@ class MarineFormFragment : Fragment() {
         activity?.let {
             ArrayAdapter<String>(
                 it,
-                android.R.layout.simple_spinner_item,
+                R.layout.item_spinner,
                 data as MutableList<String>
             )
 
@@ -330,12 +344,14 @@ class MarineFormFragment : Fragment() {
     private fun submitApplication() {
         val name: String = binding.etName.text.toString()
         val email: String = binding.etEmail.text.toString()
-        val contact: String = binding.layoutMobile.etMobile.text.toString().replace("\\s".toRegex(), "")
+        val contact: String =
+            binding.layoutMobile.etMobile.text.toString().replace("\\s".toRegex(), "")
         val id: String = binding.etId.text.toString()
         val reserv_date: String = binding.etDate.text.toString()
         val hrs: String = binding.etHrs.text.toString()
+        val gender: String = getGender(binding.cbFemale, binding.cbMale)
 
-        if(!name.isNullOrEmpty() && !id.isNullOrEmpty()) {
+        if (!name.isNullOrEmpty() && !id.isNullOrEmpty()) {
             val request = MarineServiceRequest(
                 service_id,
                 package_id,
@@ -347,15 +363,18 @@ class MarineFormFragment : Fragment() {
                 reserv_date,
                 package_id,
                 hrs,
-                total_price.toString()
+                total_price.toString(),
+                gender
             )
 
             viewModel.addApplication(request, requireContext())
             observeAddApplicationVM()
-        }
-        else
-        {
-            showAlertDialog(requireActivity(),getString(R.string.app_name), getString(R.string.empty_fields))
+        } else {
+            showAlertDialog(
+                requireActivity(),
+                getString(R.string.app_name),
+                getString(R.string.empty_fields)
+            )
         }
 
     }
@@ -385,27 +404,26 @@ class MarineFormFragment : Fragment() {
     }
 
 
-
     fun checkAvailability() {
-            if (!package_id.isEmpty()) {
+        if (!package_id.isEmpty()) {
 
-                binding.progressBar.progressbar.visibility = View.VISIBLE
+            binding.progressBar.progressbar.visibility = View.VISIBLE
 
-                viewModel.checkBookingAviability(
-                    service_id,
-                    package_id,
-                    binding.etDate.text.toString(),
-                    binding.etHrs.text.toString()
-                )
-                observeBookingVM()
+            viewModel.checkBookingAviability(
+                service_id,
+                package_id,
+                binding.etDate.text.toString(),
+                binding.etHrs.text.toString()
+            )
+            observeBookingVM()
 
-            } else {
-                showAlertDialog(
-                    context as Activity,
-                    getString(R.string.app_name),
-                    getString(R.string.no_pckg_error)
-                )
-            }
+        } else {
+            showAlertDialog(
+                context as Activity,
+                getString(R.string.app_name),
+                getString(R.string.no_pckg_error)
+            )
+        }
     }
 
 
@@ -433,9 +451,11 @@ class MarineFormFragment : Fragment() {
         viewModel.bookingResponse.observe(viewLifecycleOwner, Observer { bookingResponse ->
             bookingResponse?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
-                if (!bookingResponse.is_booked) {
-                    total_price = bookingResponse.total_price as Int
+                if (!bookingResponse.is_booked && !bookingResponse.total_price.isNullOrEmpty()) {
+                    total_price = Integer.parseInt(bookingResponse.total_price);
+                    isBookingAvailable = true
                 } else {
+                    isBookingAvailable = false
                     showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name), getString(R.string.booking_unavailable)
@@ -474,15 +494,28 @@ class MarineFormFragment : Fragment() {
             msg?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 showAlertDialog(
-                    context as Activity,
-                    getString(R.string.app_name), msg
+                    getString(R.string.app_name), "Form submitted successfully."
                 )
             }
 
         })
 
-
     }
 
+    fun showAlertDialog(title: String, msg: String) {
+        val builder: AlertDialog.Builder? = activity?.let {
+            AlertDialog.Builder(it)
+        }
+
+        builder?.setMessage(msg)
+            ?.setTitle(title)?.setPositiveButton(
+                R.string.ok
+            ) { dialog, id ->
+                val action = MarineFormFragmentDirections.actionNavToHome()
+                Navigation.findNavController(binding.btnSubmit).navigate(action)
+
+            }
+        builder?.create()?.show()
+    }
 
 }

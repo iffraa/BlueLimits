@@ -23,9 +23,9 @@
             android:id="@+id/iv_oia"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_below="@+id/iv_logo"
             android:layout_marginTop="10dp"
             android:scaleType="fitXY"
-            android:layout_below="@+id/iv_logo"
             android:src="@drawable/boho_slide1" />
 
         <TextView
@@ -48,10 +48,10 @@
             android:layout_below="@+id/tv_oia_beach"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:textColor="@color/light_black"
             android:layout_marginRight="10dp"
             android:fontFamily="@font/jura_semi_bold"
-            android:text="@string/oia_info"></TextView>
+            android:text="@string/oia_info"
+            android:textColor="@color/light_black"></TextView>
 
         <ImageView
             android:id="@+id/iv_boho"
@@ -111,17 +111,209 @@
             android:fontFamily="@font/jura_demi_bold"
             android:text="@string/marine_services"></TextView>
 
-        <TextView
-            android:id="@+id/tv_marine"
+
+        <LinearLayout
+            android:id="@+id/ll_marine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_marine_serv"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
-            android:fontFamily="@font/jura_semi_bold"
-            android:text="@string/marine_info"
-            android:textColor="@color/light_black"></TextView>
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info1"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info2"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info3"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_10sdp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info4"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_10sdp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info5"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_10sdp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info6"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_10sdp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info7"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/_10sdp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info8"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_10sdp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bullet"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    ></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/light_black"
+                    android:text="@string/marine_info9"
+                    android:fontFamily="@font/jura_semi_bold"
+                    android:layout_marginLeft="@dimen/_5sdp"></TextView>
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </RelativeLayout>
 </ScrollView>

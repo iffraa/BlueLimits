@@ -20,15 +20,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="@dimen/_95sdp"
         android:visibility="gone"
         android:layout_centerHorizontal="true">
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="150dp"
+            android:layout_width="@dimen/_130sdp"
             android:background="@android:color/transparent"
-            android:textSize="24sp"
+            android:textSize="@dimen/_17ssp"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:fontFamily="@font/jura_semi_bold"
@@ -37,11 +37,11 @@
 
         <Button
             android:id="@+id/btn_apply"
-            android:layout_width="150dp"
+            android:layout_width="@dimen/_130sdp"
             android:layout_height="wrap_content"
             android:text="@string/apply"
             android:background="@android:color/transparent"
-            android:textSize="24sp"
+            android:textSize="@dimen/_17ssp"
             android:textColor="@android:color/white"
             android:fontFamily="@font/jura_semi_bold"
             android:onClick="onApplyClick"

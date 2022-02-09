@@ -35,7 +35,7 @@ class GuestListAdapter() :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuestViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        _binding = ItemGuestBinding.inflate(inflater)
+        _binding = ItemGuestBinding.inflate(inflater, parent, false)
         return GuestViewHolder(binding)
     }
 
@@ -46,7 +46,7 @@ class GuestListAdapter() :
 
         var et_name: EditText = holder.view.etGuestName
         val et_id: EditText = holder.view.etGuestId
-        val et_contact: EditText = holder.view.etGuestMobile
+        val et_contact: EditText = holder.view.layoutMobile.etMobile
 
         val cb_male: CheckBox = holder.view.checkboxMale
         val cb_female: CheckBox = holder.view.checkboxFemale

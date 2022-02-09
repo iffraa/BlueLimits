@@ -22,7 +22,7 @@
         android:fitsSystemWindows="true"
         android:background="@color/dark_blue"
         app:itemTextColor="@color/white"
-        app:itemTextAppearance="@font/jura_demi_bold"
+        app:theme="@style/ThemeOverlay.AppCompat.navTheme"
         app:headerLayout="@layout/nav_header_main2"
         app:menu="@menu/activity_main_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

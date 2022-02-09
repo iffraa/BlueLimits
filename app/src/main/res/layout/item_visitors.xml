@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_15sdp"
+    android:paddingBottom="@dimen/_15sdp">
+
+    <TextView
+        android:id="@+id/tv_no_of_visitors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="@string/no_of_visitors"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_13ssp" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="@string/date_time"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_13ssp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_view"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:background="@drawable/btn_bg"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="View"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13ssp"></Button>
+
+        <Button
+            android:id="@+id/btn_edit"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/btn_bg"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="Edit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13ssp"></Button>
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/btn_bg"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="Delete"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13ssp"></Button>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_include"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <include layout="@layout/progress_bar"
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></include>
+
+    </RelativeLayout>
+
+</LinearLayout>
+

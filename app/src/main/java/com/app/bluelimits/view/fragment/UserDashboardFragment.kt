@@ -16,7 +16,10 @@ import com.app.bluelimits.view.activity.DashboardActivity as DashboardActivity
 import android.R.string
 import android.app.Activity
 import android.text.TextUtils.split
+import com.app.bluelimits.model.Data
+import com.app.bluelimits.util.SharedPreferencesHelper
 import com.app.bluelimits.util.setHomeNavigation
+import com.google.gson.Gson
 
 
 /**
@@ -58,8 +61,13 @@ class UserDashboardFragment : Fragment() {
     }
 
     private fun setProgressBar() {
-        if (!user_data?.contract_remaining_days.isNullOrEmpty()) {
-            val remaining_days: Int? = user_data?.contract_remaining_days?.toInt()
+        var remainingDays = user_data?.contract_remaining_days
+        if (!remainingDays.isNullOrEmpty()) {
+            if(remainingDays.equals("today"))
+            {
+                remainingDays = "0"
+            }
+            val remaining_days: Int? = remainingDays?.toInt()
             binding.pbDays.max = Constants.CONTRACT_TOTAL_DAYS
             binding.pbDays.progress = remaining_days!!
         }
@@ -67,6 +75,17 @@ class UserDashboardFragment : Fragment() {
 
 
     private fun setUserData() {
+        if(user_data == null)
+        {
+            val prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
+
+            val data_string = prefsHelper.getData(Constants.USER_DATA)
+            val gson = Gson()
+            val data = gson.fromJson(data_string, Data::class.java)
+            user_data = data.user
+
+        }
+
         binding.tvName.setText(user_data!!.name)
         user_data?.profile_image?.let {
             context?.let { it1 ->
@@ -87,7 +106,9 @@ class UserDashboardFragment : Fragment() {
         } else {
             var rDays = user_data?.contract_remaining_days
             if (!rDays.isNullOrEmpty()) {
-                binding.tvProgress.setText(rDays)
+                if(rDays.equals("today"))
+                    rDays ="0"
+                binding.tvProgress.setText(rDays + "\nDAYS" )
             }
             binding.tvTotalPoints.setText(user_data?.loyalty_points + " " + getString(R.string.points))
 
@@ -101,9 +122,10 @@ class UserDashboardFragment : Fragment() {
                 else if (date?.contains(" ") == true) {
                     strs = date.split(" ").toTypedArray()
                 }
-                binding.tvExpiryDate.setText(strs[2])
+
+                binding.tvExpiryDate.setText(strs[0])
                 binding.tvExpiryMnth.setText(strs[1])
-                binding.tvExpiryYr.setText(strs[0])
+                binding.tvExpiryYr.setText(strs[2])
 
             }
         }

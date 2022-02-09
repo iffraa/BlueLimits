@@ -2,7 +2,6 @@ package com.app.bluelimits.util
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.DialogInterface
 import android.util.Patterns
@@ -18,27 +17,20 @@ import com.bumptech.glide.request.RequestOptions
 
 import java.text.SimpleDateFormat
 import java.util.*
-import android.widget.TimePicker
 
-import android.app.TimePickerDialog
-import android.app.TimePickerDialog.OnTimeSetListener
-import android.os.CountDownTimer
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 
-import android.widget.DatePicker
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.view.ViewCompat
 import androidx.navigation.NavDirections
 import com.app.bluelimits.view.activity.DashboardActivity
-import com.app.bluelimits.view.fragment.AboutUsFragment.Companion.newInstance
-import java.lang.reflect.Array.newInstance
-import com.app.bluelimits.view.activity.MainActivity
-import com.app.bluelimits.view.fragment.ResortInfoFragmentDirections
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import org.json.JSONException
 import org.json.JSONObject
-import java.text.ParseException
 
 
 fun loadGif(view: ImageView, resId: Int, context: Context) {
@@ -46,6 +38,28 @@ fun loadGif(view: ImageView, resId: Int, context: Context) {
         .load(resId)
         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
         .skipMemoryCache(true)
+        .listener(object : RequestListener<GifDrawable> {
+            override fun onLoadFailed(
+                p0: GlideException?,
+                p1: Any?,
+                p2: Target<GifDrawable>?,
+                p3: Boolean
+            ): Boolean {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onResourceReady(
+                resource: GifDrawable?,
+                p1: Any?,
+                p2: Target<GifDrawable>?,
+                p3: DataSource?,
+                p4: Boolean
+            ): Boolean {
+                (resource as GifDrawable).setLoopCount(1)
+
+                return false
+            }
+        })
         .into(view)
 
 }
@@ -217,7 +231,7 @@ fun showDateTime(context: Context, editText: EditText) {
 
 }
 
-fun showDate(context: Context, editText: EditText) {
+fun showBirthdayDialog(context: Context, editText: EditText) {
 
     hideKeyboard(context as Activity)
 
@@ -228,13 +242,12 @@ fun showDate(context: Context, editText: EditText) {
         .titleTextColor(context.getResources().getColor(R.color.white))
         .displayHours(false)
         .displayMinutes(false)
-       // .minDateRange(d)
+        .maxDateRange(d)
 
         .displayDays(false)
         .displayMonth(true)
         .displayYears(true)
         .displayDaysOfMonth(true)
-
         .backgroundColor(context.getResources().getColor(R.color.white))
         .mainColor(context.getResources().getColor(R.color.blue_text))
         .listener { date ->
@@ -245,4 +258,14 @@ fun showDate(context: Context, editText: EditText) {
         }.display()
 
 }
+
+fun EditText.removeUnderline() {
+    val paddingBottom = this.paddingBottom
+    val paddingStart = ViewCompat.getPaddingStart(this)
+    val paddingEnd = ViewCompat.getPaddingEnd(this)
+    val paddingTop = this.paddingTop
+    ViewCompat.setBackground(this, null)
+    ViewCompat.setPaddingRelative(this, paddingStart, paddingTop, paddingEnd, paddingBottom)
+}
+
 

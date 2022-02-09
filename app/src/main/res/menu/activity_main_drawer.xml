@@ -4,9 +4,12 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+
         <item
-            android:id="@+id/nav_dashboard"
+            android:id="@+id/userDashboardFragment"
             android:title="@string/dashboard" />
+
         <item
             android:id="@+id/nav_profile"
             android:title="@string/my_profile" />
@@ -14,11 +17,13 @@
             android:id="@+id/nav_invite"
             android:title="@string/invite_visitor" />
         <item
-            android:id="@+id/nav_reservation"
+            android:id="@+id/nav_guest_space"
             android:title="@string/reservation" />
+
         <item
-            android:id="@+id/nav_contract"
-            android:title="@string/contract" />
+            android:id="@+id/nav_update_pwd"
+            android:title="@string/update_pwd"
+            />
 
         <item
             android:id="@+id/nav_services"
@@ -36,6 +41,7 @@
         <item
             android:id="@+id/nav_terms"
             android:title="@string/terms" />
+
         <item
             android:id="@+id/nav_login"
             android:title="@string/login_menu" />

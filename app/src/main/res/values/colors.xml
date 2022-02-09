@@ -9,10 +9,16 @@
     <color name="app_bar">#e4eaf0</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_black">#6F6E6E</color>
-    <color name="dark_blue">#294a69</color>
+    <color name="dark_blue">#294A69</color>
     <color name="navy_blue">#3b577c</color>
     <color name="grey">#98aec5</color>
     <color name="blue_text">#5f96d0</color>
     <color name="grey_text">#82a5ca</color>
+    <color name="dark_grey">#696969</color>
+    <color name="btn_grey">#99AEC1</color>
+    <color name="btn_form_grey">#99AEC4</color>
+    <color name="input_outline">#8098BE</color>
+    <color name="light_grey_box">#99AFC4</color>
+    <color name="dark_box">#3C587B</color>
 
 </resources>

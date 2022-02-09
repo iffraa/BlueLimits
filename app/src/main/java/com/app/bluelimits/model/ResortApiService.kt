@@ -4,12 +4,11 @@ import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Header
 
 
 class ResortApiService {
 
-    private val BASE_URL = "http://saudiaweb.com/bluelimits/api/"
+    private val BASE_URL = "http://bluelimits.net/api/"
 
     private val api = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -17,10 +16,11 @@ class ResortApiService {
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
         .create(
-            ResortAPI::class.java)
+            ResortAPI::class.java
+        )
 
-    fun login(user_name: String,password: String, user_type: String): Single<APIResponse?>? {
-        return api.login(user_name,password,user_type)
+    fun login(user_name: String, password: String, user_type: String): Single<APIResponse?>? {
+        return api.login(user_name, password, user_type)
     }
 
     fun getGuestResorts(): Single<ResortResponse> {
@@ -32,8 +32,8 @@ class ResortApiService {
     }
 
     fun getProfile(token: String): Single<APIResponse?>? {
-      return api.getProfile(token)
-  }
+        return api.getProfile(token)
+    }
 
     fun getServices(resort_id: String): Single<ResortResponse> {
         return api.getServices(resort_id)
@@ -44,59 +44,77 @@ class ResortApiService {
     }
 
     fun getMemberPackages(resort_id: String, role_id: String): Single<PackageResponse> {
-        return api.getMemberPackages(resort_id,role_id)
+        return api.getMemberPackages(resort_id, role_id)
     }
 
-    fun addMember(data: RegisterMemberRequest
+    fun addMember(
+        data: RegisterMemberRequest
     ): Single<APIResponse?>? {
         return api.addMember(data)
     }
 
-    fun getVisitorPackages(token: String,date_time: String,gender: String,resort_id: String): Single<VisitorPackage> {
-        return api.getVisitorPackages(token,date_time,gender,resort_id)
+    fun getVisitorPackages(
+        token: String,
+        date_time: String,
+        gender: String,
+        resort_id: String
+    ): Single<VisitorPackage> {
+        return api.getVisitorPackages(token, date_time, gender, resort_id)
     }
 
     fun addVisitor(
-        token:String,
+        token: String,
         visitors: VisitorRequest?
-    ): Single<APIResponse?>?
-    {
-        return api.addVisitor(token,visitors)
+    ): Single<APIResponse?>? {
+        return api.addVisitor(token, visitors)
     }
 
     fun getCustomerResorts(token: String): Single<ResortResponse?>? {
         return api.getCustomerResorts(token)
     }
 
-    fun getAvailableUnits(token: String, resort_id: String, reservation_date: String,chk_out: String, discount: String): Single<UnitsResponse?>? {
-        return api.getAvailableUnits(token,resort_id,reservation_date,chk_out, discount)
+    fun getAvailableUnits(
+        token: String,
+        resort_id: String,
+        reservation_date: String,
+        chk_out: String,
+        discount: String,
+        unitId: String
+    ): Single<UnitsResponse?>? {
+        return api.getAvailableUnits(token, resort_id, reservation_date, chk_out, discount, unitId)
     }
 
     fun addGuestReservation(
-        token:String,
+        token: String,
         guests: GHReservationRequest
-    ): Single<APIResponse?>?
-    {
-        return api.addGuestReservation(token,guests)
+    ): Single<APIResponse?>? {
+        return api.addGuestReservation(token, guests)
     }
 
-    fun addMarineApplication(data: MarineServiceRequest
+    fun addMarineApplication(
+        data: MarineServiceRequest
     ): Single<APIResponse?>? {
         return api.addMarineApplication(data)
     }
 
-    fun checkBookingAvailability(service_id: String,resort_unit_id: String, reservation_date_time: String, hour: String): Single<MarineBookingResponse?>? {
-        return api.checkBookingAvailability(service_id,resort_unit_id,reservation_date_time,hour)
+    fun checkBookingAvailability(
+        service_id: String,
+        resort_unit_id: String,
+        reservation_date_time: String,
+        hour: String
+    ): Single<MarineBookingResponse?>? {
+        return api.checkBookingAvailability(service_id, resort_unit_id, reservation_date_time, hour)
     }
 
-    fun getUserRoles(): Single<ResortResponse?>?
-    {
+    fun getUserRoles(): Single<ResortResponse?>? {
         return api.getUserRoles()
     }
 
-    fun getNoOfVisitors(token: String,
-                        visiting_date_time: String,
-                        resort_id: String): Single<TotalVisitorsResponse> {
+    fun getNoOfVisitors(
+        token: String,
+        visiting_date_time: String,
+        resort_id: String
+    ): Single<TotalVisitorsResponse> {
         return api.getNoOfVisitors(token, visiting_date_time, resort_id)
     }
 
@@ -104,6 +122,24 @@ class ResortApiService {
         return api.getGuestUnits(resort_id)
     }
 
+    fun updatePwd(token: String, req: PwdUpdateReq): Single<APIResponse> {
+        return api.updatePwd(token, req)
+    }
 
+    fun getVisitors(token: String): Single<VisitorsResponse> {
+        return api.getVisitors(token)
+    }
+
+    fun deleteVisitor(token: String, inviteeID: String): Single<APIResponse> {
+        return api.deleteVisitor(token,inviteeID)
+    }
+
+    fun editVisitor(token: String, inviteeID: String, visitors: EditVisitorRequest): Single<APIResponse> {
+        return api.editVisitor(token,inviteeID, visitors)
+    }
+
+    fun getUnitTypes(token: String): Single<SpaceResponse> {
+        return api.getUnitTypes(token)
+    }
 
 }

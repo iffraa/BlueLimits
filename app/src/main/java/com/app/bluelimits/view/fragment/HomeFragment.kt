@@ -2,6 +2,8 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +20,6 @@ import com.app.bluelimits.util.*
 import com.app.bluelimits.view.ResortListAdapter
 import com.app.bluelimits.view.activity.DashboardActivity
 import com.app.bluelimits.viewmodel.HomeViewModel
-import java.util.*
 
 class HomeFragment : Fragment()  {
 
@@ -48,6 +49,7 @@ class HomeFragment : Fragment()  {
         binding.progressBar.progressbar.visibility = View.VISIBLE
 
         hideKeyboard(context as Activity)
+        (activity as DashboardActivity).onCustomTBIconClick(null)
 
         viewModel.getMemberResorts()
         /* if(Constants.isLoggedIn)
@@ -85,9 +87,27 @@ class HomeFragment : Fragment()  {
             user?.let {
                 //prevents on souccess code from being called twice
                 if(viewLifecycleOwner.lifecycle.currentState== Lifecycle.State.RESUMED){
-                    viewModel.resorts.value?.let { it1 -> resortListAdapter.updateResortList(it1) }
+                    viewModel.resorts.value?.let {
+
+                        val iterator = it.iterator()
+                        while(iterator.hasNext()){
+                            val resort = iterator.next()
+                            if(resort.name.equals("BOHO Resort")){
+                                iterator.remove()
+                            }
+                        }
+
+
+                        resortListAdapter.updateResortList(it)
+                    }
                     binding.rvResorts.visibility = View.VISIBLE
-                    binding.ivMarine.visibility = View.VISIBLE
+                    Handler(Looper.getMainLooper()).postDelayed(
+                        {
+                            // This method will be executed once the timer is over
+                            binding.ivMarine.visibility = View.VISIBLE
+                        },
+                        150 // value in milliseconds
+                    )
                 }
 
             }

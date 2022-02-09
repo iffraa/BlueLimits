@@ -7,13 +7,14 @@
     android:background="@drawable/rectangle"
     >
     <TextView
+        android:id="@+id/tv_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/number_code"
         android:fontFamily="@font/jura_demi_bold"
-        android:paddingLeft="10dp"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"></TextView>
+        android:paddingLeft="@dimen/_10sdp"
+        android:textSize="@dimen/_11ssp"
+        android:textColor="@color/navy_blue"></TextView>
 
     <EditText
         android:id="@+id/et_mobile"
@@ -22,9 +23,9 @@
         android:fontFamily="@font/jura_demi_bold"
         android:inputType="number"
         android:lines="1"
+        android:textSize="@dimen/_11ssp"
         android:background="@android:color/transparent"
-        android:paddingLeft="10dp"
-        android:textColor="@android:color/black"></EditText>
+        android:textColor="@color/navy_blue"></EditText>
 
 
 </LinearLayout>

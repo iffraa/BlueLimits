@@ -31,8 +31,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-
-
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -58,7 +56,7 @@ class ResortFacilitiesFragment : Fragment() {
             type = it.getParcelable<Resort>(Constants.TYPE)!!
         }
 
-        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,19 +78,24 @@ class ResortFacilitiesFragment : Fragment() {
         viewModel.getUserRoles()
         observeViewModel()
 
-        /*  binding.btnGhouse.setOnClickListener(View.OnClickListener {
-              val action = ResortFacilitiesFragmentDirections.actionResortFacilitiesFragToUnitFormFragment(type,getString(R.string.guest_house))
-              Navigation.findNavController(it).navigate(action)
-          })*/
-
     }
 
     fun observeViewModel() {
         viewModel.roles.observe(viewLifecycleOwner, Observer { roles ->
             binding.progressBar.progressbar.visibility = View.GONE
             roles?.let {
-                viewModel.roles.value?.let { it1 -> setRolesList(roles)
+                viewModel.roles.value?.let { it1 ->
+
+                    val iterator = roles.iterator()
+                    while (iterator.hasNext()) {
+                        val item = iterator.next()
+                        if (item.name.equals(getString(R.string.guest_visitor))) {
+                            iterator.remove()
+                        }
                     }
+
+                    setRolesList(roles)
+                }
             }
 
         })
@@ -121,14 +124,14 @@ class ResortFacilitiesFragment : Fragment() {
 
     private fun setRolesList(roles: ArrayList<Resort>) {
 
-        roleListAdapter = RoleListAdapter(arrayListOf(),requireContext())
+        roleListAdapter = RoleListAdapter(arrayListOf(), requireContext())
 
         binding.rvRoles.visibility = View.VISIBLE
         binding.rvRoles.apply {
             layoutManager = LinearLayoutManager(context)
 
             adapter = roleListAdapter
-            roleListAdapter.setRoleList(roles,type)
+            roleListAdapter.setRoleList(roles, type)
 
 
         }
@@ -137,18 +140,16 @@ class ResortFacilitiesFragment : Fragment() {
     }
 
 
-    private fun setLogo()
-    {
-        when{
-            type.name?.contains(Constants.OIA) == true ->  setLayout(R.drawable.oia_logo)
+    private fun setLogo() {
+        when {
+            type.name?.contains(Constants.OIA) == true -> setLayout(R.drawable.oia_logo)
             type.name?.contains(Constants.BOHO) == true -> setLayout(R.drawable.boho_logo)
             type.name?.contains(Constants.MARINE) == true -> setLayout(R.drawable.marine_logo)
         }
     }
 
 
-    private fun setLayout(logo_img: Int)
-    {
+    private fun setLayout(logo_img: Int) {
         binding.ivLogo.setImageResource(logo_img)
 
     }

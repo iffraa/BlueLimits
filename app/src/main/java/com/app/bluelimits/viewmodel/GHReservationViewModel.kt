@@ -18,7 +18,7 @@ class GHReservationViewModel(application: Application): BaseViewModel(applicatio
     private val resortService = ResortApiService()
     private val disposable = CompositeDisposable()
 
-    var availableUnits = MutableLiveData<ArrayList<AvailableUnit>>()
+    var availableUnit = MutableLiveData<AvailableUnit>()
     var resorts = MutableLiveData<ArrayList<Resort>>()
     val loadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
@@ -46,17 +46,17 @@ class GHReservationViewModel(application: Application): BaseViewModel(applicatio
 
     }
 
-    fun getAvailableUnits(token: String, resort_id: String, reservation_date: String,chk_out: String, discount: String)
+    fun getAvailableUnits(token: String, resort_id: String, reservation_date: String,chk_out: String, discount: String, unitId: String)
     {
         loading.value = true
-        resortService.getAvailableUnits("Bearer " + token, resort_id, reservation_date,chk_out,discount)
+        resortService.getAvailableUnits("Bearer " + token, resort_id, reservation_date,chk_out,discount, unitId)
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())?.let {
                 disposable.add(
                     it
                         .subscribeWith(object : DisposableSingleObserver<UnitsResponse>() {
                             override fun onSuccess(value: UnitsResponse) {
-                                unitsRetrieved(value.data)
+                                unitsRetrieved(value.data[0])
                             }
                             override fun onError(e: Throwable) {
                                 loading.value = false
@@ -78,9 +78,9 @@ class GHReservationViewModel(application: Application): BaseViewModel(applicatio
 
     }
 
-    private fun unitsRetrieved(availableUnits: ArrayList<AvailableUnit>)
+    private fun unitsRetrieved(availableUnits: AvailableUnit)
     {
-        this.availableUnits.value = availableUnits
+        this.availableUnit.value = availableUnits
         loadError.value = false
         loading.value = false
 

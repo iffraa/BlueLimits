@@ -3,19 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.ProfileFragment">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_18sdp"
         android:layout_gravity="center_horizontal">
     <ImageView
         android:id="@+id/iv_profile"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:scaleType="fitXY"
         android:background="@drawable/round_outline"
         android:src="@drawable/profile_img" />
@@ -26,10 +27,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_profile"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/jura_demi_bold"
-            android:textColor="@color/grey_text"
-            android:textSize="18sp"></TextView>
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_18ssp"></TextView>
 
     <TextView
         android:id="@+id/tv_role"
@@ -37,79 +38,78 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/jura_demi_bold"
         android:layout_below="@+id/tv_name"
-        android:layout_marginTop="10dp"
-        android:textSize="16dp"
-        android:textColor="@color/grey"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/navy_blue"
         android:layout_centerHorizontal="true">
     </TextView>
 
         <Button
             android:id="@+id/btn_info"
-            android:layout_width="320dp"
-            android:layout_height="55dp"
+            android:layout_width="@dimen/_320sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_below="@+id/tv_role"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/btn_bg"
             android:fontFamily="@font/jura_demi_bold"
             android:text="@string/personal_info"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold"></Button>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
         android:layout_below="@+id/btn_info">
 
         <LinearLayout
+            android:id="@+id/ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="250dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/_160sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rectangle"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="@drawable/rectangle">
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:src="@drawable/id"></ImageView>
 
                 <TextView
                     android:id="@+id/tv_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/id_no"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/grey_text"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/jura_demi_bold"></TextView>
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/id_no"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"></TextView>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_width="@dimen/_160sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:background="@drawable/rectangle"
                 android:gravity="center_vertical"
-                android:background="@drawable/rectangle">
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:src="@drawable/mobile"></ImageView>
 
                 <TextView
@@ -117,50 +117,51 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="@string/mobile"
-                    android:textColor="@color/grey_text"
-                    android:textSize="14sp"></TextView>
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10sdp"></TextView>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="250dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/_160sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:background="@drawable/rectangle"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rectangle">
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:src="@drawable/email"></ImageView>
 
                 <TextView
                     android:id="@+id/tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/email"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/grey_text"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/jura_demi_bold"></TextView>
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/email"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"></TextView>
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_unit"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:background="@drawable/rectangle">
+                android:layout_width="@dimen/_160sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:background="@drawable/rectangle"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/unit"></ImageView>
 
@@ -168,27 +169,27 @@
                     android:id="@+id/tv_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/unit"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/grey_text"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/jura_demi_bold"></TextView>
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/unit"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"></TextView>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_family"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:id="@+id/ll_extra"
+                android:layout_width="@dimen/_160sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_13sdp"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/rectangle">
+                android:background="@drawable/rectangle"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/family"></ImageView>
 
@@ -196,37 +197,66 @@
                     android:id="@+id/tv_family"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/total_mems"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/grey_text"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/jura_demi_bold"></TextView>
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/total_mems"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10sdp"></TextView>
 
             </LinearLayout>
 
 
+
+            <LinearLayout
+                android:id="@+id/ll_family"
+                android:layout_width="@dimen/_160sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/rectangle"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/family"></ImageView>
+
+                <TextView
+                    android:id="@+id/tv_extra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/extra_mems"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10sdp"></TextView>
+
+            </LinearLayout>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_barcode"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp">
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
 
         </ImageView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
         <Button
             android:id="@+id/btn_family"
-            android:layout_width="320dp"
-            android:layout_height="55dp"
+            android:layout_width="@dimen/_320sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_below="@+id/ll_info"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:visibility="gone"
+            android:textSize="@dimen/_14ssp"
             android:background="@drawable/btn_bg"
             android:fontFamily="@font/jura_demi_bold"
             android:text="@string/fam_members"
@@ -238,14 +268,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:layout_below="@+id/btn_family"></androidx.recyclerview.widget.RecyclerView>
 
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressbar"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_130sdp"
             android:indeterminate="true"
             android:max="100"
             android:visibility="gone"

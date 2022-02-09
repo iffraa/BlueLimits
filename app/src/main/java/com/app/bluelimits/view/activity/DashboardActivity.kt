@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -14,16 +13,9 @@ import com.app.bluelimits.R
 import com.app.bluelimits.databinding.ActivityDashboardBinding
 import com.app.bluelimits.util.Constants
 import com.google.android.material.navigation.NavigationView
-import androidx.navigation.ui.NavigationUI
 
-import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.Toolbar
-import com.app.bluelimits.view.fragment.ResortInfoFragmentDirections
-import androidx.fragment.app.Fragment
 import androidx.navigation.*
-import com.app.bluelimits.util.hideKeyboard
-import com.app.bluelimits.view.fragment.HomeFragment
 
 
 class DashboardActivity : AppCompatActivity() {
@@ -51,7 +43,8 @@ class DashboardActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_login,  R.id.nav_dashboard,  R.id.userDashboardFragment
+                 R.id.nav_login,  R.id.userDashboardFragment, R.id.nav_home, R.id.nav_reservation_msg
+
             ), drawerLayout
         )
         //  appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
@@ -63,17 +56,17 @@ class DashboardActivity : AppCompatActivity() {
         val isLogin = intent.getBooleanExtra(Constants.IS_LOGIN, false)
         setNavGraphStart(navController, isLogin)
 
-       // changeMenuIcon()
+        // changeMenuIcon()
         hideLoginItems()
         changeMenuIcon()
     }
 
-  /*  private fun changeMenuIcon() {
-        getSupportActionBar()?.setHomeButtonEnabled(true);
-        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.nav_icon);
+    /*  private fun changeMenuIcon() {
+          getSupportActionBar()?.setHomeButtonEnabled(true);
+          getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
+          getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.nav_icon);
 
-    }*/
+      }*/
 
     @SuppressLint("ResourceType")
     private fun setNavGraphStart(navController: NavController, isLogin: Boolean) {
@@ -119,7 +112,9 @@ class DashboardActivity : AppCompatActivity() {
     fun makeUserDashboardStart() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.userDashboardFragment
+                R.id.userDashboardFragment,
+                R.id.nav_reservation_msg,
+                R.id.nav_home
             ), drawerLayout
         )
 
@@ -141,24 +136,33 @@ class DashboardActivity : AppCompatActivity() {
         val nav_profile = menu.findItem(R.id.nav_profile)
         nav_profile.setVisible(false)
 
-        val nav_reservation = menu.findItem(R.id.nav_reservation)
+        val nav_reservation = menu.findItem(R.id.nav_guest_space)
         nav_reservation.setVisible(false)
 
-        val nav_my_contract = menu.findItem(R.id.nav_contract)
-        nav_my_contract.setVisible(false)
+      //  val nav_my_contract = menu.findItem(R.id.nav_contract)
+       // nav_my_contract.setVisible(false)
 
         val nav_req_services = menu.findItem(R.id.nav_services)
         nav_req_services.setVisible(false)
+
+        val nav_pwd = menu.findItem(R.id.nav_update_pwd)
+        nav_pwd.setVisible(false)
+
 
     }
 
     private fun showLoginItems() {
         val menu: Menu = binding.navView.getMenu()
-        val nav_logout = menu.findItem(R.id.nav_logout)
-        nav_logout.setVisible(true)
 
         val nav_login = menu.findItem(R.id.nav_login)
         nav_login.setVisible(false)
+
+
+        val nav_logout = menu.findItem(R.id.nav_logout)
+        nav_logout.setVisible(true)
+
+        val nav_pwd = menu.findItem(R.id.nav_update_pwd)
+        nav_pwd.setVisible(true)
 
         val nav_invite = menu.findItem(R.id.nav_invite)
         nav_invite.setVisible(true)
@@ -166,14 +170,14 @@ class DashboardActivity : AppCompatActivity() {
         val nav_profile = menu.findItem(R.id.nav_profile)
         nav_profile.setVisible(true)
 
-        val nav_reservation = menu.findItem(R.id.nav_reservation)
+        val nav_reservation = menu.findItem(R.id.nav_guest_space)
         nav_reservation.setVisible(true)
 
-        val nav_my_contract = menu.findItem(R.id.nav_contract)
-        nav_my_contract.setVisible(true)
+     //   val nav_my_contract = menu.findItem(R.id.nav_contract)
+     //   nav_my_contract.setVisible(true)
 
         val nav_req_services = menu.findItem(R.id.nav_services)
-        nav_req_services.setVisible(true)
+        nav_req_services.setVisible(false)
 
 
     }
@@ -188,21 +192,37 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
-    fun onCustomTBIconClick(action: NavDirections) {
-        val dashboardIcon = binding.appBarMain2.ivLogo
+    fun onCustomTBIconClick(action: NavDirections?) {
+        if (this::binding.isInitialized) {
+            binding.appBarMain2.tvListing.visibility = View.GONE
 
-        dashboardIcon.setOnClickListener(View.OnClickListener {
-                navController.navigate(action)
+            val dashboardIcon = binding.appBarMain2.ivLogo
+            dashboardIcon.setOnClickListener {
+                action?.let { it1 -> navController.navigate(it1) }
 
-            })
+            }
 
+        }
+    }
+
+    fun navigateToVisitorsList(action: NavDirections) {
+        val tvVisitors = binding.appBarMain2.tvListing;
+        tvVisitors.visibility = View.VISIBLE
+
+        tvVisitors.setOnClickListener {
+            navController.navigate(action)
+        }
     }
 
     fun changeMenuIcon() {
-        navController.addOnDestinationChangedListener(NavController.OnDestinationChangedListener{ navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
-            if (navDestination.getId() == R.id.nav_home
+        navController.addOnDestinationChangedListener(NavController.OnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
+            if (
+                navDestination.getId() ==  R.id.nav_reservation_msg
+                ||
+                navDestination.getId() == R.id.nav_home
                 || navDestination.getId() == R.id.userDashboardFragment
-                || navDestination.getId() == R.id.nav_login){
+                || navDestination.getId() == R.id.nav_login
+            ) {
                 getSupportActionBar()?.setHomeButtonEnabled(true);
                 getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.nav_icon);
@@ -211,16 +231,13 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
-    fun setPermissions(isPermitted: Boolean, isGuest: Boolean)
-    {
+    fun setPermissions(isPermitted: Boolean, isGuest: Boolean) {
         val menu: Menu = binding.navView.getMenu()
 
-        if(isGuest) {
-            val nav_guest = menu.findItem(R.id.nav_reservation)
+        if (isGuest) {
+            val nav_guest = menu.findItem(R.id.nav_guest_space)
             nav_guest.setVisible(isPermitted)
-        }
-        else
-        {
+        } else {
             val nav_visitor = menu.findItem(R.id.nav_invite)
             nav_visitor.setVisible(isPermitted)
         }

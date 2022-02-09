@@ -227,7 +227,18 @@ data class VisitorRequest(
     var discount: String,
     var total_price: String,
     var visitor: ArrayList<Visitor>
-                          )
+)
+
+data class EditVisitorRequest(
+    var no_of_visitor: String,
+    var resort_id: String,
+    var visiting_date_time: String,
+    var custom_discount_percentage: String?,
+    var sub_total: String,
+    var discount: String,
+    var total_price: String,
+    var visitor: ArrayList<VisitorDetail>
+)
 
 data class Permission(val id: String, val name: String)
 
@@ -245,18 +256,18 @@ data class Invitee(
 )
 
 data class Visitor(
-  //  var id: String,
+    //  var id: String,
     var name: String,
     var contact_no: String,
     var id_no: String,
     var gender: String,
-   // val status: String,
+    // val status: String,
     var package_id: String,
 
     @SerializedName("package")
     var servicePackage: ServicePackage?,
     var who_will_pay: String,
-  //  val qr_code: String,
+    //  val qr_code: String,
     var price: String
 
 )
@@ -273,14 +284,14 @@ data class VisitorPackage(
     val status: Boolean,
     val message: String,
 
-    val data : ServicePackage
+    val data: ServicePackage
 )
 
 data class PackageResponse(
     val status: Boolean,
     val message: String,
 
-    val data : ArrayList<ServicePackage>
+    val data: ArrayList<ServicePackage>
 )
 
 data class FamilyMember(
@@ -304,7 +315,11 @@ data class FamilyMemberRequest(
 
     )
 
-data class UnitsResponse(var status: Boolean, var message: String, var data: ArrayList<AvailableUnit>)
+data class UnitsResponse(
+    var status: Boolean,
+    var message: String,
+    var data: ArrayList<AvailableUnit>
+)
 
 data class AvailableUnit(
     var id: Int,
@@ -327,8 +342,8 @@ data class ResortResponse(
     val message: String,
 
     @SerializedName("data")
-    val resort : ArrayList<Resort>
-    )
+    val resort: ArrayList<Resort>
+)
 
 data class Resort(
     val id: Int,
@@ -364,61 +379,66 @@ data class Resort(
 
 }
 
-data class RegisterMemberRequest(var role_id: String,
-                                 var resort_id: String,
-                                 var service_id: String,
-                                 var package_id: String,
-                                 var first_name: String,
-                                 var last_name: String,
-                                 var member_id: String,
-                                 var email: String,
-                                 var birth_date: String,
-                                 var gender: String,
-                                 var contact_no: String,
-                                 var home_city: String,
-                                 var home_country: String,
-                                 var office_city: String,
-                                 var office_country: String,
-                                 var membership_no: String,
-                                 var no_of_family_member: String,
-                                 var member: ArrayList<FamilyMemberRequest>
+data class RegisterMemberRequest(
+    var title: String,
+    var role_id: String,
+    var resort_id: String,
+    var service_id: String,
+    var package_id: String,
+    var first_name: String,
+    var last_name: String,
+    var member_id: String,
+    var email: String,
+    var birth_date: String,
+    var gender: String,
+    var contact_no: String,
+    var home_city: String,
+    var home_country: String,
+    var office_city: String,
+    var office_country: String,
+    var membership_no: String,
+    var no_of_family_member: String,
+    var member: ArrayList<FamilyMemberRequest>
 )
 
-data class Guest(var name: String, var gender: String,var id_no: String, var contact_no: String)
+data class Guest(var name: String, var gender: String, var id_no: String, var contact_no: String)
 
-data class GHReservationRequest(var setup_unit_id: String,
-                                 var discount: String,
-                                 var no_of_guest: String,
-                                 var package_id: String,
-                                 var resort_id: String,
-                                var sub_total: String,
-                                var total_price: String,
-                                var reservation_date: String,
-                                var check_out_date: String,
-                                var custom_discount_percentage: String,
-                                var guest: ArrayList<Guest>
+data class GHReservationRequest(
+    var setup_unit_id: String,
+    var discount: String,
+    var no_of_guest: String,
+    var package_id: String,
+    var resort_id: String,
+    var sub_total: String,
+    var total_price: String,
+    var reservation_date: String,
+    var check_out_date: String,
+    var custom_discount_percentage: String,
+    var guest: ArrayList<Guest>
 )
 
-data class MarineServiceRequest(var service_id: String,
-                                var package_id: String,
-                                var resort_id: String,
-                                var name: String,
-                                var contact_no: String,
-                                var id_no: String,
-                                var email: String,
-                                var reservation_date_time: String,
-                                var resort_unit_id: String,
-                                var hour: String,
-                                var total_price: String
+data class MarineServiceRequest(
+    var service_id: String,
+    var package_id: String,
+    var resort_id: String,
+    var name: String,
+    var contact_no: String,
+    var id_no: String,
+    var email: String,
+    var reservation_date_time: String,
+    var resort_unit_id: String,
+    var hour: String,
+    var total_price: String,
+    var gender: String
 
-                                )
+)
 
 data class MarineBookingResponse(var is_booked: Boolean, var total_price: String)
 
 data class TotalVisitorsResponse(
     val status: Boolean,
     val message: String,
-    val data : TotalVisitors
+    val data: TotalVisitors
 )
 
 data class TotalVisitors(
@@ -430,11 +450,10 @@ data class TotalVisitors(
     val female: Int,
 )
 
-
 data class GuestRegistrationResponse(
     val status: Boolean,
     val message: String,
-    val data : ArrayList<GuestUnit>
+    val data: ArrayList<GuestUnit>
 )
 
 data class GuestUnit(
@@ -443,3 +462,138 @@ data class GuestUnit(
     val description: String,
     val pdf: String,
 )
+
+data class PwdUpdateReq(val password: String, val password_confirmation: String)
+
+data class VisitorsResponse(val status: Boolean, var message: String, var data: VisitorsData)
+
+data class VisitorsData(
+    val total_invitees: Int, var today_invitees: Int, var invitees:
+    VisitorInvitee
+)
+
+data class VisitorInvitee(val data: ArrayList<VisitorResult>)
+
+data class VisitorResult(
+    var id: Int,
+    var no_of_visitor: String?,
+    var resort_id: String?,
+    var visiting_date_time: String?,
+    var custom_discount_percentage: String?,
+    var sub_total: String?,
+    var discount: String?,
+    var total_price: String?,
+    var visitors: ArrayList<VisitorDetail>?
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readArrayList(VisitorResult::class.java.classLoader) as ArrayList<VisitorDetail>?,
+    )
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(no_of_visitor)
+        parcel.writeString(resort_id)
+        parcel.writeString(visiting_date_time)
+        parcel.writeString(custom_discount_percentage)
+        parcel.writeString(sub_total)
+        parcel.writeString(discount)
+        parcel.writeString(total_price)
+        parcel.writeList(visitors)
+
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<VisitorResult> {
+        override fun createFromParcel(parcel: Parcel): VisitorResult {
+            return VisitorResult(parcel)
+        }
+
+        override fun newArray(size: Int): Array<VisitorResult?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+data class VisitorDetail(
+    var id: String?,
+    var name: String?,
+    var contact_no: String?,
+    var id_no: String?,
+    var gender: String?,
+    val status: String?,
+    var package_id: String?,
+
+    @SerializedName("package")
+    var servicePackage: ServicePackage?,
+    var who_will_pay: String?,
+    val qr_code: String?,
+    var price: String?
+
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        TODO("servicePackage"),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(name)
+        parcel.writeString(contact_no)
+        parcel.writeString(id_no)
+        parcel.writeString(gender)
+        parcel.writeString(status)
+        parcel.writeString(package_id)
+        parcel.writeString(who_will_pay)
+        parcel.writeString(qr_code)
+        parcel.writeString(price)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<VisitorDetail> {
+        override fun createFromParcel(parcel: Parcel): VisitorDetail {
+            return VisitorDetail(parcel)
+        }
+
+        override fun newArray(size: Int): Array<VisitorDetail?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+data class SpaceResponse(
+    var status: Boolean,
+    var message: String,
+    var data: ArrayList<SpaceType>
+)
+
+data class SpaceType(
+    var id: String,
+    var name: String,
+    var accomodation: String,
+    var description: String,
+    var start_pirce: String,
+
+    )

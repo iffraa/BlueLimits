@@ -52,7 +52,6 @@ class LoginViewModel(application: Application): BaseViewModel(application) {
     }
 
 
-
     private fun userRetrieved(user: User)
     {
         this.user.value = user

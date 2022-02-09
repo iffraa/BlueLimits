@@ -2,9 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp">
+    android:paddingTop="@dimen/_45sdp"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,18 +17,18 @@
 
         <ImageView
             android:id="@+id/iv_logo"
-            android:layout_width="140dp"
-            android:layout_height="130dp"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_120sdp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:scaleType="fitXY"
             android:src="@drawable/app_icon" />
 
         <View
-            android:layout_width="300dp"
-            android:layout_height="1dp"
+            android:layout_width="@dimen/_260sdp"
+            android:layout_height="@dimen/_1sdp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:background="@color/grey_text" />
 
         <TextView
@@ -33,44 +36,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/jura_semi_bold"
             android:text="@string/marine_form_text"
-            android:textColor="@color/grey_text"
-            android:textSize="16sp"></TextView>
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_16ssp"></TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/jura_demi_bold"
-                android:text="@string/select_facility"
-                android:textColor="@color/grey_text"
-                android:textSize="16sp"></TextView>
 
             <Spinner
                 android:id="@+id/sp_facility"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/rectangle"></Spinner>
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/jura_demi_bold"
-                android:text="@string/select_service"
-                android:textColor="@color/grey_text"
-                android:textSize="16sp"></TextView>
 
             <include
                 android:id="@+id/progressBar"
@@ -82,8 +69,8 @@
             <Spinner
                 android:id="@+id/sp_service"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_25sdp"
                 android:background="@drawable/rectangle"></Spinner>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -92,132 +79,177 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/gender"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_14ssp"></TextView>
+
+                <CheckBox
+                    android:id="@+id/cb_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_30sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:button="@drawable/chkbox_bg"
+                    android:buttonTint="@color/grey_text"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/male"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_12ssp" />
+
+                <CheckBox
+                    android:id="@+id/cb_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:buttonTint="@color/grey_text"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/female"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:button="@drawable/chkbox_bg"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_12ssp" />
+            </LinearLayout>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_18sdp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:text="@string/hours"
-                android:textColor="@color/grey_text"
-                android:textSize="16sp"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <EditText
                 android:id="@+id/et_hrs"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:lines="1"
-                android:paddingLeft="10dp"
-                android:textColor="@android:color/black"></EditText>
-
+                android:textSize="@dimen/_11ssp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"></EditText>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:text="@string/reserv_date"
-                android:textColor="@color/grey_text"
-                android:textSize="16sp"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <EditText
                 android:id="@+id/et_date"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/rectangle"
-                android:fontFamily="@font/jura_demi_bold"
                 android:focusableInTouchMode="false"
+                android:fontFamily="@font/jura_demi_bold"
                 android:lines="1"
-                android:paddingLeft="10dp"
-                android:textColor="@android:color/black"></EditText>
+                android:textSize="@dimen/_11ssp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:text="@string/full_name"
-                android:textColor="@color/grey_text"
-                android:textSize="16sp"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <EditText
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="text"
+                android:textSize="@dimen/_11ssp"
                 android:lines="1"
-                android:paddingLeft="10dp"
-                android:textColor="@android:color/black"></EditText>
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:text="@string/id_no"
-                android:textColor="@color/grey_text"
-                android:textSize="16sp"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_16ssp"></TextView>
 
             <EditText
                 android:id="@+id/et_id"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
-                android:inputType="text"
+                android:inputType="number"
                 android:lines="1"
-                android:paddingLeft="10dp"
-                android:textColor="@android:color/black"></EditText>
+                android:textSize="@dimen/_11ssp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:text="@string/email"
-                android:textColor="@color/grey_text"
-                android:textSize="16sp"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <EditText
                 android:id="@+id/et_email"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="textEmailAddress"
                 android:lines="1"
-                android:paddingLeft="10dp"
-                android:textColor="@android:color/black"></EditText>
+                android:textSize="@dimen/_11ssp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:text="@string/contact_num"
-                android:textColor="@color/grey_text"
-                android:textSize="16sp"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <include
                 android:id="@+id/layout_mobile"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
                 layout="@layout/layout_contact_number"
-                android:layout_marginTop="10dp"
-                ></include>
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"></include>
 
             <!--    <EditText
                     android:id="@+id/et_contact"
@@ -234,12 +266,14 @@
 
             <Button
                 android:id="@+id/btn_submit"
-                android:layout_width="240dp"
-                android:layout_height="55dp"
+                android:layout_width="@dimen/_175sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/btn_bg"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/btn_form_grey"
                 android:text="@string/submit"
+                android:textSize="@dimen/_12ssp"
                 android:textColor="@color/white">
 
             </Button>

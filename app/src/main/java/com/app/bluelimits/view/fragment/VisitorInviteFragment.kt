@@ -2,14 +2,16 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.bluelimits.R
@@ -19,7 +21,8 @@ import com.app.bluelimits.model.ServicePackage
 import com.app.bluelimits.model.Visitor
 import com.app.bluelimits.model.VisitorRequest
 import com.app.bluelimits.util.*
-import com.app.bluelimits.view.VisitorListAdapter
+import com.app.bluelimits.view.AddVisitorsAdapter
+import com.app.bluelimits.view.activity.DashboardActivity
 import com.app.bluelimits.viewmodel.VisitorInviteViewModel
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.google.gson.Gson
@@ -29,7 +32,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,7 +51,7 @@ class VisitorInviteFragment : Fragment() {
     private lateinit var resortId: String
     private var totalVisitors = 0
     private var visitorPolicyPresent = false
-    private lateinit var visitorListAdapter: VisitorListAdapter
+    private lateinit var visitorListAdapter: AddVisitorsAdapter
     private lateinit var data: Data
     private var packages: HashMap<String, ServicePackage> = hashMapOf()
 
@@ -78,10 +80,24 @@ class VisitorInviteFragment : Fragment() {
             showDateDialog(data)
         })
 
+        navigateToListing();
+
         binding.btnSubmit.setOnClickListener(View.OnClickListener {
-            binding.rlInclude.visibility = View.VISIBLE
-            addVisitor()
-            observeViewModel()
+
+            val date = binding.etVisitorsTime.text.toString()
+            val visitors = binding.etVisitorsNum.text.toString()
+
+            if (date.isNullOrEmpty() || visitors.isNullOrEmpty()) {
+                showAlertDialog(
+                    requireActivity(),
+                    getString(R.string.app_name),
+                    getString(R.string.empty_fields)
+                )
+            } else {
+                binding.rlInclude.visibility = View.VISIBLE
+                addVisitor()
+                observeViewModel()
+            }
 
         })
 
@@ -125,7 +141,7 @@ class VisitorInviteFragment : Fragment() {
 
     private fun setVisitorList() {
 
-        visitorListAdapter = context?.let { VisitorListAdapter(arrayListOf(), it, this) }!!
+        visitorListAdapter = context?.let { AddVisitorsAdapter(arrayListOf(), it, this) }!!
 
         binding.rvVisitor.addItemDecoration(
             DividerItemDecoration(
@@ -183,32 +199,32 @@ class VisitorInviteFragment : Fragment() {
 
     }
 
-   /* private fun updateList() {
-        visitorListAdapter.clear()
+    /* private fun updateList() {
+         visitorListAdapter.clear()
 
-        val num = binding.etVisitorsNum.text.toString()
-        if (!num.isNullOrEmpty()) {
-            val no_of_visitors = num.toInt()
-            if (no_of_visitors > 0) {
-                val visitors = ArrayList<Visitor>(no_of_visitors)
-                for (i in 1..no_of_visitors) {
-                    val person = Visitor(
-                        "0", "", "", "", "",
-                        null, "", ""
-                    )
-                    visitors.add(person)
-                }
-                visitorListAdapter?.setVisitorList(
-                    visitors, packages
-                )
+         val num = binding.etVisitorsNum.text.toString()
+         if (!num.isNullOrEmpty()) {
+             val no_of_visitors = num.toInt()
+             if (no_of_visitors > 0) {
+                 val visitors = ArrayList<Visitor>(no_of_visitors)
+                 for (i in 1..no_of_visitors) {
+                     val person = Visitor(
+                         "0", "", "", "", "",
+                         null, "", ""
+                     )
+                     visitors.add(person)
+                 }
+                 visitorListAdapter?.setVisitorList(
+                     visitors, packages
+                 )
 
-            } else {
-                binding.rvVisitor.visibility = View.GONE
-                binding.btnSubmit.visibility = View.GONE
+             } else {
+                 binding.rvVisitor.visibility = View.GONE
+                 binding.btnSubmit.visibility = View.GONE
 
-            }
-        }
-    }*/
+             }
+         }
+     }*/
 
     private fun updateList() {
         if (visitorListAdapter != null) {
@@ -253,8 +269,17 @@ class VisitorInviteFragment : Fragment() {
         return Triple(total.toString(), subTotal.toString(), discount.toString())
     }
 
-    fun addVisitor() {
-        val visitors: ArrayList<Visitor> = visitorListAdapter.getData()
+    private fun removeDuplicateElemets(visitors: ArrayList<Visitor>): ArrayList<Visitor> {
+        val noVisitors = Integer.parseInt(binding.etVisitorsNum.text.toString())
+        if (visitors.size > noVisitors)
+            return visitors?.distinct() as ArrayList<Visitor>
+        else
+            return visitors
+    }
+
+    private fun addVisitor() {
+        var visitors: ArrayList<Visitor> = visitorListAdapter.getData()
+      //  visitors = removeDuplicateElemets(visitors)
         var (total, subTotal, discount) = getPriceInfo(visitors)
 
         prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
@@ -267,6 +292,8 @@ class VisitorInviteFragment : Fragment() {
 
         val errorMsg = visitors?.let { getErrorMsg(it) }
         if (errorMsg.isNullOrEmpty()) {
+
+            binding.scrollView.fullScroll(ScrollView.FOCUS_UP);
 
             hideKeyboard(requireActivity())
 
@@ -349,11 +376,17 @@ class VisitorInviteFragment : Fragment() {
                     totalVisitors = response.each_time_limit
                     val totalMale = response.male
                     val totalFemale = response.female
+                    val perDay = response.total_allow
+
+                    binding.tvPerDay.visibility = View.VISIBLE
+                    binding.tvPerDay.setText("Per Day " + totalVisitors + " visitors are allowed")
+
+                    // adjustLayout()
 
                     binding.tvTotalVisitors.visibility = View.VISIBLE
                     binding.tvTotalVisitors.setText(
-                        totalVisitors.toString() + " " + getString(R.string.max_visitors)
-                                + ": " + totalMale + " " + Constants.MALE + " & " + totalFemale + " " + Constants.FEMALE
+                        "Only " + totalMale.toString() + " " + Constants.MALE + " & " +
+                                totalFemale + " " + Constants.FEMALE + " are allowed"
                     )
                 }
 
@@ -447,7 +480,6 @@ class VisitorInviteFragment : Fragment() {
             msg?.let {
                 binding.rlInclude.visibility = View.GONE
                 showAlertDialog(
-                    context as Activity,
                     requireContext().getString(R.string.app_name),
                     msg
                 )
@@ -485,8 +517,8 @@ class VisitorInviteFragment : Fragment() {
 
         dateDialog.title(getString(R.string.select_date))
             .titleTextColor(getResources().getColor(R.color.white))
-            .minutesStep(1)
-            .minDateRange(d)
+            .minutesStep(1).mustBeOnFuture()
+           // .minDateRange(d).mustBeOnFuture()
             .backgroundColor(getResources().getColor(R.color.white))
             .mainColor(getResources().getColor(R.color.blue_text))
             .listener { date ->
@@ -545,7 +577,7 @@ class VisitorInviteFragment : Fragment() {
 
                 packages.put(Constants.MALE, sPackage)
 
-           //     viewModel.malePackage.removeObservers(viewLifecycleOwner)
+                //     viewModel.malePackage.removeObservers(viewLifecycleOwner)
 
             }
 
@@ -574,15 +606,55 @@ class VisitorInviteFragment : Fragment() {
 
                 val num = binding.etVisitorsNum.text.toString()
 
-                 if(num.isNullOrEmpty())
-                     setVisitorList()
-                 else
-                     updateList()
+                if (num.isNullOrEmpty())
+                    setVisitorList()
+                else
+                    updateList()
 
             }
 
         })
 
+    }
+
+    private fun navigateToListing() {
+        val action = VisitorInviteFragmentDirections.actionNavToList()
+        (activity as DashboardActivity).navigateToVisitorsList(action)
+    }
+
+    private var builder: AlertDialog.Builder? = null
+
+    fun showAlertDialog(title: String, msg: String) {
+        if (builder == null) {
+            builder = activity?.let {
+                AlertDialog.Builder(it)
+            }
+
+            builder?.setMessage(msg)
+                ?.setTitle(title)?.setPositiveButton(
+                    R.string.ok
+                ) { dialog, id ->
+                    val action = VisitorInviteFragmentDirections.actionNavToList()
+                    Navigation.findNavController(binding.btnSubmit).navigate(action)
+
+                }
+            builder?.create()?.show()
+        }
+    }
+
+    private fun adjustLayout() {
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.topMargin = 200
+        params.width = 300
+
+        binding.tvVisitorsLbl.layoutParams = params
+        binding.tvVisitorsLbl.textSize = 20F
+
+        val typeface = ResourcesCompat.getFont(requireContext(), R.font.jura_demi_bold)
+        binding.tvVisitorsLbl.typeface = typeface
     }
 
 }

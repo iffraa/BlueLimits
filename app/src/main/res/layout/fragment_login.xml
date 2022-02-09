@@ -15,10 +15,10 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="70dp"
+        android:layout_width="@dimen/_110sdp"
+        android:layout_height="@dimen/_110sdp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_70sdp"
         android:src="@drawable/splash_logo" />
 
     <LinearLayout
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_below="@+id/iv_logo"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:layout_centerHorizontal="true"
         >
         <CheckBox android:id="@+id/cb_customer"
@@ -35,34 +35,40 @@
             android:layout_height="wrap_content"
             android:text="@string/customer"
             android:textStyle="bold"
-            android:textColor="@color/grey_text"
+            android:paddingLeft="@dimen/_7sdp"
+            android:textSize="@dimen/_12ssp"
+            android:button="@drawable/chkbox_bg"
+            android:textColor="@color/navy_blue"
             android:fontFamily="@font/jura_demi_bold"
             android:buttonTint="@color/grey_text"
             android:checked="true"
-           />
+            />
 
         <CheckBox android:id="@+id/cb_admin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/admin"
             android:textStyle="bold"
+            android:textSize="@dimen/_12ssp"
+            android:paddingLeft="@dimen/_7sdp"
+            android:button="@drawable/chkbox_bg"
             android:buttonTint="@color/grey_text"
-            android:layout_marginLeft="35dp"
-            android:textColor="@color/grey_text"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:textColor="@color/navy_blue"
             android:fontFamily="@font/jura_demi_bold"
             />
     </LinearLayout>
 
 
     <LinearLayout
-        android:layout_width="280dp"
+        android:layout_width="@dimen/_210sdp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_chkBoxes"
-        android:orientation="vertical"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_20sdp"
         android:gravity="center_horizontal"
-        >
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,81 +76,88 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:scaleType="fitCenter"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/email"></ImageView>
+
             <View
-                android:layout_width="1dp"
+                android:layout_width="@dimen/_1sdp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@color/navy_blue" />
+
             <EditText
                 android:id="@+id/et_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/darker_gray"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:hint="@string/username"
+                android:inputType="textEmailAddress"
                 android:lines="2"
-                android:textSize="15sp"
-                android:layout_marginLeft="15dp"
-                android:inputType="textEmailAddress"></EditText>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_12ssp"></EditText>
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/_1sdp"
             android:background="@color/navy_blue" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/_25sdp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:scaleType="fitCenter"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/pwd"></ImageView>
+
             <View
-                android:layout_width="1dp"
+                android:layout_width="@dimen/_1sdp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@color/navy_blue" />
+
             <EditText
                 android:id="@+id/et_pwd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/darker_gray"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:hint="@string/pwd"
+                android:inputType="textPassword"
                 android:lines="1"
-                android:textSize="15sp"
-                android:layout_marginLeft="15dp"
-                android:inputType="textPassword"></EditText>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_12ssp"></EditText>
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/_1sdp"
             android:background="@color/navy_blue" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@drawable/btn_bg"
-            android:layout_marginTop="30dp"
-            android:text="@string/login_btn"
-            android:textStyle="bold"
-            android:textAllCaps="false"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:background="@drawable/btn_grey"
             android:fontFamily="@font/jura_demi_bold"
-            android:textColor="@color/white"></Button>
+            android:text="@string/login_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"></Button>
 
     </LinearLayout>
 

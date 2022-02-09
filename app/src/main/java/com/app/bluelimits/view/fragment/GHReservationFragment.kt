@@ -1,15 +1,12 @@
 package com.app.bluelimits.view.fragment
 
 import android.app.Activity
-import android.app.DatePickerDialog
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,13 +25,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
-import androidx.core.os.HandlerCompat.postDelayed
-
-import android.view.MotionEvent
 
 import android.view.View.OnTouchListener
-import android.widget.Toast
-import androidx.core.os.HandlerCompat
+import android.widget.*
+
+import android.widget.LinearLayout
+import androidx.navigation.Navigation
 
 
 /**
@@ -49,6 +45,7 @@ class GHReservationFragment : Fragment() {
 
     private val guestListAdapter = GuestListAdapter()
     private val binding get() = _binding!!
+
     private lateinit var prefsHelper: SharedPreferencesHelper
     private var resortId = ""
     private lateinit var obj: Data
@@ -56,11 +53,8 @@ class GHReservationFragment : Fragment() {
     private var guestsLimit = 0
     private var discount = "0"
     private lateinit var userType: String
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    var root: View? = null
+    private lateinit var spaceId: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,9 +62,11 @@ class GHReservationFragment : Fragment() {
     ): View? {
 
         _binding = FragmentGuestReservationBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        root = binding.root
+
         return root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -82,6 +78,8 @@ class GHReservationFragment : Fragment() {
         val data_string = prefsHelper.getData(Constants.USER_DATA)
         val gson = Gson()
         obj = gson.fromJson(data_string, Data::class.java)
+
+        spaceId = arguments?.getString("spaceId").toString().uppercase()
 
         userType = obj.user?.user_type.toString()
 
@@ -147,6 +145,7 @@ class GHReservationFragment : Fragment() {
             )
         }
 
+        binding.scrollView.fullScroll(ScrollView.FOCUS_UP);
         hideKeyboard(requireActivity())
 
         obj.token?.let {
@@ -183,16 +182,16 @@ class GHReservationFragment : Fragment() {
             if (adminDiscount > serverDiscount!!) {
                 hideKeyboard(requireActivity())
 
-                 showAlertDialog(
-                     requireActivity(),
-                     getString(R.string.app_name),
-                     getString(R.string.discount_msg) + " " + serverDiscount + "%"
-                 )
-              /*  Toast.makeText(
-                    requireContext(),
-                    getString(R.string.discount_msg) + " " + serverDiscount + "%",
-                    Toast.LENGTH_LONG
-                ).show()*/
+                showAlertDialog(
+                    requireActivity(),
+                    getString(R.string.app_name),
+                    getString(R.string.discount_msg) + " " + serverDiscount + "%"
+                )
+                /*  Toast.makeText(
+                      requireContext(),
+                      getString(R.string.discount_msg) + " " + serverDiscount + "%",
+                      Toast.LENGTH_LONG
+                  ).show()*/
 
             } else
                 discount = adminDiscount.toString()
@@ -262,7 +261,7 @@ class GHReservationFragment : Fragment() {
             if (!discount.isNullOrEmpty()) {
                 binding.progressBar.progressbar.visibility = View.VISIBLE
                 obj.token?.let {
-                    viewModel.getAvailableUnits(it, resortId, chk_in_date, chk_out_date, discount)
+                    viewModel.getAvailableUnits(it, resortId, chk_in_date, chk_out_date, discount,spaceId)
                 }
                 observeViewModel(true)
             }
@@ -274,19 +273,22 @@ class GHReservationFragment : Fragment() {
         var data: ArrayList<String>? = arrayListOf<String>()
 
         if (isUnits) {
-            viewModel.availableUnits.value!!.forEachIndexed { index, e ->
-                viewModel.availableUnits.value!!.get(index).unit?.let {
+            selectedUnit = viewModel.availableUnit.value!!
+           /* viewModel.availableUnit.value!!.forEachIndexed { index, e ->
+                viewModel.availableUnit.value!!.get(index).unit?.let {
                     if (data != null) {
                         data.add(it)
                     }
                 }
-            }
+            }*/
 
         } else {
             viewModel.resorts.value!!.forEachIndexed { index, e ->
-                viewModel.resorts.value!!.get(index).name?.let {
+                val resort = viewModel.resorts.value!!.get(index).name
+                resort?.let {
                     if (data != null) {
-                        data.add(it)
+                        if(!resort.contains(Constants.BOHO))
+                            data.add(it)
                     }
                 }
             }
@@ -296,7 +298,7 @@ class GHReservationFragment : Fragment() {
         activity?.let {
             ArrayAdapter<String>(
                 it,
-                android.R.layout.simple_spinner_item,
+                R.layout.item_spinner,
                 data as MutableList<String>
             )
 
@@ -357,19 +359,20 @@ class GHReservationFragment : Fragment() {
             ) {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
 
-                viewModel.availableUnits.value!!.forEachIndexed { index, e ->
-                    if (viewModel.availableUnits.value!!.get(index).unit?.equals(selectedItem) == true) {
-                        selectedUnit = viewModel.availableUnits.value!!.get(index)
+             /*   viewModel.availableUnit.value!!.forEachIndexed { index, e ->
+                    if (viewModel.availableUnit.value!!.get(index).unit?.equals(selectedItem) == true) {
+                        selectedUnit = viewModel.availableUnit.value!!.get(index)
                         setUnitDetails()
                     }
 
-                }
+                }*/
             }
 
         }
     }
 
     private fun setUnitDetails() {
+
         binding.tvPrice.setText(selectedUnit.price)
         binding.tvMaxGuests.setText(
             getString(R.string.max) + " " + selectedUnit.no_of_guest + " " + getString(
@@ -403,11 +406,21 @@ class GHReservationFragment : Fragment() {
         })
 
         if (isUnits) {
-            viewModel.availableUnits.observe(viewLifecycleOwner, Observer { availableUnits ->
+            viewModel.availableUnit.observe(viewLifecycleOwner, Observer {
                 binding.progressBar.progressbar.visibility = View.GONE
-                availableUnits?.let {
-                    populateSpinners(true)
-                }
+                    selectedUnit = viewModel.availableUnit.value!!
+                   /* populateSpinners(true)
+                    for(availableUnit in it) {
+                        val unitName = availableUnit.unit
+                        Log.i("unitName", unitName)
+                        if (unitName.contains(spaceId) && !unitName.equals("G 00"))
+                        {
+                            selectedUnit = availableUnit
+                        }
+                    }*/
+
+                    setUnitDetails()
+
 
             })
 
@@ -448,12 +461,14 @@ class GHReservationFragment : Fragment() {
                     activity?.let { hideKeyboard(it) }
 
                     val no_of_entered_guests: Int = enteredGuestTxt.toInt()
-                    if (no_of_entered_guests > 0 && no_of_entered_guests < guestsLimit) {
+                    if (no_of_entered_guests > 0 && no_of_entered_guests <= guestsLimit) {
                         val visitors = ArrayList<Guest>(no_of_entered_guests)
                         for (i in 1..no_of_entered_guests) {
                             val person = Guest("", "", "", "")
                             visitors.add(person)
                         }
+
+                     //   adjustLayout()
                         binding.rvGuest.visibility = View.VISIBLE
                         binding.btnSubmit.visibility = View.VISIBLE
                         guestListAdapter?.setGuestList(
@@ -481,6 +496,36 @@ class GHReservationFragment : Fragment() {
 
     }
 
+    private fun adjustLayout() {
+        val config: Configuration = resources.configuration
+        val height = config.screenHeightDp
+
+        if (height >= 900) {
+
+            //linear layout
+            val attributLayoutParams = RelativeLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            attributLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
+            attributLayoutParams.addRule(RelativeLayout.BELOW, R.id.tv_title);
+
+            binding.llMain.layoutParams = attributLayoutParams
+
+            val params = RelativeLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.topMargin = 40
+            params.leftMargin = 125
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+            params.addRule(RelativeLayout.BELOW, R.id.ll_main);
+
+            binding.tvPayment.layoutParams = params
+        }
+    }
+
+
     fun observeReservationVM() {
 
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
@@ -505,14 +550,22 @@ class GHReservationFragment : Fragment() {
 
         viewModel.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
-                showAlertDialog(
+                showSuccessMsg()
+               /* showAlertDialog(
                     context as Activity,
                     getString(R.string.app_name),
                     msg
-                )
+                )*/
             }
 
         })
+
+    }
+
+    private fun showSuccessMsg()
+    {
+        val action = GHReservationFragmentDirections.actionNavToMsg();
+        action?.let { Navigation.findNavController(binding.btnSubmit).navigate(it) }
 
     }
 

@@ -96,11 +96,6 @@
             app:destination="@id/nav_home"></action>
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_dashboard"
-        android:name="com.app.bluelimits.view.fragment.HomeFragment"
-        android:label=""
-        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_invite"
@@ -110,6 +105,9 @@
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
+        <action
+            android:id="@+id/action_nav_to_list"
+            app:destination="@id/nav_visitors"></action>
     </fragment>
 
     <fragment
@@ -142,6 +140,10 @@
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
+        <action
+            android:id="@+id/action_nav_to_msg"
+            app:destination="@id/nav_reservation_msg"></action>
+
     </fragment>
 
 
@@ -192,7 +194,7 @@
         tools:layout="@layout/fragment_guest_registration">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
 
         <action
             android:id="@+id/action_nav_to_brochure"
@@ -211,9 +213,97 @@
         tools:layout="@layout/fragment_webview">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_guest_space"
+        android:name="com.app.bluelimits.view.fragment.GuestSpaceFragment"
+        android:label=""
+        tools:layout="@layout/fragment_guest_space">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_space_to_detail"
+            app:destination="@id/nav_space_detail">
+            <argument
+                android:name="spaceId"
+                app:argType="string" />
+
+            <argument
+                android:name="space"
+                app:argType="string" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_space_detail"
+        android:name="com.app.bluelimits.view.fragment.GuestSpaceDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_space_detail">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_detail_to_reservation"
+            app:destination="@id/nav_reservation">
+            <argument
+                android:name="spaceId"
+                app:argType="string" />
+
+        </action>
+
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_detail"
+        android:name="com.app.bluelimits.view.fragment.VisitorDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_visitor_detail">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home">
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_visitors"
+        android:name="com.app.bluelimits.view.fragment.VisitorsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_visitors_list">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_edit_visitors"
+            app:destination="@id/nav_edit">
+
+            <argument
+                android:name="vDetails"
+                app:argType="com.app.bluelimits.model.VisitorResult" />
+
+        </action>
+
+        <action
+            android:id="@+id/action_view_detail"
+            app:destination="@id/nav_detail">
+
+            <argument
+                android:name="vDetails"
+                app:argType="com.app.bluelimits.model.VisitorResult" />
+
+        </action>
+
+    </fragment>
 
     <dialog
         android:id="@+id/nav_logout"

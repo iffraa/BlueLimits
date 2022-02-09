@@ -106,12 +106,14 @@ class ProfileFragment : Fragment() {
 
         if(user.user_type.equals(Constants.admin)) {
             binding.llFamily.visibility = View.GONE
+            binding.llExtra.visibility = View.GONE
             binding.llUnit.visibility = View.GONE
             binding.ivBarcode.visibility = View.GONE
 
         }
         else
         {
+            binding.tvExtra.setText(getString(R.string.extra_mems) + " " + user.no_of_extra_family_member.toString())
             binding.tvFamily.setText(getString(R.string.total_mems) + " " + user.no_of_family_member.toString())
             binding.tvUnit.setText(getString(R.string.unit) + " " + user.unit_no)
             context?.let { user.qr_code?.let { it1 -> loadImage(binding.ivBarcode, it1, it) } }

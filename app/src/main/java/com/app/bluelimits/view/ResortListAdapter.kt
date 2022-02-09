@@ -23,8 +23,8 @@ class ResortListAdapter(val resortList: ArrayList<Resort>) :
     private val binding get() = _binding!!
 
     fun updateResortList(newResortList: List<Resort>) {
-        if(!newResortList.isNullOrEmpty() && newResortList.size > 1)
-            Collections.swap(newResortList,0,1)
+      //  if(!newResortList.isNullOrEmpty() && newResortList.size > 1)
+        ///    Collections.swap(newResortList,0,1)
         resortList.clear()
         resortList.addAll(newResortList)
         notifyDataSetChanged()

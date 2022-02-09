@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
 
         <action
             android:id="@+id/action_nav_login_frag_to_userDashboardFragment"
@@ -31,19 +31,29 @@
         tools:layout="@layout/fragment_user_dashboard">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_reservation_msg"
+        android:name="com.app.bluelimits.view.fragment.GReservationMsgFragment"
+        tools:layout="@layout/fragment_reserv_msg">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
     </fragment>
 
 
+
     <fragment
-        android:id="@+id/nav_dashboard"
+        android:id="@+id/nav_home"
         android:name="com.app.bluelimits.view.fragment.HomeFragment"
         android:label=""
         tools:layout="@layout/fragment_home">
 
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
 
         <action
             android:id="@+id/action_nav_home_to_ResortInfoFrag"
@@ -55,6 +65,15 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_update_pwd"
+        android:name="com.app.bluelimits.view.fragment.UpdatePwdFragment"
+        android:label=""
+        tools:layout="@layout/fragment_update_pwd">
+        <action
+            android:id="@+id/action_nav_to_login"
+            app:destination="@id/nav_login"></action>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_invite"
@@ -63,7 +82,22 @@
         tools:layout="@layout/fragment_visitor_invite">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
+        <action
+            android:id="@+id/action_nav_to_list"
+            app:destination="@id/nav_visitors"></action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit"
+        android:name="com.app.bluelimits.view.fragment.VisitorEditFragment"
+        android:label=""
+        tools:layout="@layout/fragment_visitor_invite">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
+
     </fragment>
 
 
@@ -74,7 +108,7 @@
         tools:layout="@layout/fragment_about_us">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
     </fragment>
 
 
@@ -85,7 +119,7 @@
         tools:layout="@layout/fragment_contact_us">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
     </fragment>
 
 
@@ -96,7 +130,11 @@
         tools:layout="@layout/fragment_guest_reservation">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
+        <action
+            android:id="@+id/action_nav_to_msg"
+            app:destination="@id/nav_reservation_msg"></action>
+
     </fragment>
 
 
@@ -107,11 +145,11 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
 
         <action
             android:id="@+id/action_resortInfo_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
     </fragment>
 
     <fragment
@@ -122,11 +160,11 @@
 
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
 
         <action
             android:id="@+id/action_resortInfo_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
 
         <action
             android:id="@+id/action_ResortInfo_to_ResortFacilitiesFrag"
@@ -150,7 +188,7 @@
 
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
 
         <action
             android:id="@+id/action_ResortFacilitiesFrag_to_unitFormFragment"
@@ -183,7 +221,7 @@
         tools:layout="@layout/fragment_unit_form">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
     </fragment>
 
     <fragment
@@ -193,7 +231,7 @@
         tools:layout="@layout/fragment_guest_registration">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
         <action
             android:id="@+id/action_nav_to_brochure"
             app:destination="@id/webViewFragment">
@@ -212,7 +250,7 @@
         tools:layout="@layout/fragment_webview">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
       </fragment>
 
     <fragment
@@ -222,9 +260,96 @@
         tools:layout="@layout/fragment_marine_form">
         <action
             android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_dashboard"></action>
+            app:destination="@id/nav_home"></action>
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_guest_space"
+        android:name="com.app.bluelimits.view.fragment.GuestSpaceFragment"
+        android:label=""
+        tools:layout="@layout/fragment_guest_space">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_space_to_detail"
+            app:destination="@id/nav_space_detail">
+            <argument
+                android:name="spaceId"
+                app:argType="string" />
+            <argument
+                android:name="space"
+                app:argType="string" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_space_detail"
+        android:name="com.app.bluelimits.view.fragment.GuestSpaceDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_space_detail">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_detail_to_reservation"
+            app:destination="@id/nav_reservation">
+            <argument
+                android:name="spaceId"
+                app:argType="string" />
+
+        </action>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_detail"
+        android:name="com.app.bluelimits.view.fragment.VisitorDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_visitor_detail">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home">
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_visitors"
+        android:name="com.app.bluelimits.view.fragment.VisitorsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_visitors_list">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home">
+        </action>
+
+        <action
+            android:id="@+id/action_view_detail"
+            app:destination="@id/nav_detail">
+
+            <argument
+                android:name="vDetails"
+                app:argType="com.app.bluelimits.model.VisitorResult" />
+
+        </action>
+
+        <action
+            android:id="@+id/action_edit_visitors"
+            app:destination="@id/nav_edit">
+
+            <argument
+                android:name="vDetails"
+                app:argType="com.app.bluelimits.model.VisitorResult" />
+
+        </action>
+
+    </fragment>
 
     <dialog
         android:id="@+id/nav_logout"

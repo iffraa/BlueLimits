@@ -7,7 +7,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_title">Welcome</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -17,6 +17,12 @@
     <string name="pwd">PASSWORD</string>
     <string name="login_btn">LOGIN</string>
     <string name="forget_pwd">Forget Password?</string>
+    <string name="pwd_confirm">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="update">Update</string>
+    <string name="update_pwd">Update Password</string>
+    <string name="new_pwd">New Password</string>
+    <string name="chnge_pwd">CHANGE PASSWORD</string>
 
     <string name="oia_text">this is oia text.this is oia text.this is oia text.this is oia text.this is oia text.this is oia text.this is oia text.this is oia text.</string>
     <string name="units">Units</string>
@@ -53,22 +59,16 @@
     <string name="boho_info">Boho Beach is another unique concept presented by Blue Limits Co. It is designed to be an exceptional gateway that will have you mesmerized and reconnect with the good vibes in no time.
 \n\nBoho Beach is where freedom, peace, and happiness are in abundance and it is comprised of a very limited number of villas, one bedroom apartments, studios and locker memberships along with amenities and facilities that will make your visits worthwhile.</string>
 
-    <string name="marine_info">• Above and below water inspection services for marine and coastal structures such as seabed, seawalls, piers, groins and breakwaters.\n
-
-\n• Marina and component inspections.\n
-
-\n• Technical inspection (pre-purchase &amp; periodic).\n
-
-\n• Feasibility studies • cost estimation studies &amp; assessments\n
-
-\n• Infrastructure and facilities assessments\n
-
-\n• Third party verification\n
-
-\n• Offer repair and/or replacement solutions.\n
-
-\n• Due diligence and valuation.
-    </string>
+    <string name="marine_info1">Above and below water inspection services for marine and coastal structures such as seabed, seawalls, piers, groins and breakwaters.
+</string>
+    <string name="marine_info2">Marina and component inspections.</string>
+    <string name="marine_info3">Technical inspection (pre-purchase &amp; periodic).</string>
+    <string name="marine_info4">Feasibility studies.</string>
+    <string name="marine_info5">Cost estimation studies &amp; assessments.</string>
+    <string name="marine_info6">Infrastructure and facilities assessments.</string>
+    <string name="marine_info7">Third party verification</string>
+    <string name="marine_info8">Offer repair and/or replacement solutions.</string>
+    <string name="marine_info9">Due diligence and valuation.</string>
 
 
     <string name="personal_info">My Personal Info</string>
@@ -78,6 +78,7 @@
     <string name="email_profile">Email:</string>
     <string name="id_profile">ID No:</string>
     <string name="total_mems">Total Family Members:</string>
+    <string name="extra_mems">Extra Family Members:</string>
 
     <string name="invite">INVITE A VISITOR</string>
     <string name="visitor">Visitor</string>
@@ -88,6 +89,7 @@
     <string name="mobile_visi">Mobile</string>
     <string name="price">Price</string>
     <string name="pay">I will pay</string>
+    <string name="pay_visitor">Visitor will pay</string>
     <string name="name">Name:</string>
 
     <string name="dashboard">Dashboard</string>
@@ -144,6 +146,8 @@
 
     <string name="profile_error">Profile loading failed.</string>
     <string name="login_error">Login Failed</string>
+    <string name="pwd_change_error">Password cannot be changed.</string>
+    <string name="pwd_change">Password is updated.</string>
     <string name="connectivity_error">Internet not connected</string>
     <string name="empty_fields">Please enter data</string>
     <string name="no_pckg_error">Please select any package.</string>
@@ -158,7 +162,7 @@
     <string name="guests_exceeded">Guest limit exceeded.</string>
     <string name="adding_guest_error">Sorry.Cannot add guest</string>
     <string name="facility">facility</string>
-    <string name="booking_unavailable">Sorry. Booking not avaialble.</string>
+    <string name="booking_unavailable">Sorry.Booking not avaialble.</string>
     <string name="brochure">BROCHURE</string>
 
     <string name="reserv_date">Reservation date</string>
@@ -180,5 +184,16 @@
     <string name="lname_error">Please enter last name.</string>
     <string name="fname_error">Please enter first name.</string>
     <string name="guest_visitor">guest house visitor</string>
+    <string name="forgot_pwd">Forgot Password?</string>
+    <string name="pwd_match_error">Passwords do not match.</string>
+
+    <string name="no_of_visitors">No of Visitors</string>
+    <string name="date_time">Date Time</string>
+    <string name="delete_msg">Do you want to delete this visitor?</string>
+    <string name="delete_error">Sorry. Unable to delete visitor.</string>
+
+    <string name="reservation_title">THANK YOU FOR APPLYING</string>
+    <string name="reservation_msg">This application is not a binding contract and it is subject to the approval
+        of our management.</string>
 
 </resources>

@@ -1,49 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.HomeFragment">
 
     <ImageView
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        />
+        android:scaleType="fitXY" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_resorts"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_resorts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"></androidx.recyclerview.widget.RecyclerView>
+
+        <ImageView
+            android:id="@+id/iv_marine"
+            android:layout_width="@dimen/_125sdp"
+            android:layout_height="@dimen/_125sdp"
+            android:layout_below="@+id/rv_resorts"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/round_outline"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/marine"
+            android:visibility="invisible"></ImageView>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/progressBar"
+        layout="@layout/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true">
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <ImageView
-        android:id="@+id/iv_marine"
-        android:layout_width="140dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="20dp"
-        android:scaleType="fitXY"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/rv_resorts"
-        android:background="@drawable/round_outline"
-        android:src="@drawable/marine"
-        android:visibility="gone"
-        android:clickable="true"></ImageView>
-
-
-    <include layout="@layout/progress_bar"
-        android:id="@+id/progressBar"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></include>
-
-
+        android:layout_centerInParent="true"></include>
 
 
 </RelativeLayout>

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:paddingTop="@dimen/_30sdp"
     tools:context=".view.fragment.VisitorInviteFragment">
 
     <LinearLayout
@@ -14,17 +16,17 @@
 
         <ImageView
             android:id="@+id/iv_logo"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_25sdp"
             android:src="@drawable/oia_logo" />
 
         <View
             android:id="@+id/line"
-            android:layout_width="250dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/grey_text" />
 
 
@@ -34,111 +36,131 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/jura_semi_bold"
             android:text="@string/invite"
-            android:textColor="@color/grey_text"
-            android:textSize="18sp"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_18ssp"
             android:textStyle="bold"></TextView>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
             android:gravity="center_horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="101dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_81sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
+                    android:textSize="@dimen/_13ssp"
                     android:text="@string/visiting_date"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textColor="@color/navy_blue"></TextView>
 
                 <TextView
                     android:id="@+id/tv_resorts"
-                    android:layout_width="101dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_101sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
                     android:visibility="gone"
-                    android:layout_marginTop="15dp"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:text="@string/select_resort"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textColor="@color/navy_blue"></TextView>
 
                 <TextView
-                    android:layout_width="101dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/tv_visitors_lbl"
+                    android:layout_width="@dimen/_81sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="@dimen/_35sdp"
                     android:text="@string/visitors"
-                    android:textColor="@color/grey_text"></TextView>
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/navy_blue"></TextView>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:orientation="vertical">
 
 
                 <EditText
                     android:id="@+id/et_visitors_time"
-                    android:layout_width="235dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:focusableInTouchMode="false"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_11ssp"
                     android:lines="1"></EditText>
+
 
                 <Spinner
                     android:id="@+id/sp_resorts"
-                    android:layout_width="235dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:textSize="16sp"
+                    android:paddingLeft="@dimen/_10sdp"
                     android:visibility="gone"
-                    android:textColor="@color/grey_text"></Spinner>
-
+                    android:textColor="@color/navy_blue"></Spinner>
+                <TextView
+                    android:id="@+id/tv_per_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:visibility="invisible"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:textSize="@dimen/_11ssp"
+                    android:text="@string/max_visitors"
+                    android:textColor="@color/navy_blue"></TextView>
 
                 <EditText
                     android:id="@+id/et_visitors_num"
-                    android:layout_width="235dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:inputType="number"
+                    android:textColor="@color/navy_blue"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textSize="@dimen/_11ssp"
                     android:lines="1"></EditText>
-
                 <TextView
                     android:id="@+id/tv_total_visitors"
-                    android:layout_width="235dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:gravity="center_vertical"
-                    android:visibility="gone"
-                    android:textSize="12sp"
+                    android:gravity="left"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:visibility="invisible"
+                    android:textSize="@dimen/_11ssp"
                     android:text="@string/max_visitors"
-                    android:textColor="@color/grey_text"></TextView>
-
+                    android:textColor="@color/navy_blue"></TextView>
 
 
             </LinearLayout>
 
         </LinearLayout>
+
 
         <RelativeLayout
             android:id="@+id/rl_include"
@@ -159,10 +181,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_visitor"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
             android:visibility="gone"
             android:layout_centerInParent="true">
         </androidx.recyclerview.widget.RecyclerView>
@@ -170,14 +193,13 @@
 
         <Button
             android:id="@+id/btn_submit"
-            android:layout_width="240dp"
-            android:layout_height="55dp"
-            android:background="@drawable/btn_bg"
-            android:layout_marginTop="20dp"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/btn_form_grey"
+            android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/submit"
-            android:visibility="gone"
             android:textStyle="bold"
-            android:textAllCaps="false"
+            android:textSize="@dimen/_15ssp"
             android:fontFamily="@font/jura_demi_bold"
             android:textColor="@color/white"></Button>
 

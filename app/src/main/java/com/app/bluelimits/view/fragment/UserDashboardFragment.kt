@@ -96,6 +96,7 @@ class UserDashboardFragment : Fragment() {
                 )
             }
         }
+
         binding.tvRole.setText(user_data?.resort + " - " + user_data?.role)
         user_data?.total_invitees?.let { binding.tvInviteNo.setText(it.toString()) }
 

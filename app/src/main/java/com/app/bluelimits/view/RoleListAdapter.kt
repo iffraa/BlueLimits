@@ -42,6 +42,16 @@ class RoleListAdapter(val roleList: ArrayList<Resort>, context: Context) :
 
         val role = roleList.get(position).name
 
+        if(role?.contains("Unit Member") == true)
+        {
+            holder.view.btnRole.setText("Unit Membership")
+        }
+        else if(role?.contains("Locker Member") == true)
+        {
+            holder.view.btnRole.setText("Locker Membership")
+        }
+
+
         if (role.equals(mContext.getString(R.string.guest_visitor))) {
             holder.view.btnRole.setOnClickListener(View.OnClickListener {
                 val action =

@@ -24,9 +24,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
         android:layout_below="@id/btn_guest"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_5sdp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -38,41 +38,40 @@
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:textColor="@color/navy_blue"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/_13ssp"
-                android:text="@string/guest_name"></TextView>
+                android:text="@string/guest_name"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_13ssp"></TextView>
 
             <TextView
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:textColor="@color/navy_blue"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/_13ssp"
-                android:text="@string/id_visi"></TextView>
+                android:text="@string/id_visi"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_13ssp"></TextView>
 
             <TextView
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:textColor="@color/navy_blue"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/_13ssp"
-                android:text="@string/mobile_visi"></TextView>
+                android:text="@string/mobile_visi"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_13ssp"></TextView>
 
             <TextView
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:textColor="@color/navy_blue"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/_13ssp"
-                android:text="@string/gender"></TextView>
+                android:text="@string/gender"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_13ssp"></TextView>
 
         </LinearLayout>
 
@@ -88,24 +87,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="15dp"
-                android:textColor="@color/navy_blue"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="text"
-                android:textSize="@dimen/_11ssp"
-                android:lines="1"></EditText>
+                android:lines="1"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
 
             <EditText
                 android:id="@+id/et_guest_id"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="20dp"
-                android:textSize="@dimen/_11ssp"
-                android:textColor="@color/navy_blue"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="number"
-                android:lines="1"></EditText>
+                android:lines="1"
+                android:maxLength="10"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
 
             <include
                 android:id="@+id/layout_mobile"
@@ -124,11 +124,10 @@
                     android:id="@+id/checkbox_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/grey_text"
-                    android:checked="true"
                     android:button="@drawable/chkbox_bg"
-                    android:paddingLeft="@dimen/_10sdp"
+                    android:buttonTint="@color/grey_text"
                     android:fontFamily="@font/jura_demi_bold"
+                    android:paddingLeft="@dimen/_10sdp"
                     android:text="@string/male"
                     android:textColor="@color/navy_blue" />
 
@@ -137,11 +136,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
+                    android:button="@drawable/chkbox_bg"
                     android:buttonTint="@color/grey_text"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:text="@string/female"
-                    android:button="@drawable/chkbox_bg"
                     android:paddingLeft="@dimen/_10sdp"
+                    android:text="@string/female"
                     android:textColor="@color/navy_blue" />
             </LinearLayout>
 

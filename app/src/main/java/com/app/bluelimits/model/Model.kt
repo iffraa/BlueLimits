@@ -3,6 +3,7 @@ package com.app.bluelimits.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import okhttp3.MultipartBody
 
 data class User(
     val user_type: String?,
@@ -61,7 +62,8 @@ data class User(
     val no_of_extra_family_member: Int?,
     val invitees: ArrayList<Invitee>?,
     val permissions: ArrayList<Permission>,
-    val members: ArrayList<FamilyMember>?
+    val members: ArrayList<FamilyMember>?,
+    val extra_members: ArrayList<FamilyMember>
 
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -116,7 +118,8 @@ data class User(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         TODO("invitees"),
         TODO("permissions"),
-        TODO("members")
+        TODO("members") ,
+        TODO("extra_members")
 
     ) {
     }
@@ -268,7 +271,10 @@ data class Visitor(
     var servicePackage: ServicePackage?,
     var who_will_pay: String,
     //  val qr_code: String,
-    var price: String
+    var price: String,
+    var discount: String,
+    var total: String,
+    var payment_status: String
 
 )
 
@@ -306,7 +312,7 @@ data class FamilyMember(
     )
 
 data class FamilyMemberRequest(
-    var member_id: Int,
+    var member_id: String,
     var first_name: String,
     var last_name: String,
     var contact_no: String,
@@ -401,7 +407,10 @@ data class RegisterMemberRequest(
     var member: ArrayList<FamilyMemberRequest>
 )
 
-data class Guest(var name: String, var gender: String, var id_no: String, var contact_no: String)
+data class Guest(
+    var id: String, var name: String, var gender: String, var id_no: String, var contact_no: String,
+    val qr_code: String, val status: String
+)
 
 data class GHReservationRequest(
     var setup_unit_id: String,
@@ -416,6 +425,75 @@ data class GHReservationRequest(
     var custom_discount_percentage: String,
     var guest: ArrayList<Guest>
 )
+
+data class GuestData(
+    var id: String?,
+    var unit_type_id: String?,
+    var setup_unit_id: String?,
+    var discount: String?,
+    var no_of_guest: String?,
+    var no_of_day: String?,
+    var package_id: String?,
+    var resort_id: String?,
+    var facility_location: String?,
+    var unit_no: String?,
+    var to: String?,
+    var from: String?,
+    var custom_discount_percentage: String?,
+    var ref_name: String?,
+    var guests: ArrayList<Guest>?
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readArrayList(GuestData::class.java.classLoader) as ArrayList<Guest>?,
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(unit_type_id)
+        parcel.writeString(setup_unit_id)
+        parcel.writeString(discount)
+        parcel.writeString(no_of_guest)
+        parcel.writeString(no_of_day)
+        parcel.writeString(package_id)
+        parcel.writeString(resort_id)
+        parcel.writeString(facility_location)
+        parcel.writeString(unit_no)
+        parcel.writeString(to)
+        parcel.writeString(from)
+        parcel.writeString(custom_discount_percentage)
+        parcel.writeString(ref_name)
+        parcel.writeList(guests)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<GuestData> {
+        override fun createFromParcel(parcel: Parcel): GuestData {
+            return GuestData(parcel)
+        }
+
+        override fun newArray(size: Int): Array<GuestData?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 data class MarineServiceRequest(
     var service_id: String,
@@ -496,6 +574,7 @@ data class VisitorResult(
         parcel.readString(),
         parcel.readArrayList(VisitorResult::class.java.classLoader) as ArrayList<VisitorDetail>?,
     )
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(no_of_visitor)
@@ -597,3 +676,48 @@ data class SpaceType(
     var start_pirce: String,
 
     )
+
+data class ServiceEntry(
+    var service_id: String,
+    var service_name: String,
+    var package_id: String,
+    var details: String,
+    var date_time: String,
+    var image: String,
+    var id: String,
+    var status: String,
+    var price: String,
+    @SerializedName("package")
+    var packagee: ServicePackage?
+)
+
+data class ServiceResponse(
+    val status: Boolean,
+    var message: String,
+    var data: ArrayList<ServiceEntry>
+)
+
+
+data class ServiceRequest(
+    var service_id: String,
+    var package_id: String,
+    var details: String,
+    var date_time: String,
+    var image: MultipartBody.Part?,
+)
+
+data class GuestsResponse(val status: Boolean, var message: String, var data: GuestListResponse)
+
+data class GuestListResponse(var data: ArrayList<GuestData>)
+
+data class PayFortData(
+    var access_code: String, var sdk_token: String, var response_message: String,
+    var status: String, var response_code: String
+)
+
+data class FortTokenRequest(val service_command: String = "",
+                            val access_code: String = "",
+                            val merchant_identifier: String = "",
+                            val language: String = "", // en/ ar
+                            val device_id: String = "",
+                            val signature: String = "")

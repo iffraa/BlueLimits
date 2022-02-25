@@ -2,33 +2,20 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.FragmentResortFacilitiesBinding
 import com.app.bluelimits.model.Resort
-import com.app.bluelimits.model.ServicePackage
 import com.app.bluelimits.util.Constants
-import com.app.bluelimits.util.showAlertDialog
-import com.app.bluelimits.view.PackageListAdapter
+import com.app.bluelimits.util.showSuccessDialog
 import com.app.bluelimits.view.RoleListAdapter
-import com.app.bluelimits.viewmodel.HomeViewModel
 import com.app.bluelimits.viewmodel.ResortFacilityViewModel
-import android.content.Intent
-import android.view.MotionEvent
-import android.widget.AdapterView
-
-import android.widget.TextView
-
-import androidx.recyclerview.widget.RecyclerView
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -104,7 +91,7 @@ class ResortFacilitiesFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)

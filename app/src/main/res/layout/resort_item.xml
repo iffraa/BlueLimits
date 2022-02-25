@@ -22,7 +22,7 @@
             android:id="@+id/iv_resort"
             android:layout_width="@dimen/_125sdp"
             android:layout_height="@dimen/_122sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_50sdp"
             android:scaleType="fitXY"
             android:background="@drawable/round_outline"
             android:clickable="true"

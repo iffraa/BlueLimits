@@ -17,6 +17,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 
 import android.media.MediaPlayer
+import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import com.app.bluelimits.databinding.ActivityMainBinding
 import com.app.bluelimits.util.Constants
@@ -114,5 +116,20 @@ class MainActivity : Activity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finishAffinity();
+    }
+
+    private fun forceCrash() {
+        val crashButton = Button(this)
+        crashButton.text = "Test Crash"
+        crashButton.setOnClickListener {
+            throw RuntimeException("Test Crash") // Force a crash
+        }
+
+        addContentView(
+            crashButton, ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        )
     }
 }

@@ -2,27 +2,23 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.lifecycle.Observer
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.FragmentGuestSpaceBinding
-import com.app.bluelimits.databinding.FragmentLoginBinding
 import com.app.bluelimits.model.Data
 import com.app.bluelimits.model.SpaceType
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
 import com.app.bluelimits.util.setHomeNavigation
-import com.app.bluelimits.util.showAlertDialog
+import com.app.bluelimits.util.showSuccessDialog
 import com.app.bluelimits.viewmodel.GuestSpaceViewModel
-import com.app.bluelimits.viewmodel.HomeViewModel
 import com.google.gson.Gson
 
 class GuestSpaceFragment : Fragment() {
@@ -30,6 +26,7 @@ class GuestSpaceFragment : Fragment() {
     private lateinit var binding: FragmentGuestSpaceBinding
     private lateinit var viewModel: GuestSpaceViewModel
     private lateinit var spaceList: ArrayList<SpaceType>
+    private var prefsHelper = SharedPreferencesHelper()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +40,7 @@ class GuestSpaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(GuestSpaceViewModel::class.java)
+        prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
 
         setHomeNavigation(context as Activity, AboutUsFragmentDirections.actionNavToHome())
 
@@ -92,7 +90,7 @@ class GuestSpaceFragment : Fragment() {
             isError?.let {
                // binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -116,11 +114,11 @@ class GuestSpaceFragment : Fragment() {
         binding.tvAccom.setText("Accomodation for " + unit.accomodation)
         binding.tvDescription.setText(unit.description)
         binding.tvPrice.setText(unit.start_pirce)
+        saveUnitData(unit, Constants.LOFT_SPACE)
 
-        binding.cvLoft.setOnClickListener{
+        binding.btnLoft.setOnClickListener{
             val action = GuestSpaceFragmentDirections.actionSpaceToDetail(String.format(unit.id),"loft")
-            action?.let { Navigation.findNavController(binding.cvLoft).navigate(it, ) }
-
+            action?.let { Navigation.findNavController(binding.btnLoft).navigate(it) }
         }
 
 
@@ -128,13 +126,14 @@ class GuestSpaceFragment : Fragment() {
     private fun setVillaDetail(unit: SpaceType)
     {
         binding.tvSpace2.setText(unit.name)
-        binding.tvAccom2.setText(unit.accomodation)
+        binding.tvAccom2.setText("Accomodation for " + unit.accomodation)
         binding.tvDescription2.setText(unit.description)
         binding.tvPrice2.setText(unit.start_pirce)
+        saveUnitData(unit, Constants.VILLA_SPACE)
 
-        binding.cvVilla.setOnClickListener{
+        binding.btnVilla.setOnClickListener{
             val action = GuestSpaceFragmentDirections.actionSpaceToDetail(String.format(unit.id),"villa")
-            action?.let { Navigation.findNavController(binding.cvVilla).navigate(it, ) }
+            action?.let { Navigation.findNavController(binding.btnVilla).navigate(it) }
 
         }
 
@@ -143,16 +142,25 @@ class GuestSpaceFragment : Fragment() {
     private fun setSuiteDetail(unit: SpaceType)
     {
         binding.tvSpace3.setText(unit.name)
-        binding.tvAccom3.setText( unit.accomodation)
+        binding.tvAccom3.setText("Accomodation for " + unit.accomodation)
         binding.tvDescription3.setText(unit.description)
         binding.tvPrice3.setText(unit.start_pirce)
+        saveUnitData(unit, Constants.SUITE_SPACE)
 
-        binding.cvSuite.setOnClickListener{
+        binding.btnSuite.setOnClickListener{
             val action = GuestSpaceFragmentDirections.actionSpaceToDetail(String.format(unit.id),"suite")
-            action?.let { Navigation.findNavController(binding.cvSuite).navigate(it, ) }
+            action?.let { Navigation.findNavController(binding.btnSuite).navigate(it) }
 
         }
 
+
+    }
+
+    private fun saveUnitData(unit: SpaceType, key: String)
+    {
+        val gson = Gson()
+        val unitJson = gson.toJson(unit)
+        prefsHelper.saveData(unitJson,key)
 
     }
 

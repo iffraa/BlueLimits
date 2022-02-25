@@ -7,8 +7,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.app.bluelimits.R
 import com.app.bluelimits.model.*
-import com.app.bluelimits.util.showAlertDialog
-import io.reactivex.Single
+import com.app.bluelimits.util.showSuccessDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -80,7 +79,7 @@ class UnitFormViewModel(application: Application) : BaseViewModel(application) {
                                     }
                                 } else {
                                     e.message?.let { it1 ->
-                                        showAlertDialog(
+                                        showSuccessDialog(
                                             context as Activity,
                                             context.getString(R.string.app_name), it1
                                         )

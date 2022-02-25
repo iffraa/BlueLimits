@@ -46,18 +46,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/jura_demi_bold"
-                    android:textSize="@dimen/_6ssp"
-                    android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_2sdp"
-                    android:text="@string/name"></TextView>
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/name"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_6ssp"></TextView>
 
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:textSize="@dimen/_8ssp"
+                    android:textSize="@dimen/_6ssp"
                     android:textColor="@color/navy_blue"
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="@{familyMember.name}"></TextView>
@@ -83,20 +83,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_2sdp"
-                    android:textSize="@dimen/_8ssp"
-                    android:textColor="@color/navy_blue"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:text="Gender:"></TextView>
+                    android:text="Gender:"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_6ssp"></TextView>
 
                 <TextView
                     android:id="@+id/tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_8ssp"
-                    android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:text="@{familyMember.gender}"></TextView>
+                    android:text="@{familyMember.gender}"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_6ssp"></TextView>
 
             </LinearLayout>
 
@@ -126,7 +126,7 @@ s
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_7ssp"
+                    android:textSize="@dimen/_6ssp"
                     android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_2sdp"
                     android:fontFamily="@font/jura_demi_bold"
@@ -136,7 +136,7 @@ s
                     android:id="@+id/tv_mobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_7ssp"
+                    android:textSize="@dimen/_6ssp"
                     android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/jura_demi_bold"
@@ -163,7 +163,7 @@ s
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_8ssp"
+                    android:textSize="@dimen/_6ssp"
                     android:layout_marginLeft="@dimen/_2sdp"
                     android:textColor="@color/navy_blue"
                     android:fontFamily="@font/jura_demi_bold"
@@ -173,7 +173,7 @@ s
                     android:id="@+id/tv_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_8ssp"
+                    android:textSize="@dimen/_6ssp"
                     android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/jura_demi_bold"

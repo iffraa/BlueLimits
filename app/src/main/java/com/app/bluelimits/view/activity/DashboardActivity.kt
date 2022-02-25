@@ -16,6 +16,7 @@ import com.google.android.material.navigation.NavigationView
 
 import android.view.View
 import androidx.navigation.*
+import com.app.bluelimits.util.SharedPreferencesHelper
 
 
 class DashboardActivity : AppCompatActivity() {
@@ -43,7 +44,7 @@ class DashboardActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                 R.id.nav_login,  R.id.userDashboardFragment, R.id.nav_home, R.id.nav_reservation_msg
+                 R.id.nav_login,  R.id.userDashboardFragment, R.id.nav_reservation_msg, R.id.nav_home
 
             ), drawerLayout
         )
@@ -114,7 +115,7 @@ class DashboardActivity : AppCompatActivity() {
             setOf(
                 R.id.userDashboardFragment,
                 R.id.nav_reservation_msg,
-                R.id.nav_home
+            //    R.id.nav_home
             ), drawerLayout
         )
 
@@ -177,7 +178,7 @@ class DashboardActivity : AppCompatActivity() {
      //   nav_my_contract.setVisible(true)
 
         val nav_req_services = menu.findItem(R.id.nav_services)
-        nav_req_services.setVisible(false)
+        nav_req_services.setVisible(true)
 
 
     }
@@ -214,12 +215,24 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
+    fun navigateToGuestsList(action: NavDirections) {
+        val tvGuests = binding.appBarMain2.tvListing;
+        tvGuests.visibility = View.VISIBLE
+
+        tvGuests.setOnClickListener {
+            navController.navigate(action)
+        }
+    }
+
     fun changeMenuIcon() {
+        var prefsHelper = SharedPreferencesHelper(getApplication())
+        val data = prefsHelper.getData(Constants.USER_DATA)
+
         navController.addOnDestinationChangedListener(NavController.OnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
             if (
                 navDestination.getId() ==  R.id.nav_reservation_msg
                 ||
-                navDestination.getId() == R.id.nav_home
+                (!Constants.isLoggedIn && navDestination.getId() == R.id.nav_home)
                 || navDestination.getId() == R.id.userDashboardFragment
                 || navDestination.getId() == R.id.nav_login
             ) {
@@ -228,6 +241,9 @@ class DashboardActivity : AppCompatActivity() {
                 getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.nav_icon);
             }
         })
+
+
+
 
     }
 
@@ -242,6 +258,11 @@ class DashboardActivity : AppCompatActivity() {
             nav_visitor.setVisible(isPermitted)
         }
 
+    }
+
+    fun getNavController(): NavController
+    {
+        return  navController
     }
 
 }

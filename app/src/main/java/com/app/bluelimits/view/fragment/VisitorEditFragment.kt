@@ -1,23 +1,24 @@
 package com.app.bluelimits.view.fragment
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.FragmentVisitorEditBinding
-import com.app.bluelimits.databinding.FragmentVisitorInviteBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.*
-import com.app.bluelimits.view.AddVisitorsAdapter
 import com.app.bluelimits.view.EditVisitorAdapter
 import com.app.bluelimits.view.activity.DashboardActivity
 import com.app.bluelimits.viewmodel.VisitorEditViewModel
@@ -29,8 +30,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,6 +47,8 @@ class VisitorEditFragment : Fragment() {
     private lateinit var viewModel: VisitorInviteViewModel
     private lateinit var updateVM: VisitorEditViewModel
     private var prefsHelper = SharedPreferencesHelper()
+    private var builder: AlertDialog.Builder? = null
+    private var mAlertDialog: AlertDialog? = null
     private lateinit var resortId: String
     private var totalVisitors = 0
     private var visitorPolicyPresent = false
@@ -87,9 +88,9 @@ class VisitorEditFragment : Fragment() {
 
         data.user?.resort?.let { setLogo(it) }
 
-    /*    binding.etVisitorsTime.setOnClickListener(View.OnClickListener {
-            showDateDialog(data)
-        })*/
+        /*    binding.etVisitorsTime.setOnClickListener(View.OnClickListener {
+                showDateDialog(data)
+            })*/
 
         navigateToListing();
 
@@ -99,29 +100,48 @@ class VisitorEditFragment : Fragment() {
             val visitors = binding.etVisitorsNum.text.toString()
 
             if (date.isNullOrEmpty() || visitors.isNullOrEmpty()) {
-                showAlertDialog(
+                showSuccessDialog(
                     requireActivity(),
                     getString(R.string.app_name),
                     getString(R.string.empty_fields)
                 )
             } else {
-                binding.rlInclude.visibility = View.VISIBLE
-                updateVisitors()
-                observeViewModel()
+                val idMsg = checkVisitorsID(visitorListAdapter.getData(), requireContext())
+                if (idMsg.isEmpty()) {
+                    binding.rlInclude.visibility = View.VISIBLE
+                    updateVisitors()
+                    observeViewModel()
+                }
+                else
+                {
+                    showSuccessDialog(requireActivity(), getString(R.string.app_name), idMsg)
+                }
+
             }
 
         })
 
-      /*  if (data.user?.user_type.equals(Constants.admin)) {
-            binding.spResorts.visibility = View.VISIBLE
-            binding.tvResorts.visibility = View.VISIBLE
+        /*  if (data.user?.user_type.equals(Constants.admin)) {
+              binding.spResorts.visibility = View.VISIBLE
+              binding.tvResorts.visibility = View.VISIBLE
 
-            getResorts(data)
-        }*/
+              getResorts(data)
+          }*/
 
         populateDetails()
         setHomeNavigation(context as Activity, VisitorEditFragmentDirections.actionNavToHome())
+    }
 
+    private fun checkVisitorsID(visitors: ArrayList<VisitorDetail>, context: Context): String
+    {
+        for(visitor in visitors)
+        {
+            val id = visitor.id_no
+            if(!isValidID(id!!))
+                return context.getString(R.string.id_length_error)
+        }
+
+        return ""
     }
 
 
@@ -192,29 +212,28 @@ class VisitorEditFragment : Fragment() {
                 if (!noOfVisitors.isEmpty()) {
                     activity?.let { hideKeyboard(it) }
 
-                    if (visitorPolicyPresent && noOfVisitors.toInt() > totalVisitors) {
-                        showAlertDialog(
-                            context as Activity,
-                            getString(R.string.app_name),
-                            totalVisitors.toString() + " " + getString(R.string.max_visitors)
-                        )
-                    } else {
-                        val no_of_visitors: Int = noOfVisitors.toInt()
-                        if (no_of_visitors > 0) {
+                    /*  if (visitorPolicyPresent && noOfVisitors.toInt() > totalVisitors) {
+                          showAlertDialog(requireActivity(),
+                              getString(R.string.app_name),
+                              totalVisitors.toString() + " " + getString(R.string.max_visitors)
+                          )
+                      } else {*/
+                    val no_of_visitors: Int = noOfVisitors.toInt()
+                    if (no_of_visitors > 0) {
 
-                            binding.rvVisitor.visibility = View.VISIBLE
-                            binding.btnSubmit.visibility = View.VISIBLE
-                            visitorsData.visitors?.let {
-                                visitorListAdapter?.setVisitorList(
-                                    it, packages
-                                )
-                            }
-
-                        } else {
-                            binding.rvVisitor.visibility = View.GONE
-                            binding.btnSubmit.visibility = View.GONE
-
+                        binding.rvVisitor.visibility = View.VISIBLE
+                        binding.btnSubmit.visibility = View.VISIBLE
+                        visitorsData.visitors?.let {
+                            visitorListAdapter?.setVisitorList(
+                                it, packages
+                            )
                         }
+
+                        /*  } else {
+                              binding.rvVisitor.visibility = View.GONE
+                              binding.btnSubmit.visibility = View.GONE
+
+                          }*/
                     }
                 }
 
@@ -275,7 +294,7 @@ class VisitorEditFragment : Fragment() {
             val visitors: ArrayList<VisitorDetail> = visitorListAdapter.getData()
             //  val visitors = visitorsData.visitors
             val num = visitors.size//binding.etVisitorsNum.text.toString()
-            if (visitors?.size!! > 0 ) {
+            if (visitors?.size!! > 0) {
                 for (i in 0 until num.toInt()) {
                     val visitor = visitors.get(i)
                     val gender = visitor.gender
@@ -316,7 +335,7 @@ class VisitorEditFragment : Fragment() {
 
     fun updateVisitors() {
         var visitors: ArrayList<VisitorDetail> = visitorListAdapter.getData()
-      //  visitors = visitors.distinct() as ArrayList<VisitorDetail>
+        //  visitors = visitors.distinct() as ArrayList<VisitorDetail>
         var (total, subTotal, discount) = getPriceInfo(visitors)
 
         prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
@@ -357,8 +376,8 @@ class VisitorEditFragment : Fragment() {
             }
 
         } else {
-            showAlertDialog(
-                context as Activity,
+            showSuccessDialog(
+                requireActivity(),
                 getString(R.string.app_name), errorMsg
             )
         }
@@ -372,8 +391,8 @@ class VisitorEditFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showAlertDialog(
-                        context as Activity,
+                    showSuccessDialog(
+                        requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.units_loading_error)
                     )
@@ -402,8 +421,8 @@ class VisitorEditFragment : Fragment() {
             isError?.let {
                 binding.rlInclude.visibility = View.GONE
                 if (it) {
-                    showAlertDialog(
-                        context as Activity,
+                    showSuccessDialog(
+                        requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.units_loading_error)
                     )
@@ -422,15 +441,6 @@ class VisitorEditFragment : Fragment() {
                     val totalFemale = response.female
                     val perDay = response.total_allow
 
-                  /* binding.tvPerDay.visibility = View.VISIBLE
-                    binding.tvPerDay.setText("Per Day " + totalVisitors + " visitors are allowed")
-
-
-                    binding.tvTotalVisitors.visibility = View.VISIBLE
-                    binding.tvTotalVisitors.setText(
-                        "Only " + totalMale.toString() + " " + Constants.MALE + " & " +
-                                totalFemale + " " + Constants.FEMALE + " are allowed"
-                    )*/
                 }
 
                 viewModel.totalVisitors.removeObservers(viewLifecycleOwner)
@@ -500,30 +510,31 @@ class VisitorEditFragment : Fragment() {
     }
 
 
-    fun getDateTime(): String {
-        val dateTime = binding.etVisitorsTime.text.toString()
-
-        if (dateTime.isNullOrEmpty()) {
-            activity?.let {
-                showAlertDialog(
-                    it,
-                    getString(R.string.app_name),
-                    getString(R.string.missing_date)
-                )
+    fun showAlertDialog(title: String, msg: String) {
+        if (builder == null) {
+            builder = activity?.let {
+                AlertDialog.Builder(it)
             }
-        } else {
-            return dateTime
-        }
 
-        return ""
+            builder?.setMessage(msg)
+                ?.setTitle(title)?.setPositiveButton(
+                    R.string.ok
+                ) { dialog, id ->
+                    val action = VisitorEditFragmentDirections.actionNavToList()
+                    Navigation.findNavController(binding.btnSubmit).navigate(action)
+
+                }
+            mAlertDialog = builder?.create()
+            mAlertDialog?.show()
+        }
     }
+
 
     fun observeViewModel() {
         updateVM.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
                 binding.rlInclude.visibility = View.GONE
                 showAlertDialog(
-                    context as Activity,
                     requireContext().getString(R.string.app_name),
                     msg
                 )
@@ -535,8 +546,8 @@ class VisitorEditFragment : Fragment() {
             isError?.let {
                 if (it) {
                     binding.rlInclude.visibility = View.GONE
-                    showAlertDialog(
-                        context as Activity,
+                    showSuccessDialog(
+                        requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.add_visitor_error)
                     )
@@ -607,7 +618,7 @@ class VisitorEditFragment : Fragment() {
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
                 if (it) {
-                    showAlertDialog(
+                    showSuccessDialog(
                         requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -634,7 +645,7 @@ class VisitorEditFragment : Fragment() {
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
                 if (it) {
-                    showAlertDialog(
+                    showSuccessDialog(
                         requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -662,7 +673,10 @@ class VisitorEditFragment : Fragment() {
     }
 
     private fun navigateToListing() {
-        val action = VisitorInviteFragmentDirections.actionNavToList()
+        if (mAlertDialog?.isShowing == true)
+            mAlertDialog!!.dismiss()
+
+        val action = VisitorEditFragmentDirections.actionNavToList()
         (activity as DashboardActivity).navigateToVisitorsList(action)
 
 
@@ -682,5 +696,6 @@ class VisitorEditFragment : Fragment() {
         val typeface = ResourcesCompat.getFont(requireContext(), R.font.jura_demi_bold)
         binding.tvVisitorsLbl.typeface = typeface
     }
+
 
 }

@@ -27,7 +27,6 @@ class GReservationMsgFragment : Fragment()  {
 
     private var pdf = ""
     private var _binding: FragmentReservMsgBinding? = null
-    private val resortListAdapter = ResortListAdapter(arrayListOf())
 
     // This property is only valid between onCreateView and
     // onDestroyView.

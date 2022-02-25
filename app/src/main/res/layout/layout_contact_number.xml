@@ -23,6 +23,7 @@
         android:fontFamily="@font/jura_demi_bold"
         android:inputType="number"
         android:lines="1"
+        android:maxLength="8"
         android:textSize="@dimen/_11ssp"
         android:background="@android:color/transparent"
         android:textColor="@color/navy_blue"></EditText>

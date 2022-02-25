@@ -20,6 +20,10 @@ object Constants {
     const val PERMISSION_GUEST = "add guest house reservation"
     const val PERMISSION_VISITOR = "add invite visitor"
     const val ANNUAL_UNITS = "Annual Units"
-    const val LOCKERS: String = "Lockers"
+    const val LOFT_SPACE: String = "LoftSpace"
+    const val VILLA_SPACE: String = "VillaSpace"
+    const val SUITE_SPACE: String = "SuiteSpace"
+    const val PAID: String = "paid"
+    const val UN_PAID: String = "un-paid"
 
 }

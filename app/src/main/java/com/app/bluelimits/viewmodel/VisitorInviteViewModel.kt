@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.app.bluelimits.R
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
-import com.app.bluelimits.util.showAlertDialog
+import com.app.bluelimits.util.showSuccessDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -130,7 +130,7 @@ class VisitorInviteViewModel(application: Application): BaseViewModel(applicatio
                             override fun onError(e: Throwable) {
                                 loading.value = false
                                 e?.printStackTrace()
-                                showAlertDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.add_visitor_error))
+                                showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.add_visitor_error))
                             }
 
                         }))

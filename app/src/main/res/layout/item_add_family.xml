@@ -143,6 +143,7 @@
                 android:textSize="@dimen/_11ssp"
                 android:paddingLeft="@dimen/_10sdp"
                 android:inputType="number"
+                android:maxLength="10"
                 android:lines="1"></EditText>
 
             <include

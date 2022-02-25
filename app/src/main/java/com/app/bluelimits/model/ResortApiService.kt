@@ -131,15 +131,47 @@ class ResortApiService {
     }
 
     fun deleteVisitor(token: String, inviteeID: String): Single<APIResponse> {
-        return api.deleteVisitor(token,inviteeID)
+        return api.deleteVisitor(token, inviteeID)
     }
 
-    fun editVisitor(token: String, inviteeID: String, visitors: EditVisitorRequest): Single<APIResponse> {
-        return api.editVisitor(token,inviteeID, visitors)
+    fun editVisitor(
+        token: String,
+        inviteeID: String,
+        visitors: EditVisitorRequest
+    ): Single<APIResponse> {
+        return api.editVisitor(token, inviteeID, visitors)
     }
 
     fun getUnitTypes(token: String): Single<SpaceResponse> {
         return api.getUnitTypes(token)
     }
+
+    fun getAllServices(
+        token: String,
+        per_page: String,
+        page: String
+    ): Single<ServiceResponse> {
+        return api.getAllServices(token, per_page, page)
+    }
+
+    fun getGuests(token: String): Single<GuestsResponse> {
+        return api.getGuests(token)
+    }
+
+    fun deleteGuest(
+        token: String,
+        reservID: String
+    ): Single<APIResponse> {
+        return api.deleteGuest(token, reservID)
+    }
+
+    fun editGuest(
+        token: String,
+        rsrvID: String,
+        guest: GHReservationRequest
+    ): Single<APIResponse> {
+        return api.editGuest(token, rsrvID, guest)
+    }
+
 
 }

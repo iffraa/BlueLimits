@@ -20,7 +20,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_loft"
-            android:layout_width="@dimen/_230sdp"
+            android:layout_width="@dimen/_255sdp"
             android:layout_height="@dimen/_180sdp"
             android:layout_marginTop="@dimen/_15sdp"
             app:cardBackgroundColor="@color/white"
@@ -101,8 +101,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_strts"
                         android:layout_marginLeft="@dimen/_5ssp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/_10ssp">
+                        android:layout_alignParentRight="true">
 
                         <TextView
                             android:id="@+id/tv_price"
@@ -153,7 +152,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_villa"
-            android:layout_width="@dimen/_230sdp"
+            android:layout_width="@dimen/_255sdp"
             android:layout_height="@dimen/_180sdp"
             android:layout_marginTop="@dimen/_10sdp"
             app:cardBackgroundColor="@color/white"
@@ -234,8 +233,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_strts2"
                         android:layout_marginLeft="@dimen/_5ssp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/_10ssp">
+                        android:layout_alignParentRight="true">
 
                         <TextView
                             android:id="@+id/tv_price2"
@@ -268,15 +266,15 @@
                         android:textSize="@dimen/_7sdp"></TextView>
 
                     <Button
-                        android:id="@+id/btn_loft2"
+                        android:id="@+id/btn_villa"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_below="@id/tv_per_night2"
                         android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_30sdp"
                         android:background="@drawable/detailsbtn"
                         android:text="View Details"
-                        android:layout_marginBottom="@dimen/_30sdp"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_5sdp"></Button>
                 </LinearLayout>
@@ -285,7 +283,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_suite"
-            android:layout_width="@dimen/_230sdp"
+            android:layout_width="@dimen/_255sdp"
             android:layout_height="@dimen/_180sdp"
             android:layout_marginTop="@dimen/_10sdp"
             app:cardBackgroundColor="@color/white"
@@ -366,8 +364,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_strts2"
                         android:layout_marginLeft="@dimen/_5ssp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/_10ssp">
+                        android:layout_alignParentRight="true">
 
                         <TextView
                             android:id="@+id/tv_price3"
@@ -400,7 +397,7 @@
                         android:textSize="@dimen/_7sdp"></TextView>
 
                     <Button
-                        android:id="@+id/btn_loft3"
+                        android:id="@+id/btn_suite"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_marginTop="@dimen/_5sdp"

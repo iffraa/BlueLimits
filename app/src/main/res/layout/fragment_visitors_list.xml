@@ -11,11 +11,12 @@
     android:paddingRight="@dimen/_15sdp">
 
 
-    <include layout="@layout/progress_bar"
+    <include
         android:id="@+id/progressBar"
-        android:layout_centerInParent="true"
+        layout="@layout/progress_bar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></include>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"></include>
 
 
 

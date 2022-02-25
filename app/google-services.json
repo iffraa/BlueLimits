@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "658524367253",
+    "project_id": "bluelimits",
+    "storage_bucket": "bluelimits.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658524367253:android:97f22cf33be306cb0eae9c",
+        "android_client_info": {
+          "package_name": "com.app.bluelimits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658524367253-ouiq402hojgtgfitfosmgr2inpabkpe6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzjFfU56HuQ7GtH0pe3ZDfGXEcZs83Nx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658524367253-ouiq402hojgtgfitfosmgr2inpabkpe6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

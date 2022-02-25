@@ -4,6 +4,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven { url "https://android-sdk.payfort.com" }
+
         jcenter() // Warning: this repository is going to shut down soon
     }
 }

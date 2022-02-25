@@ -2,8 +2,6 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,7 +20,6 @@ import com.app.bluelimits.view.PackageListAdapter
 import com.app.bluelimits.viewmodel.UnitFormViewModel
 import java.util.*
 import kotlin.collections.ArrayList
-import androidx.fragment.app.DialogFragment
 import com.app.bluelimits.view.FamilyListAdapter
 import com.hbb20.CountryCodePicker
 import com.jakewharton.rxbinding4.widget.textChanges
@@ -31,12 +28,13 @@ import java.util.concurrent.TimeUnit
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.*
-import android.content.DialogInterface
 import android.widget.*
 import androidx.core.content.FileProvider
 import androidx.navigation.Navigation
 import com.app.bluelimits.BuildConfig
+import com.app.bluelimits.view.activity.DashboardActivity
 import java.io.File
+import kotlin.concurrent.schedule
 
 
 /**
@@ -62,6 +60,8 @@ class UnitFormFragment : Fragment() {
     private var role: Resort? = null
     private var imgUri: Uri? = null
     private var cameraImgFile: File? = null
+    private var builder: androidx.appcompat.app.AlertDialog.Builder? = null
+    private var mAlertDialog: androidx.appcompat.app.AlertDialog? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,7 +159,7 @@ class UnitFormFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -215,7 +215,7 @@ class UnitFormFragment : Fragment() {
         )
 
         binding.etFamily.textChanges()
-            .debounce(1, TimeUnit.SECONDS)
+            .debounce(0.5.toLong(), TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
                 val noOfFam: String = binding.etFamily.text.toString()
@@ -225,7 +225,7 @@ class UnitFormFragment : Fragment() {
                     val no_of_fam_members: Int = noOfFam.toInt()
                     val members = ArrayList<FamilyMemberRequest>(no_of_fam_members)
                     for (i in 1..no_of_fam_members) {
-                        val person = FamilyMemberRequest(0, "", "", "", "", "")
+                        val person = FamilyMemberRequest("0", "", "", "", "", "")
                         members.add(person)
                     }
                     binding.rvFamily.visibility = View.VISIBLE
@@ -235,7 +235,6 @@ class UnitFormFragment : Fragment() {
             }
 
     }
-
 
     private fun setPackagesList(servicePackages: ArrayList<ServicePackage>) {
         binding.rvPckgs.visibility = View.VISIBLE
@@ -368,14 +367,14 @@ class UnitFormFragment : Fragment() {
                     observeAddMemberViewModel()
 
                 } else {
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.no_pckg_error)
                     )
                 }
             } else {
-                showAlertDialog(
+                showSuccessDialog(
                     context as Activity,
                     getString(R.string.app_name), errorMsg
                 )
@@ -387,13 +386,13 @@ class UnitFormFragment : Fragment() {
 
 
     fun observeAddMemberViewModel() {
-
         viewModel.errorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
             errorMsg?.let {
                 if (!it.isNullOrEmpty()) {
                     binding.rlPb.visibility = View.GONE
-                    displayServerErrors(viewModel.errorMsg.value.toString(), requireContext())
-
+                    val errorMsg =
+                        getServerErrors(viewModel.errorMsg.value.toString(), requireContext())
+                    showAlertDialog(errorMsg)
                 }
             }
         })
@@ -408,7 +407,7 @@ class UnitFormFragment : Fragment() {
         viewModel.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
                 binding.rlPb.visibility = View.GONE
-                showAlertDialog(
+                showSuccessDialog(
                     getString(R.string.app_name), msg
                 )
             }
@@ -417,7 +416,29 @@ class UnitFormFragment : Fragment() {
 
     }
 
-    fun showAlertDialog(title: String, msg: String) {
+    fun showAlertDialog(msg: String) {
+        if (builder == null) {
+            builder = activity?.let {
+                androidx.appcompat.app.AlertDialog.Builder(it)
+            }
+
+            builder?.setMessage(msg)
+                ?.setTitle(getString(R.string.app_name))?.setPositiveButton(
+                    R.string.ok
+                ) { _, _ ->
+
+                }
+            mAlertDialog = builder?.create()
+            mAlertDialog?.show()
+        }
+    }
+
+
+    fun showSuccessDialog(title: String, msg: String) {
+        if (mAlertDialog?.isShowing == true) {
+            mAlertDialog?.dismiss()
+        }
+
         val builder: androidx.appcompat.app.AlertDialog.Builder? = activity?.let {
             androidx.appcompat.app.AlertDialog.Builder(it)
         }
@@ -427,7 +448,7 @@ class UnitFormFragment : Fragment() {
                 R.string.ok
             ) { dialog, id ->
                 val action = UnitFormFragmentDirections.actionNavToHome()
-                Navigation.findNavController(binding.btnApply).navigate(action)
+                (activity as DashboardActivity).getNavController().navigate(action)
 
             }
         builder?.create()?.show()
@@ -454,6 +475,8 @@ class UnitFormFragment : Fragment() {
             errorMsg = getString(R.string.fname_error)
         } else if (member_id.isNullOrEmpty()) {
             errorMsg = getString(R.string.id_error)
+        } else if (member_id.length < 10) {
+            errorMsg = getString(R.string.id_length_error)
         }
 
         return errorMsg
@@ -547,6 +570,7 @@ class UnitFormFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
+
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,

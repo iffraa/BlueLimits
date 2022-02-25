@@ -2,11 +2,14 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.content.res.Resources
+import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.FragmentResortInfoBinding
@@ -69,30 +72,42 @@ class ResortInfoFragment : Fragment() {
         }
 
         setSliderImgs()
-        //type.name?.let { setSlider(it) }
 
         if (type.name?.contains(Constants.MARINE) == true) {
             setReqTripLayout()
         } else {
-            binding.ivRightArrow.setOnClickListener(View.OnClickListener {
-                val action =
-                    ResortInfoFragmentDirections.actionResortInfoToResortFacilitiesFrag(type)
-                Navigation.findNavController(it).navigate(action)
-            })
+            val action =
+                ResortInfoFragmentDirections.actionResortInfoToResortFacilitiesFrag(type)
+            setRightArrowClick(action)
+            setLeftArrowClick(binding.ivLeftArrow)
 
-            binding.ivLeftArrow.setOnClickListener {
-                val action =
-                    ResortInfoFragmentDirections.actionNavToHome()
-                Navigation.findNavController(it).navigate(action)
-            }
         }
 
         setHomeNavigation(context as Activity, ResortInfoFragmentDirections.actionNavToHome())
     }
 
+    private fun setLeftArrowClick(image: ImageView) {
+        image.setOnClickListener {
+            val action =
+                ResortInfoFragmentDirections.actionNavToHome()
+            Navigation.findNavController(it).navigate(action)
+        }
+
+    }
+
+    private fun setRightArrowClick(action: NavDirections) {
+        binding.ivRightArrow.setOnClickListener(View.OnClickListener {
+            val action =
+                ResortInfoFragmentDirections.actionResortInfoToResortFacilitiesFrag(type)
+            Navigation.findNavController(it).navigate(action)
+        })
+    }
+
     private fun setReqTripLayout() {
-        binding.ivLeftArrow.visibility = View.GONE
+
         binding.ivRightArrow.visibility = View.GONE
+        binding.ivLeftArrow.visibility = View.GONE
+
         binding.rlTrip?.visibility = View.VISIBLE
         binding.rlTrip.setOnClickListener(View.OnClickListener {
             val action =
@@ -101,6 +116,13 @@ class ResortInfoFragment : Fragment() {
 
         })
 
+        binding.llArrowsMarine.visibility = View.VISIBLE
+        setLeftArrowClick(binding.ivLeftArrowMarine)
+        binding.ivRightArrowMarine.setOnClickListener(View.OnClickListener {
+            val action =
+                ResortInfoFragmentDirections.actionResortInfoToMarineForm()
+            Navigation.findNavController(it).navigate(action)
+        })
     }
 
     private fun getImages(type: String) {
@@ -137,25 +159,28 @@ class ResortInfoFragment : Fragment() {
 
     }
 
-    private fun setSliderImgs()
-    {
+    private fun setSliderImgs() {
         val images = intArrayOf(
-            R.drawable.boho_slide1, R.drawable.boho_slide2, R.drawable.boho_slide3, R.drawable.boho_slide4)
+            R.drawable.boho_slide1,
+            R.drawable.boho_slide2,
+            R.drawable.boho_slide3,
+            R.drawable.boho_slide4
+        )
 
         mViewPager = binding.viewPager
 
         // Initializing the ViewPagerAdapter
-        mViewPagerAdapter = ViewPagerAdapter(requireContext(),images)
+        mViewPagerAdapter = ViewPagerAdapter(requireContext(), images)
 
         // Adding the Adapter to the ViewPager
         mViewPager!!.adapter = mViewPagerAdapter
 
-        binding.ivLeft.setOnClickListener{
+        binding.ivLeft.setOnClickListener {
             mViewPager!!.setCurrentItem(mViewPager!!.getCurrentItem() - 1, true);
 
         }
 
-        binding.ivRight.setOnClickListener{
+        binding.ivRight.setOnClickListener {
             mViewPager!!.setCurrentItem(mViewPager!!.getCurrentItem() + 1, true);
 
         }

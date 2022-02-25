@@ -1,12 +1,12 @@
 package com.app.bluelimits.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
+import android.widget.*
+import com.app.bluelimits.util.*
 import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.ItemVisitorBinding
@@ -16,9 +16,11 @@ import com.app.bluelimits.model.Visitor
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
 import com.app.bluelimits.view.fragment.VisitorInviteFragment
+import com.google.gson.Gson
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
+
 
 class AddVisitorsAdapter(
     val visitorList: ArrayList<Visitor>,
@@ -40,18 +42,11 @@ class AddVisitorsAdapter(
     private var packages: HashMap<String, ServicePackage> = hashMapOf()
 
 
-    fun setVisitorList(newFamList: ArrayList<Visitor>, vPackages: HashMap<String, ServicePackage>) {
-        /* prefsHelper = SharedPreferencesHelper(context)
-         val data_string = prefsHelper.getData(Constants.USER_DATA)
-         val gson = Gson()
-         data = gson.fromJson(data_string, Data::class.java)
-
-         dateTime =  visitorFrag.getDateTime()*/
-
+    fun setVisitorList(newList: ArrayList<Visitor>, vPackages: HashMap<String, ServicePackage>) {
         packages = vPackages
         enteredData.clear()
         visitorList.clear()
-        visitorList.addAll(newFamList)
+        visitorList.addAll(newList)
 
         notifyDataSetChanged()
     }
@@ -75,8 +70,11 @@ class AddVisitorsAdapter(
 
         val cb_male: CheckBox = holder.view.checkboxMale
         val cb_female: CheckBox = holder.view.checkboxFemale
-        val cb_sender_pay: CheckBox = holder.view.cbSenderPay
-        val cb_visitor_pay: CheckBox = holder.view.cbVisitorPay
+        //  val cb_sender_pay: CheckBox = holder.view.cbSenderPay
+        //val cb_visitor_pay: CheckBox = holder.view.cbVisitorPay
+        val payRg: RadioGroup = holder.view.radioGroup
+        val rbSender: RadioButton = holder.view.cbSenderPay
+        val rbVisitor: RadioButton = holder.view.cbVisitorPay
 
         val btn_visitor: Button = holder.view.btnVisitor
         btn_visitor.setText(context.getString(R.string.visitor) + " " + (position + 1))
@@ -94,52 +92,66 @@ class AddVisitorsAdapter(
             .debounce(3, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-                visitor.contact_no = et_mobile.text.toString()
+                visitor.contact_no =
+                    context.getString(R.string.server_number_code) + et_mobile.text.toString()
             }
 
         et_id.textChanges()
-            .debounce(3, TimeUnit.SECONDS)
+            .debounce(2, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-                if (!et_id.text.toString().isEmpty())
-                    visitor.id_no = et_id.text.toString().toInt().toString()
+                val id = et_id.text.toString()
+                if (!id.isNullOrEmpty()) {
+                    if(id.length < 10){
+                        showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.id_length_error))
+                    }
+                    else
+                        visitor.id_no = id
+                }
             }
 
         fetchGenderPackage(cb_female, cb_male, visitor, price)
-        getWhoWillPay(cb_sender_pay, cb_visitor_pay, visitor)
-
-        if (!isCBClicked)
+        if (!isContain(enteredData, visitor))
             enteredData.add(visitor)
+        getWhoWillPay(rbSender, rbVisitor, visitor)
 
         price.setText(visitor.price)
     }
 
-    private fun getWhoWillPay(cb_pay_sender: CheckBox, cb_pay_visitor: CheckBox, visitor: Visitor): String {
-        var who_will_pay = "visitor"
+    private fun isContain(enteredList: ArrayList<Visitor>, visitor: Visitor): Boolean {
+        for (enteredVisitor in enteredList) {
+            val enteredName = enteredVisitor.name
+            val name = visitor.name
+            if (enteredName == name) {
+                return true
+            }
+        }
 
-        cb_pay_sender.setOnCheckedChangeListener { buttonView, isChecked ->
+        return false
+    }
+
+    private fun getWhoWillPay(senderRB: RadioButton, visitorRB: RadioButton, visitor: Visitor) {
+        var who_will_pay = "visitor"
+        senderRB.setOnCheckedChangeListener { buttonView, isChecked ->
+            hideKeyboard(context as Activity)
+            isCBClicked = true
             if (isChecked) {
-                isCBClicked = true
                 who_will_pay = "sender"
                 visitor.who_will_pay = who_will_pay
                 notifyDataSetChanged();
-
             }
 
         }
 
-        cb_pay_visitor.setOnCheckedChangeListener { buttonView, isChecked ->
+        visitorRB.setOnCheckedChangeListener { buttonView, isChecked ->
+            isCBClicked = true
+            hideKeyboard(context as Activity)
             if (isChecked) {
-                isCBClicked = true
                 who_will_pay = "visitor"
                 visitor.who_will_pay = who_will_pay
                 notifyDataSetChanged();
-
             }
         }
-
-
-        return who_will_pay
     }
 
     private fun fetchGenderPackage(
@@ -206,13 +218,37 @@ class AddVisitorsAdapter(
             visitor.price = visitorPckg.price
 
             etPrice.setText(visitor.price)
+
+            val pInfo = getDiscountInfo(visitor.price)
+            visitor.discount =pInfo.first
+            visitor.total =pInfo.second
         }
+    }
+
+    private fun getDiscountInfo(priceTxt: String): Pair<String, String>
+    {
+        var discount = 0
+        var total = 0
+
+        prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
+        val data_string = prefsHelper.getData(Constants.USER_DATA)
+        val gson = Gson()
+        data = gson.fromJson(data_string, Data::class.java)
+
+        val serverDiscount = data.user?.invite_visitor_discount_percentage
+        var customDiscount: Int = serverDiscount?.toInt()!!
+
+        if (customDiscount != 0 && !priceTxt.isNullOrEmpty()) {
+            discount = (customDiscount / 100) * priceTxt.toInt()
+        }
+        total = priceTxt.toInt() - discount
+
+        return  Pair(discount.toString(), total.toString())
     }
 
     fun getData(): ArrayList<Visitor> {
         return enteredData
     }
-
 
 
     fun clear() {

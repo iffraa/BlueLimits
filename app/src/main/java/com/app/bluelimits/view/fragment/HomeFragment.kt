@@ -2,8 +2,6 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.FragmentHomeBinding
@@ -21,7 +18,7 @@ import com.app.bluelimits.view.ResortListAdapter
 import com.app.bluelimits.view.activity.DashboardActivity
 import com.app.bluelimits.viewmodel.HomeViewModel
 
-class HomeFragment : Fragment()  {
+class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
@@ -39,7 +36,7 @@ class HomeFragment : Fragment()  {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-     return root
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,10 +49,6 @@ class HomeFragment : Fragment()  {
         (activity as DashboardActivity).onCustomTBIconClick(null)
 
         viewModel.getMemberResorts()
-        /* if(Constants.isLoggedIn)
-             viewModel.getMemberResorts()
-         else
-             viewModel.getGuestResorts()*/
 
         binding.rvResorts.apply {
             layoutManager = LinearLayoutManager(context)
@@ -64,14 +57,14 @@ class HomeFragment : Fragment()  {
 
         observeViewModel()
 
-        context?.let { loadGif(binding.ivBg,R.raw.white_bg, it) }
+        context?.let { loadGif(binding.ivBg, R.raw.white_bg, it) }
 
-        binding.ivMarine.setOnClickListener(View.OnClickListener {
-            val resort = Resort(0,Constants.MARINE,"")
+      /*  binding.ivMarine.setOnClickListener(View.OnClickListener {
+            val resort = Resort(0, Constants.MARINE, "")
             val action = HomeFragmentDirections.actionNavHomeToResortInfoFrag(resort)
             Navigation.findNavController(it).navigate(action)
 
-        })
+        })*/
 
     }
 
@@ -81,33 +74,56 @@ class HomeFragment : Fragment()  {
         _binding = null
     }
 
+    private fun addMarine(resorts: ArrayList<Resort>) {
+
+        val marineResort = Resort(
+            90,
+            "Marine",
+            "http://saudiaweb.com/bluelimits/public/uploads/resort/file_1629272985_marine.png"
+        )
+        resorts.add(marineResort)
+        /* Handler(Looper.getMainLooper()).postDelayed(
+                {
+                    if (binding.rvResorts.isVisible)
+                    // This method will be executed once the timer is over
+                        binding.ivMarine.visibility = View.VISIBLE
+                    else {
+                        Handler(Looper.getMainLooper()).postDelayed(
+                            {
+
+                                // This method will be executed once the timer is over
+                                binding.ivMarine.visibility = View.VISIBLE
+                            },
+                            2000 // value in milliseconds
+                        )
+                    }
+                },
+                1000 // value in milliseconds
+            )*/
+    }
+
     fun observeViewModel() {
         viewModel.resorts.observe(viewLifecycleOwner, Observer { user ->
             binding.progressBar.progressbar.visibility = View.GONE
             user?.let {
                 //prevents on souccess code from being called twice
-                if(viewLifecycleOwner.lifecycle.currentState== Lifecycle.State.RESUMED){
+                if (viewLifecycleOwner.lifecycle.currentState == Lifecycle.State.RESUMED) {
+                   // binding.rvResorts.visibility = View.VISIBLE
+
                     viewModel.resorts.value?.let {
 
                         val iterator = it.iterator()
-                        while(iterator.hasNext()){
+                        while (iterator.hasNext()) {
                             val resort = iterator.next()
-                            if(resort.name.equals("BOHO Resort")){
+                            if (resort.name.equals("BOHO Resort")) {
                                 iterator.remove()
                             }
                         }
 
-
+                        addMarine(it)
+                        //binding.ivMarine.visibility = View.VISIBLE
                         resortListAdapter.updateResortList(it)
                     }
-                    binding.rvResorts.visibility = View.VISIBLE
-                    Handler(Looper.getMainLooper()).postDelayed(
-                        {
-                            // This method will be executed once the timer is over
-                            binding.ivMarine.visibility = View.VISIBLE
-                        },
-                        150 // value in milliseconds
-                    )
                 }
 
             }
@@ -118,7 +134,7 @@ class HomeFragment : Fragment()  {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)

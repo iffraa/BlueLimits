@@ -3,12 +3,10 @@ package com.app.bluelimits.view
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,18 +15,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.ItemVisitorsBinding
 import com.app.bluelimits.model.Data
-import com.app.bluelimits.model.VisitorDetail
-import com.app.bluelimits.model.VisitorRequest
 import com.app.bluelimits.model.VisitorResult
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
-import com.app.bluelimits.util.showAlertDialog
-import com.app.bluelimits.view.fragment.HomeFragmentDirections
+import com.app.bluelimits.util.showSuccessDialog
 import com.app.bluelimits.view.fragment.VisitorsFragmentDirections
-import com.app.bluelimits.viewmodel.VisitorInviteViewModel
 import com.app.bluelimits.viewmodel.VisitorsViewModel
 import com.google.gson.Gson
+import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 class VisitorsListAdapter(val visitors: ArrayList<VisitorResult>, context: Context, frag: Fragment) :
     RecyclerView.Adapter<VisitorsListAdapter.VisitorViewHolder>() {
@@ -77,7 +73,17 @@ class VisitorsListAdapter(val visitors: ArrayList<VisitorResult>, context: Conte
 
         btnEdit.setOnClickListener{
             val action = VisitorsFragmentDirections.actionEditVisitors(visitorsData)
-            Navigation.findNavController(holder.view.root).navigate(action)
+
+            if (action != null &&
+                Navigation.findNavController(holder.view.root).currentDestination?.id == R.id.nav_visitors
+                && Navigation.findNavController(holder.view.root).currentDestination?.id != action.actionId
+            ) {
+                action?.let { Navigation.findNavController(holder.view.root).navigate(it) }
+            } else {
+                Timer().schedule(2000) {
+                    action?.let { Navigation.findNavController(holder.view.root).navigate(it) }
+                }
+            }
 
         }
 
@@ -118,7 +124,7 @@ class VisitorsListAdapter(val visitors: ArrayList<VisitorResult>, context: Conte
         viewModel.delResponse.observe(fragment.viewLifecycleOwner, Observer { data ->
             data?.let {
                 binding.rlInclude.visibility = View.GONE
-                showAlertDialog(
+                showSuccessDialog(
                     mContext as Activity,
                     mContext.getString(R.string.app_name),
                     data.message
@@ -134,7 +140,7 @@ class VisitorsListAdapter(val visitors: ArrayList<VisitorResult>, context: Conte
             isError?.let {
                 if (it) {
                     binding.rlInclude.visibility = View.GONE
-                    showAlertDialog(
+                    showSuccessDialog(
                         mContext as Activity,
                         mContext.getString(R.string.app_name),
                         mContext.getString(R.string.delete_error)

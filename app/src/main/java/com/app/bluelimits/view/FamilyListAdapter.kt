@@ -94,7 +94,7 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
                 if(!et_id.text.toString().isEmpty())
-                    person.member_id = et_id.text.toString().toInt()
+                    person.member_id = et_id.text.toString()
             }
 
         person.gender = com.app.bluelimits.util.getGender(cb_female,cb_male)

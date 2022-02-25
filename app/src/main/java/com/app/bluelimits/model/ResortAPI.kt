@@ -148,4 +148,34 @@ interface ResortAPI {
         @Header("Authorization")  token:String,
     ): Single<SpaceResponse>
 
+    @Headers("Accept: application/json")
+    @GET("customer/service/requests?page=1&per_page=100")
+    fun getAllServices(
+        @Header("Authorization") token: String,
+        @Query("per_page") per_page: String,
+        @Query("page") page: String
+
+    ): Single<ServiceResponse>
+
+    @Headers("Accept: application/json")
+    @GET("customer/guest/reservation?")
+    fun getGuests(
+        @Header("Authorization")  token:String
+    ): Single<GuestsResponse>
+
+    @Headers("Accept: application/json")
+    @DELETE("customer/guest/reservation/{reservID}")
+    fun deleteGuest(
+        @Header("Authorization")  token:String,
+        @Path("reservID") reservID: String,
+    ): Single<APIResponse>
+
+    @Headers("Accept: application/json")
+    @PUT("customer/guest/reservation/{reservID}")
+    fun editGuest(
+        @Header("Authorization")  token:String,
+        @Path("reservID") reservID: String,
+        @Body guest:  GHReservationRequest,
+    ): Single<APIResponse>
+
 }

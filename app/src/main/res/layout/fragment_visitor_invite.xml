@@ -100,14 +100,14 @@
                 <EditText
                     android:id="@+id/et_visitors_time"
                     android:layout_width="@dimen/_180sdp"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="52dp"
                     android:background="@drawable/rectangle"
-                    android:fontFamily="@font/jura_demi_bold"
                     android:focusableInTouchMode="false"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:lines="1"
                     android:paddingLeft="@dimen/_10sdp"
                     android:textColor="@color/navy_blue"
-                    android:textSize="@dimen/_11ssp"
-                    android:lines="1"></EditText>
+                    android:textSize="@dimen/_11ssp"></EditText>
 
 
                 <Spinner
@@ -123,7 +123,7 @@
                     android:textColor="@color/navy_blue"></Spinner>
                 <TextView
                     android:id="@+id/tv_per_day"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_180sdp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/jura_demi_bold"
                     android:visibility="invisible"

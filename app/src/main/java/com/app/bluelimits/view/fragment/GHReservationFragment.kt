@@ -3,7 +3,6 @@ package com.app.bluelimits.view.fragment
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import com.app.bluelimits.R
 import com.app.bluelimits.databinding.FragmentGuestReservationBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.*
-import com.app.bluelimits.view.GuestListAdapter
+import com.app.bluelimits.view.AddGuestAdapter
 import com.app.bluelimits.viewmodel.GHReservationViewModel
 import com.google.gson.Gson
 import com.jakewharton.rxbinding4.widget.textChanges
@@ -30,7 +29,10 @@ import android.view.View.OnTouchListener
 import android.widget.*
 
 import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
+import com.app.bluelimits.view.activity.DashboardActivity
+import kotlin.concurrent.schedule
 
 
 /**
@@ -42,8 +44,9 @@ class GHReservationFragment : Fragment() {
 
     private lateinit var viewModel: GHReservationViewModel
     private var _binding: FragmentGuestReservationBinding? = null
-
-    private val guestListAdapter = GuestListAdapter()
+    private var builder: AlertDialog.Builder? = null
+    private var mAlertDialog: AlertDialog? = null
+    private val guestListAdapter = AddGuestAdapter()
     private val binding get() = _binding!!
 
     private lateinit var prefsHelper: SharedPreferencesHelper
@@ -83,6 +86,8 @@ class GHReservationFragment : Fragment() {
 
         userType = obj.user?.user_type.toString()
 
+        navigateToListing()
+
         getResorts()
         setReservationDates()
         setGuestList()
@@ -110,13 +115,31 @@ class GHReservationFragment : Fragment() {
         }
 
         binding.btnSubmit.setOnClickListener(View.OnClickListener {
-            addGuests()
-            observeReservationVM()
+            val noOGuests = binding.etGuestsNo.text.toString()
+            if (!noOGuests.isNullOrEmpty() && noOGuests != "0") {
+                val idMsg = checkGuestsID(guestListAdapter.getData(), requireContext())
+                if (idMsg.isNotEmpty()) {
+                    showSuccessDialog(requireActivity(),getString(R.string.app_name), idMsg)
+                } else {
+                    addGuests()
+                    observeReservationVM()
+                }
+            } else {
+                showAlertDialog(
+                    getString(R.string.app_name),
+                    "Please add any guest."
+                )
+            }
         })
 
     }
 
-    fun addGuests() {
+    private fun navigateToListing() {
+        val action = GHReservationFragmentDirections.actionNavToList()
+        (activity as DashboardActivity).navigateToVisitorsList(action)
+    }
+
+    private fun addGuests() {
         val guests: ArrayList<Guest>? = guestListAdapter.getData()
 
         val no_of_guests = binding.etGuestsNo.text.toString()
@@ -158,6 +181,7 @@ class GHReservationFragment : Fragment() {
         }
     }
 
+
     private fun showDiscountView() {
         binding.etDiscount.visibility = View.VISIBLE
         binding.tvDiscountLbl.visibility = View.VISIBLE
@@ -183,7 +207,6 @@ class GHReservationFragment : Fragment() {
                 hideKeyboard(requireActivity())
 
                 showAlertDialog(
-                    requireActivity(),
                     getString(R.string.app_name),
                     getString(R.string.discount_msg) + " " + serverDiscount + "%"
                 )
@@ -261,7 +284,14 @@ class GHReservationFragment : Fragment() {
             if (!discount.isNullOrEmpty()) {
                 binding.progressBar.progressbar.visibility = View.VISIBLE
                 obj.token?.let {
-                    viewModel.getAvailableUnits(it, resortId, chk_in_date, chk_out_date, discount,spaceId)
+                    viewModel.getAvailableUnits(
+                        it,
+                        resortId,
+                        chk_in_date,
+                        chk_out_date,
+                        discount,
+                        spaceId
+                    )
                 }
                 observeViewModel(true)
             }
@@ -274,20 +304,20 @@ class GHReservationFragment : Fragment() {
 
         if (isUnits) {
             selectedUnit = viewModel.availableUnit.value!!
-           /* viewModel.availableUnit.value!!.forEachIndexed { index, e ->
-                viewModel.availableUnit.value!!.get(index).unit?.let {
-                    if (data != null) {
-                        data.add(it)
-                    }
-                }
-            }*/
+            /* viewModel.availableUnit.value!!.forEachIndexed { index, e ->
+                 viewModel.availableUnit.value!!.get(index).unit?.let {
+                     if (data != null) {
+                         data.add(it)
+                     }
+                 }
+             }*/
 
         } else {
             viewModel.resorts.value!!.forEachIndexed { index, e ->
                 val resort = viewModel.resorts.value!!.get(index).name
                 resort?.let {
                     if (data != null) {
-                        if(!resort.contains(Constants.BOHO))
+                        if (!resort.contains(Constants.BOHO))
                             data.add(it)
                     }
                 }
@@ -359,13 +389,13 @@ class GHReservationFragment : Fragment() {
             ) {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
 
-             /*   viewModel.availableUnit.value!!.forEachIndexed { index, e ->
-                    if (viewModel.availableUnit.value!!.get(index).unit?.equals(selectedItem) == true) {
-                        selectedUnit = viewModel.availableUnit.value!!.get(index)
-                        setUnitDetails()
-                    }
+                /*   viewModel.availableUnit.value!!.forEachIndexed { index, e ->
+                       if (viewModel.availableUnit.value!!.get(index).unit?.equals(selectedItem) == true) {
+                           selectedUnit = viewModel.availableUnit.value!!.get(index)
+                           setUnitDetails()
+                       }
 
-                }*/
+                   }*/
             }
 
         }
@@ -385,18 +415,16 @@ class GHReservationFragment : Fragment() {
 
     fun observeViewModel(isUnits: Boolean) {
 
-        viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
-            isError?.let {
-                binding.progressBar.progressbar.visibility = View.GONE
-                if (it) {
-                    showAlertDialog(
-                        context as Activity,
-                        getString(R.string.app_name),
-                        getString(R.string.units_loading_error)
-                    )
+        viewModel.errorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
+            errorMsg?.let {
+                if (!it.isNullOrEmpty()) {
+                    binding.progressBar.progressbar.visibility = View.GONE
+                    val msg = getServerErrors(viewModel.errorMsg.value.toString(), requireContext())
+                    showAlertDialog(getString(R.string.title), msg)
                 }
             }
         })
+
 
         viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading.let {
@@ -408,18 +436,18 @@ class GHReservationFragment : Fragment() {
         if (isUnits) {
             viewModel.availableUnit.observe(viewLifecycleOwner, Observer {
                 binding.progressBar.progressbar.visibility = View.GONE
-                    selectedUnit = viewModel.availableUnit.value!!
-                   /* populateSpinners(true)
-                    for(availableUnit in it) {
-                        val unitName = availableUnit.unit
-                        Log.i("unitName", unitName)
-                        if (unitName.contains(spaceId) && !unitName.equals("G 00"))
-                        {
-                            selectedUnit = availableUnit
-                        }
-                    }*/
+                selectedUnit = viewModel.availableUnit.value!!
+                /* populateSpinners(true)
+                 for(availableUnit in it) {
+                     val unitName = availableUnit.unit
+                     Log.i("unitName", unitName)
+                     if (unitName.contains(spaceId) && !unitName.equals("G 00"))
+                     {
+                         selectedUnit = availableUnit
+                     }
+                 }*/
 
-                    setUnitDetails()
+                setUnitDetails()
 
 
             })
@@ -464,11 +492,11 @@ class GHReservationFragment : Fragment() {
                     if (no_of_entered_guests > 0 && no_of_entered_guests <= guestsLimit) {
                         val visitors = ArrayList<Guest>(no_of_entered_guests)
                         for (i in 1..no_of_entered_guests) {
-                            val person = Guest("", "", "", "")
+                            val person = Guest("", "", "", "", "", "", "")
                             visitors.add(person)
                         }
 
-                     //   adjustLayout()
+                        //   adjustLayout()
                         binding.rvGuest.visibility = View.VISIBLE
                         binding.btnSubmit.visibility = View.VISIBLE
                         guestListAdapter?.setGuestList(
@@ -477,7 +505,6 @@ class GHReservationFragment : Fragment() {
 
                     } else if (no_of_entered_guests > guestsLimit) {
                         showAlertDialog(
-                            requireContext() as Activity,
                             getString(R.string.app_name),
                             getString(R.string.guests_exceeded)
                         )
@@ -526,14 +553,13 @@ class GHReservationFragment : Fragment() {
     }
 
 
-    fun observeReservationVM() {
+    private fun observeReservationVM() {
 
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
                 if (it) {
                     binding.progressBar.progressbar.visibility = View.GONE
                     showAlertDialog(
-                        context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.adding_guest_error)
                     )
@@ -550,23 +576,49 @@ class GHReservationFragment : Fragment() {
 
         viewModel.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
+                if (mAlertDialog?.isShowing == true)
+                    mAlertDialog?.dismiss()
+
                 showSuccessMsg()
-               /* showAlertDialog(
-                    context as Activity,
-                    getString(R.string.app_name),
-                    msg
-                )*/
+
             }
 
         })
 
     }
 
-    private fun showSuccessMsg()
-    {
+    private fun showSuccessMsg() {
         val action = GHReservationFragmentDirections.actionNavToMsg();
-        action?.let { Navigation.findNavController(binding.btnSubmit).navigate(it) }
 
+        if (action != null &&
+            Navigation.findNavController(binding.btnSubmit).currentDestination?.id == R.id.nav_reservation
+            && Navigation.findNavController(binding.btnSubmit).currentDestination?.id != action.actionId
+        ) {
+            action?.let { Navigation.findNavController(binding.btnSubmit).navigate(it) }
+        } else {
+            Timer().schedule(2000) {
+                action?.let { Navigation.findNavController(binding.btnSubmit).navigate(it) }
+            }
+        }
+
+
+    }
+
+    fun showAlertDialog(title: String, msg: String) {
+        if (builder == null) {
+            builder = activity?.let {
+                AlertDialog.Builder(it)
+            }
+
+            builder?.setMessage(msg)
+                ?.setTitle(title)?.setPositiveButton(
+                    R.string.ok
+                ) { _, _ ->
+
+                }
+            mAlertDialog = builder?.create()
+            mAlertDialog?.show()
+        }
     }
 
 

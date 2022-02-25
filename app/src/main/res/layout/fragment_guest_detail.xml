@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_50sdp"
+    android:paddingLeft="@dimen/_15sdp"
+    android:paddingRight="@dimen/_15sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_reference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="Reference By :\nWarsi Qudos"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/tv_facility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="Facility Location :\nOIA Resort"
+            android:textColor="@color/navy_blue"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/_12ssp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_reserv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="@string/reserv_date"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_12ssp" />
+
+    <TextView
+        android:id="@+id/tv_chkout_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="@string/check_out"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_12ssp" />
+
+    <TextView
+        android:id="@+id/tv_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="@string/serv_name"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_12ssp" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="@string/price"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_12ssp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp">
+
+        <TextView
+            android:id="@+id/tv_no_of_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="@string/no_of_days"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/tv_no_of_guests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="@string/no_of_guests"
+            android:textColor="@color/navy_blue"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/_12ssp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="@string/setup_unit"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_12ssp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:fontFamily="@font/jura_semi_bold"
+        android:text="Guest List:"
+        android:textStyle="bold"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_16ssp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_guests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_total"
+        android:layout_centerHorizontal="true">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

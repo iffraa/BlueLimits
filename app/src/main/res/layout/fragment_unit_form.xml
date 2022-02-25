@@ -222,6 +222,7 @@
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="number"
                 android:lines="1"
+                android:maxLength="10"
                 android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>
@@ -501,8 +502,8 @@
 
             <Button
                 android:id="@+id/btn_apply"
-                android:layout_width="@dimen/_190sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:background="@drawable/btn_form_grey"

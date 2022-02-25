@@ -73,6 +73,7 @@
 
     <string name="personal_info">My Personal Info</string>
     <string name="fam_members">MY FAMILY MEMBERS</string>
+    <string name="fam_extra_members">EXTRA FAMILY MEMBERS</string>
     <string name="mobile">Mobile No:</string>
     <string name="unit">Unit No:</string>
     <string name="email_profile">Email:</string>
@@ -85,12 +86,13 @@
     <string name="visitors">No of Visitors</string>
     <string name="visiting_date">Visiting Date/Time</string>
     <string name="name_visi">Visitor Name</string>
-    <string name="id_visi">ID NO.</string>
+    <string name="id_visi">ID No.</string>
     <string name="mobile_visi">Mobile</string>
     <string name="price">Price</string>
     <string name="pay">I will pay</string>
     <string name="pay_visitor">Visitor will pay</string>
     <string name="name">Name:</string>
+    <string name="pay_now">Pay Now</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="my_profile">My Profile</string>
@@ -172,11 +174,13 @@
     <string name="date_format">DD-MM-YYYY hh:mm a</string>
     <string name="gh_date_format">DD-MM-YYYY</string>
     <string name="number_code">966 5</string>
+    <string name="server_number_code">9665</string>
     <string name="booking_unavialble">Booking not avialble.Choose another date.</string>
     <string name="select_date">Select date</string>
     <string name="hours">Hours</string>
     <string name="max_visitors">visitors are allowed</string>
     <string name="empty_name">Please enter visitor name.</string>
+    <string name="id_length_error">Please enter 10 digit id.</string>
 
     <string name="contact_error">Contact number should be of atleast 8 digits.</string>
     <string name="email_error">Invalid email.</string>
@@ -191,9 +195,40 @@
     <string name="date_time">Date Time</string>
     <string name="delete_msg">Do you want to delete this visitor?</string>
     <string name="delete_error">Sorry. Unable to delete visitor.</string>
+    <string name="req_services">Request Services</string>
 
     <string name="reservation_title">THANK YOU FOR APPLYING</string>
     <string name="reservation_msg">This application is not a binding contract and it is subject to the approval
         of our management.</string>
+
+    <string name="in_progress">In-progress</string>
+    <string name="rejected">Rejected</string>
+    <string name="completed">Completed</string>
+    <string name="pending">pending</string>
+    <string name="req_id">Request ID:</string>
+    <string name="req_date_time">Request Date/Time:</string>
+    <string name="service">Service:</string>
+    <string name="comments">Comments:</string>
+    <string name="create">Create New</string>
+    <string name="req_service">Request Service Application</string>
+    <string name="attach_img">Attach Image</string>
+
+    <string name="my">My</string>
+    <string name="comments_serv">Comments</string>
+    <string name="view_listings">View Listings</string>
+    <string name="view_visitors">View Visitors</string>
+    <string name="service_req_success">SERVICE REQUEST SUBMITTED SUCCESSFULLY.</string>
+
+    <string name="faciliti_loc">Facility Location :</string>
+    <string name="from">From :</string>
+    <string name="to">To :</string>
+    <string name="no_of_days">No. of Days :</string>
+    <string name="delete_msg_guest">Do you want to delete this guest?</string>
+    <string name="delete_error_guest">Sorry. Unable to delete guest.</string>
+    <string name="reference_by">Reference By : </string>
+    <string name="setup_unit">Setup Unit : </string>
+    <string name="serv_name">Service Name : </string>
+    <string name="no_of_guests">No of Guests : </string>
+
 
 </resources>

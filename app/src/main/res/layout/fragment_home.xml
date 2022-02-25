@@ -19,25 +19,11 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_resorts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:visibility="invisible"></androidx.recyclerview.widget.RecyclerView>
-
-        <ImageView
-            android:id="@+id/iv_marine"
-            android:layout_width="@dimen/_125sdp"
-            android:layout_height="@dimen/_125sdp"
-            android:layout_below="@+id/rv_resorts"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:background="@drawable/round_outline"
-            android:clickable="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/marine"
-            android:visibility="invisible"></ImageView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_resorts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"></androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 

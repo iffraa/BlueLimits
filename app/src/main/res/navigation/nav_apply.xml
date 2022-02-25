@@ -143,6 +143,9 @@
         <action
             android:id="@+id/action_nav_to_msg"
             app:destination="@id/nav_reservation_msg"></action>
+        <action
+            android:id="@+id/action_nav_to_list"
+            app:destination="@id/nav_guests"></action>
 
     </fragment>
 
@@ -274,24 +277,25 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_visitors"
-        android:name="com.app.bluelimits.view.fragment.VisitorsFragment"
-        android:label=""
-        tools:layout="@layout/fragment_visitors_list">
-        <action
-            android:id="@+id/action_nav_to_home"
-            app:destination="@id/nav_home"></action>
 
-        <action
-            android:id="@+id/action_edit_visitors"
-            app:destination="@id/nav_edit">
+    <!--  <fragment
+          android:id="@+id/nav_visitors"
+          android:name="com.app.bluelimits.view.fragment.VisitorsFragment"
+          android:label=""
+          tools:layout="@layout/fragment_visitors_list">
+          <action
+              android:id="@+id/action_nav_to_home"
+              app:destination="@id/nav_home"></action>
 
-            <argument
-                android:name="vDetails"
-                app:argType="com.app.bluelimits.model.VisitorResult" />
+          <action
+              android:id="@+id/action_edit_visitors"
+              app:destination="@id/nav_edit">
 
-        </action>
+              <argument
+                  android:name="vDetails"
+                  app:argType="com.app.bluelimits.model.VisitorResult" />
+
+          </action>
 
         <action
             android:id="@+id/action_view_detail"
@@ -303,7 +307,7 @@
 
         </action>
 
-    </fragment>
+    </fragment>-->
 
     <dialog
         android:id="@+id/nav_logout"

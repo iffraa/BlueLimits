@@ -1,95 +1,151 @@
 package com.app.bluelimits.view
 
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
-import com.app.bluelimits.databinding.ItemGuestBinding
+import com.app.bluelimits.databinding.ItemViewGuestBinding
 import com.app.bluelimits.model.*
-import com.jakewharton.rxbinding4.widget.textChanges
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
+import com.app.bluelimits.util.Constants
+import com.app.bluelimits.util.SharedPreferencesHelper
+import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.view.fragment.GuestsFragmentDirections
+import com.app.bluelimits.viewmodel.GuestsViewModel
+import com.google.gson.Gson
+import kotlin.collections.ArrayList
 
-class GuestListAdapter() :
+class GuestListAdapter(val guests: ArrayList<GuestData>, context: Context, frag: Fragment) :
     RecyclerView.Adapter<GuestListAdapter.GuestViewHolder>() {
+    private val mContext = context
+    private var _binding: ItemViewGuestBinding? = null
+    private val fragment = frag
 
-    private var _binding: ItemGuestBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
     private val binding get() = _binding!!
-    private val enteredData: ArrayList<Guest> = arrayListOf()
-    private val guestList = ArrayList<Guest>()
-    private lateinit var context: Context
 
-    fun setGuestList(newFamList: ArrayList<Guest>, context: Context) {
-        this.context = context
-        enteredData.clear()
-        guestList.clear()
-        guestList.addAll(newFamList)
+    fun setGuestList(newGuestsList: List<GuestData>) {
+        guests.addAll(newGuestsList)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuestViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        _binding = ItemGuestBinding.inflate(inflater, parent, false)
+        _binding = ItemViewGuestBinding.inflate(inflater,parent,false)
         return GuestViewHolder(binding)
     }
 
-    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: GuestViewHolder, position: Int) {
 
-        val guest: Guest = guestList.get(position)
+        val guestsData = guests.get(position)
 
-        var et_name: EditText = holder.view.etGuestName
-        val et_id: EditText = holder.view.etGuestId
-        val et_contact: EditText = holder.view.layoutMobile.etMobile
+        val tvFacilityLoc = holder.view.tvFacility
+        val tvUnit = holder.view.tvUnit
+        val tvFromDate = holder.view.tvFrom
+        val tvToDate = holder.view.tvTo
+        val tvDays = holder.view.tvDays
+        val tvGuests = holder.view.tvGuests
 
-        val cb_male: CheckBox = holder.view.checkboxMale
-        val cb_female: CheckBox = holder.view.checkboxFemale
+        val btnDetail = holder.view.btnView
+        val btnDelete = holder.view.btnDelete
+        val btnEdit = holder.view.btnEdit
 
-        val btn_visitor: Button = holder.view.btnGuest
-        btn_visitor.setText(context.getString(R.string.guest) + " " + (position + 1))
+        tvFacilityLoc.setText(mContext.getString(R.string.faciliti_loc) +" "+ guestsData.facility_location)
+        tvUnit.setText(mContext.getString(R.string.unit) + " " + guestsData.unit_no)
+        tvFromDate.setText(mContext.getString(R.string.from) + " " +  guestsData.from)
+        tvToDate.setText(mContext.getString(R.string.to) + " " + guestsData.to)
+        tvDays.setText(mContext.getString(R.string.no_of_days) + " " + guestsData.no_of_day)
+        tvGuests.setText(mContext.getString(R.string.no_of_guests) + " " + guestsData.no_of_guest)
 
-        et_name.textChanges()
-            .debounce(2, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { textChanged ->
-                guest.name = et_name.text.toString()
-            }
+        btnDetail.setOnClickListener{
+            val action = GuestsFragmentDirections.actionViewDetail(guestsData)
+            Navigation.findNavController(holder.view.root).navigate(action)
+        }
 
-        et_contact.textChanges()
-            .debounce(2, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { textChanged ->
-                guest.contact_no = et_contact.text.toString()
-            }
+        btnDelete.setOnClickListener{
+            showDeleteDialog(mContext.getString(R.string.app_name), mContext.getString(R.string.delete_msg_guest),
+                guestsData)
+        }
 
-        et_id.textChanges()
-            .debounce(2, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { textChanged ->
-                if(!et_id.text.toString().isEmpty())
-                    guest.id_no = et_id.text.toString()
-            }
+        btnEdit.setOnClickListener{
+            val action = GuestsFragmentDirections.actionEditGuests(guestsData)
+            Navigation.findNavController(holder.view.root).navigate(action)
+        }
 
-        guest.gender = com.app.bluelimits.util.getGender(cb_female,cb_male)
-
-        enteredData.add(guest)
     }
 
-    fun getData(): ArrayList<Guest>
-    {
-        return enteredData
+    override fun getItemCount() = guests.size
+
+    class GuestViewHolder(val view: ItemViewGuestBinding) : RecyclerView.ViewHolder(view.root)
+
+    private fun showDeleteDialog(title: String, msg: String, guest: GuestData) {
+        val builder: AlertDialog.Builder? = mContext?.let {
+            AlertDialog.Builder(it)
+        }
+
+        builder?.setMessage(msg)
+            ?.setTitle(title)?.setPositiveButton(R.string.yes
+            ) { dialog, id ->
+
+                val prefsHelper = mContext?.let { SharedPreferencesHelper(it) }!!
+                val data_string = prefsHelper.getData(Constants.USER_DATA)
+                val gson = Gson()
+                val data: Data = gson.fromJson(data_string, Data::class.java)
+
+                val viewModel = ViewModelProvider(fragment).get(GuestsViewModel::class.java)
+                data.token?.let {
+                    binding.rlInclude.visibility = View.VISIBLE
+                    viewModel.deleteGuest(it, guest.id!!)
+                    observeViewModel(viewModel, guest)
+                }
+
+            }
+            ?.setNegativeButton(R.string.no
+            ) { dialog, id ->
+                dialog.dismiss()
+            }
+        builder?.create()?.show()
     }
 
-    override fun getItemCount() = guestList.size
 
-    class GuestViewHolder(val view: ItemGuestBinding) : RecyclerView.ViewHolder(view.root)
+    fun observeViewModel(viewModel: GuestsViewModel, guest: GuestData) {
+        viewModel.delResponse.observe(fragment.viewLifecycleOwner) { data ->
+            data?.let {
+                binding.rlInclude.visibility = View.GONE
+                showSuccessDialog(
+                    mContext as Activity,
+                    mContext.getString(R.string.app_name),
+                    data.message
+                )
 
+                guests.remove(guest)
+                notifyDataSetChanged()
+            }
+
+        }
+
+        viewModel.loadError.observe(fragment.viewLifecycleOwner, Observer { isError ->
+            isError?.let {
+                if (it) {
+                    binding.rlInclude.visibility = View.GONE
+                    showSuccessDialog(
+                        mContext as Activity,
+                        mContext.getString(R.string.app_name),
+                        mContext.getString(R.string.delete_error_guest)
+                    )
+                }
+            }
+        })
+
+    }
 
 }
-

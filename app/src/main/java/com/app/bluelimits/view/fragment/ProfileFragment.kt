@@ -72,7 +72,7 @@ class ProfileFragment : Fragment() {
             isError?.let {
                 if (it) {
                     binding.progressbar.visibility = View.GONE
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.login_error)
@@ -99,7 +99,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.tvName.setText(user.name)
-        binding.tvRole.setText(user.role)
+        binding.tvRole.setText(user?.resort + " - " + user?.role)
         binding.tvId.setText(getString(R.string.id_no) + " " + user.id.toString())
         binding.tvMobile.setText(getString(R.string.mobile) + " " + user.contact_no)
         binding.tvEmail.setText(getString(R.string.email_profile) + " " + user.email)
@@ -121,6 +121,28 @@ class ProfileFragment : Fragment() {
         }
 
         user.members?.let { it1 -> setFamilyList(it1) }
+
+        setExtraFamilyList(user.extra_members)
+    }
+
+    private fun setExtraFamilyList(familyMembers: ArrayList<FamilyMember>) {
+        binding.rvExtraFam.visibility = View.VISIBLE
+        binding.btnExtraFamily.visibility = View.VISIBLE
+
+        binding.rvExtraFam.apply {
+            layoutManager = LinearLayoutManager(context)
+
+            addItemDecoration(
+                DividerItemDecoration(
+                    binding.rvExtraFam.getContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+
+            val famListAdapter = FMemberListAdapter(arrayListOf())
+            adapter = famListAdapter
+            famListAdapter.setFamilyList(familyMembers)
+        }
 
     }
 

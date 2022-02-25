@@ -1,25 +1,19 @@
 package com.app.bluelimits.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.EditText
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.ItemVisitorBinding
-import com.app.bluelimits.model.Data
-import com.app.bluelimits.model.ServicePackage
-import com.app.bluelimits.model.Visitor
-import com.app.bluelimits.model.VisitorDetail
+import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
+import com.app.bluelimits.util.showSuccessDialog
 import com.app.bluelimits.view.fragment.VisitorEditFragment
-import com.app.bluelimits.view.fragment.VisitorInviteFragment
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
@@ -72,7 +66,9 @@ class EditVisitorAdapter(
 
         val cb_male: CheckBox = holder.view.checkboxMale
         val cb_female: CheckBox = holder.view.checkboxFemale
-        val cb_pay: CheckBox = holder.view.cbSenderPay
+
+        val rbSender: RadioButton = holder.view.cbSenderPay
+        val rbVisitor: RadioButton = holder.view.cbVisitorPay
 
         val btn_visitor: Button = holder.view.btnVisitor
         btn_visitor.setText(context.getString(R.string.visitor) + " " + (position + 1))
@@ -82,25 +78,31 @@ class EditVisitorAdapter(
         et_name.textChanges()
             .debounce(3, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { textChanged ->
-             //   if (!textChanged.isNullOrEmpty())
-                    visitor.name = et_name.text.toString()
+            .subscribe {
+                //   if (!textChanged.isNullOrEmpty())
+                visitor.name = et_name.text.toString()
             }
 
         et_mobile.textChanges()
             .debounce(3, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-             //   if (!textChanged.isNullOrEmpty())
-                    visitor.contact_no = et_mobile.text.toString()
+                //   if (!textChanged.isNullOrEmpty())
+                visitor.contact_no = et_mobile.text.toString()
             }
 
         et_id.textChanges()
-            .debounce(3, TimeUnit.SECONDS)
+            .debounce(2, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-                if (!et_id.text.toString().isEmpty())
-                    visitor.id_no = et_id.text.toString().toLong().toString()
+                val id = et_id.text.toString()
+                if (!id.isNullOrEmpty()) {
+                    if(id.length < 10){
+                        showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.id_length_error))
+                    }
+                    else
+                        visitor.id_no = id
+                }
             }
 
         //onItemClick = onItemCheckListener
@@ -111,7 +113,7 @@ class EditVisitorAdapter(
 
         price.setText(visitor.price)
 
-            setData(visitor, holder)
+        setData(visitor, holder)
     }
 
 
@@ -174,14 +176,18 @@ class EditVisitorAdapter(
     private fun setData(visitor: VisitorDetail, holder: VisitorViewHolder) {
         holder.view.etVisitorsName.setText(visitor.name)
         holder.view.etVisitorsId.setText(visitor.id_no)
-        //val number = visitor.contact_no
-        holder.view.layoutMobile.etMobile.setText(visitor.contact_no)
-        holder.view.layoutMobile.tvCode.visibility = View.GONE
+        holder.view.layoutMobile.etMobile.setText(visitor.contact_no?.substring(4))
+       // holder.view.layoutMobile.tvCode.visibility = View.GONE
 
         if (visitor.gender.equals("male"))
             holder.view.checkboxMale.isChecked = true
         else
             holder.view.checkboxFemale.isChecked = true
+
+        if (visitor.who_will_pay.equals("Visitor will pay"))
+            holder.view.cbVisitorPay.isChecked = true
+        else if (visitor.who_will_pay.equals("I will pay"))
+            holder.view.cbSenderPay.isChecked = true
 
     }
 
@@ -197,22 +203,10 @@ class EditVisitorAdapter(
     }
 
     fun getData(): ArrayList<VisitorDetail> {
-      //   return enteredData
+        //   return enteredData
         return visitorList
     }
 
-
-    fun getWhoWillPay(cb_pay: CheckBox): String {
-        var who_will_pay = "sender"
-
-        cb_pay.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                who_will_pay = "visitor"
-            }
-        })
-
-        return who_will_pay
-    }
 
     fun clear() {
 

@@ -16,15 +16,15 @@
         android:gravity="left|center_vertical"
         android:paddingLeft="@dimen/_20sdp"
         android:text="@string/visitor"
-        android:textSize="@dimen/_14ssp"
         android:textColor="@color/white"
+        android:textSize="@dimen/_14ssp"
         android:textStyle="bold"></Button>
 
     <LinearLayout
         android:layout_width="@dimen/_278sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:gravity="center_horizontal">
 
         <LinearLayout
@@ -40,8 +40,8 @@
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/name_visi"
-                android:textSize="@dimen/_14ssp"
-                android:textColor="@color/navy_blue"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <TextView
                 android:layout_width="@dimen/_81sdp"
@@ -50,104 +50,131 @@
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/id_visi"
-                android:textSize="@dimen/_14ssp"
-                android:textColor="@color/navy_blue"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <TextView
                 android:layout_width="@dimen/_81sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:textSize="@dimen/_14ssp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/mobile_visi"
-                android:textColor="@color/navy_blue"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <TextView
                 android:layout_width="@dimen/_81sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:textSize="@dimen/_14ssp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/gender"
-                android:textColor="@color/navy_blue"></TextView>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
 
             <TextView
                 android:layout_width="@dimen/_81sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:textSize="@dimen/_14ssp"
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/price"
-                android:textColor="@color/navy_blue"></TextView>
-
-            <CheckBox
-                android:id="@+id/cb_sender_pay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/grey_text"
-                android:fontFamily="@font/jura_demi_bold"
-                android:paddingLeft="@dimen/_5sdp"
-                android:layout_marginTop="10dp"
-                android:text="@string/pay"
                 android:textColor="@color/navy_blue"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_14ssp"></TextView>
 
-            <CheckBox
-                android:id="@+id/cb_visitor_pay"
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/grey_text"
-                android:fontFamily="@font/jura_demi_bold"
-                android:paddingLeft="@dimen/_5sdp"
-                android:layout_marginTop="10dp"
-                android:text="@string/pay_visitor"
-                android:textColor="@color/navy_blue"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content">
 
+                <RadioButton
+                    android:id="@+id/cb_sender_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/pay"
+                    android:button="@drawable/chkbox_bg"
+                    android:paddingLeft="@dimen/_7sdp"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/cb_visitor_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/chkbox_bg"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_7sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/pay_visitor"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
+
+            </RadioGroup>
+            <!--  <CheckBox
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:buttonTint="@color/grey_text"
+                  android:fontFamily="@font/jura_demi_bold"
+                  android:paddingLeft="@dimen/_5sdp"
+                  android:layout_marginTop="10dp"
+                 />
+
+              <CheckBox
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:buttonTint="@color/grey_text"
+                  android:fontFamily="@font/jura_demi_bold"
+                  android:paddingLeft="@dimen/_5sdp"
+                  android:layout_marginTop="10dp"
+                  android:text="@string/pay_visitor"
+                  android:textColor="@color/navy_blue"
+                  android:textSize="@dimen/_10ssp"
+                  android:textStyle="bold" />
+  -->
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_6sdp"
             android:orientation="vertical">
 
 
             <EditText
                 android:id="@+id/et_visitors_name"
-                android:layout_width="@dimen/_180sdp"
+                android:layout_width="@dimen/_163sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="text"
-                android:textColor="@color/navy_blue"
+                android:lines="1"
                 android:paddingLeft="@dimen/_10sdp"
-                android:textSize="@dimen/_11ssp"
-                android:lines="1"></EditText>
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
 
             <EditText
                 android:id="@+id/et_visitors_id"
-                android:layout_width="@dimen/_180sdp"
+                android:layout_width="@dimen/_163sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:textSize="@dimen/_11ssp"
-                android:textColor="@color/navy_blue"
-                android:paddingLeft="@dimen/_10sdp"
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="number"
-                android:lines="1"></EditText>
+                android:lines="1"
+                android:maxLength="10"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
 
             <include
                 android:id="@+id/layout_mobile"
                 layout="@layout/layout_contact_number"
-                android:layout_width="@dimen/_180sdp"
+                android:layout_width="@dimen/_163sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_20sdp"></include>
 
@@ -163,44 +190,43 @@
                     android:id="@+id/checkbox_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:button="@drawable/chkbox_bg"
                     android:buttonTint="@color/grey_text"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:text="@string/male"
-                    android:button="@drawable/chkbox_bg"
                     android:paddingLeft="@dimen/_10sdp"
-                    android:textSize="@dimen/_12ssp"
-                    android:textColor="@color/navy_blue" />
+                    android:text="@string/male"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_12ssp" />
 
                 <CheckBox
                     android:id="@+id/checkbox_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:button="@drawable/chkbox_bg"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:textSize="@dimen/_12ssp"
                     android:layout_marginLeft="30dp"
+                    android:button="@drawable/chkbox_bg"
                     android:buttonTint="@color/grey_text"
+                    android:checked="true"
                     android:fontFamily="@font/jura_demi_bold"
+                    android:paddingLeft="@dimen/_10sdp"
                     android:text="@string/female"
-                    android:textColor="@color/navy_blue" />
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_12ssp" />
             </LinearLayout>
 
             <EditText
                 android:id="@+id/et_pay"
-                android:layout_width="@dimen/_180sdp"
+                android:layout_width="@dimen/_163sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:textSize="@dimen/_11ssp"
                 android:background="@drawable/rectangle"
+                android:clickable="false"
+                android:focusable="false"
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="number|text"
-                android:clickable="false"
-                android:textColor="@color/navy_blue"
+                android:lines="1"
                 android:paddingLeft="@dimen/_10sdp"
-                android:focusable="false"
-                android:lines="1"></EditText>
-
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
 
         </LinearLayout>
 

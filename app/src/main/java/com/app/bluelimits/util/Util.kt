@@ -3,7 +3,6 @@ package com.app.bluelimits.util
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -22,6 +21,8 @@ import android.text.TextUtils
 
 import androidx.core.view.ViewCompat
 import androidx.navigation.NavDirections
+import com.app.bluelimits.model.Guest
+import com.app.bluelimits.model.Visitor
 import com.app.bluelimits.view.activity.DashboardActivity
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -32,6 +33,53 @@ import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePick
 import org.json.JSONException
 import org.json.JSONObject
 
+fun isValidID(id: String): Boolean {
+    if (id.length < 10)
+        return false
+    return true
+}
+
+fun checkGuestsID(guests: ArrayList<Guest>, context: Context): String {
+    for (guest in guests) {
+        val id = guest.id_no
+        if (!isValidID(id))
+            return context.getString(R.string.id_length_error)
+    }
+
+    return ""
+}
+
+fun willSenderPay(visitors: ArrayList<Visitor>): Boolean {
+    for (visitor in visitors) {
+        val payment = visitor.who_will_pay
+        if (payment == "sender") {
+            return true
+        }
+    }
+
+    return false
+}
+
+fun getPayableAmount(visitors: ArrayList<Visitor>): String {
+    var price = 0
+    for (visitor in visitors) {
+        if (!visitor.price.isNullOrEmpty()) {
+            val amount = visitor.price.toInt()
+            price += amount
+        }
+    }
+    return price.toString()
+}
+
+fun checkVisitorsID(visitors: ArrayList<Visitor>, context: Context): String {
+    for (guest in visitors) {
+        val id = guest.id_no
+        if (!isValidID(id))
+            return context.getString(R.string.id_length_error)
+    }
+
+    return ""
+}
 
 fun loadGif(view: ImageView, resId: Int, context: Context) {
     Glide.with(context).asGif()
@@ -72,15 +120,16 @@ fun loadImage(view: ImageView, url: String, context: Context) {
 
 }
 
-fun showAlertDialog(activity: Activity, title: String, msg: String) {
+fun showSuccessDialog(activity: Activity, title: String, msg: String) {
     val builder: AlertDialog.Builder? = activity?.let {
         AlertDialog.Builder(it)
     }
 
     builder?.setMessage(msg)
-        ?.setTitle(title)?.setPositiveButton(R.string.ok,
-            DialogInterface.OnClickListener { dialog, id ->
-            })
+        ?.setTitle(title)?.setPositiveButton(
+            R.string.ok
+        ) { _, _ ->
+        }
     builder?.create()?.show()
 }
 
@@ -169,7 +218,7 @@ fun setHomeNavigation(activity: Activity, action: NavDirections) {
 
 }
 
-fun displayServerErrors(errorJson: String, context: Context) {
+fun getServerErrors(errorJson: String, context: Context): String {
     var message = ""
     try {
         val json = JSONObject(errorJson)
@@ -192,17 +241,11 @@ fun displayServerErrors(errorJson: String, context: Context) {
         for (error in errors) {
             message += error + "\n"
         }
-
-        showAlertDialog(
-            context as Activity,
-            context.getString(R.string.app_name), message
-        )
     } catch (ex: JSONException) {
-        showAlertDialog(
-            context as Activity,
-            context.getString(R.string.app_name), ex.toString()
-        )
+        message = ex.toString()
     }
+
+    return message
 }
 
 fun String.isEmailValid(): Boolean {

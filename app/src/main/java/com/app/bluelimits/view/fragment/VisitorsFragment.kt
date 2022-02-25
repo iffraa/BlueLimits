@@ -3,9 +3,7 @@ package com.app.bluelimits.view.fragment
 import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,23 +11,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.bluelimits.R
-import com.app.bluelimits.databinding.FragmentHomeBinding
-import com.app.bluelimits.databinding.FragmentVisitorInviteBinding
 import com.app.bluelimits.databinding.FragmentVisitorsListBinding
 import com.app.bluelimits.model.Data
-import com.app.bluelimits.model.VisitorRequest
 import com.app.bluelimits.model.VisitorResult
 import com.app.bluelimits.model.VisitorsData
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
 import com.app.bluelimits.util.setHomeNavigation
-import com.app.bluelimits.util.showAlertDialog
-import com.app.bluelimits.view.AddVisitorsAdapter
-import com.app.bluelimits.view.ResortListAdapter
+import com.app.bluelimits.util.showSuccessDialog
 import com.app.bluelimits.view.VisitorsListAdapter
-import com.app.bluelimits.view.activity.DashboardActivity
-import com.app.bluelimits.viewmodel.HomeViewModel
-import com.app.bluelimits.viewmodel.VisitorInviteViewModel
 import com.app.bluelimits.viewmodel.VisitorsViewModel
 import com.google.gson.Gson
 
@@ -89,7 +79,7 @@ class VisitorsFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)

@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
-import android.widget.EditText
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -86,7 +84,7 @@ class LoginFragment : Fragment() {
                     observeViewModel(it)
                 } else {
                     activity?.let { it1 ->
-                        showAlertDialog(
+                        showSuccessDialog(
                             it1,
                             getString(R.string.app_name),
                             getString(R.string.empty_fields)
@@ -95,7 +93,7 @@ class LoginFragment : Fragment() {
                 }
             } else {
                 activity?.let { it1 ->
-                    showAlertDialog(
+                    showSuccessDialog(
                         it1,
                         getString(R.string.app_name),
                         getString(R.string.connectivity_error)
@@ -133,7 +131,7 @@ class LoginFragment : Fragment() {
                     Constants.isLoggedIn = false
                     binding.rlInclude.visibility = View.GONE
                     binding.progressBar.progressbar.visibility = View.GONE
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.login_error)

@@ -78,7 +78,7 @@ class UpdatePwdFragment : Fragment() {
                     else
                     {
                         activity?.let { it1 ->
-                            showAlertDialog(
+                            showSuccessDialog(
                                 it1,
                                 getString(R.string.app_name),
                                 getString(R.string.pwd_match_error)
@@ -87,7 +87,7 @@ class UpdatePwdFragment : Fragment() {
                     }
                   } else {
                       activity?.let { it1 ->
-                          showAlertDialog(
+                          showSuccessDialog(
                               it1,
                               getString(R.string.app_name),
                               getString(R.string.empty_fields)
@@ -96,7 +96,7 @@ class UpdatePwdFragment : Fragment() {
                   }
             } else {
                 activity?.let { it1 ->
-                    showAlertDialog(
+                    showSuccessDialog(
                         it1,
                         getString(R.string.app_name),
                         getString(R.string.connectivity_error)
@@ -127,7 +127,7 @@ class UpdatePwdFragment : Fragment() {
             isError?.let {
                 if (it) {
                     binding.rlInclude.visibility = View.GONE
-                    showAlertDialog(
+                    showSuccessDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.pwd_change_error)
@@ -141,7 +141,7 @@ class UpdatePwdFragment : Fragment() {
                // navigateToLogin(view)
                 binding.rlInclude.visibility = View.GONE
 
-                showAlertDialog(
+                showSuccessDialog(
                     context as Activity,
                     getString(R.string.app_name), it.message
                 )

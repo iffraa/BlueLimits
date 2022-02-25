@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.app.bluelimits.view.fragment.VisitorsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:paddingLeft="@dimen/_15sdp"
+    android:paddingTop="@dimen/_15sdp"
+    android:paddingRight="@dimen/_15sdp"
+    android:paddingBottom="@dimen/_15sdp">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_include"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <include layout="@layout/progress_bar"
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></include>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_facility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="@string/faciliti_loc"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_12ssp"></TextView>
+
+        <TextView
+            android:id="@+id/tv_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="@string/unit"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_12ssp"></TextView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/ll_dates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_info"
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/tv_from"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="From: 2022-02-02 12:00 PM"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_12ssp"></TextView>
+
+        <TextView
+            android:id="@+id/tv_to"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="To: 2044-02-02 12:00 PM"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_12ssp"></TextView>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/ll_days"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_dates"
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/tv_guests"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="No of guest: 1"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_12ssp"></TextView>
+
+        <TextView
+            android:id="@+id/tv_days"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/jura_demi_bold"
+            android:gravity="start"
+            android:text="No of days: 1"
+            android:textColor="@color/navy_blue"
+            android:textSize="@dimen/_12ssp"></TextView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_days"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_view"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:background="@drawable/btn_bg"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="View"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13ssp"></Button>
+
+        <Button
+            android:id="@+id/btn_edit"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/btn_bg"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="Edit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13ssp"></Button>
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/btn_bg"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="Delete"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13ssp"></Button>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

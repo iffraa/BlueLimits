@@ -41,6 +41,11 @@
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_nav_to_list"
+            app:destination="@id/nav_guests"></action>
+
     </fragment>
 
 
@@ -97,9 +102,26 @@
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
+        <action
+            android:id="@+id/action_nav_to_list"
+            app:destination="@id/nav_visitors"></action>
 
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_guest_edit"
+        android:name="com.app.bluelimits.view.fragment.EditGuestFragment"
+        android:label=""
+        tools:layout="@layout/fragment_edit_guest">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_nav_to_list"
+            app:destination="@id/nav_guests"></action>
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_about"
@@ -131,6 +153,9 @@
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
+        <action
+            android:id="@+id/action_nav_to_list"
+            app:destination="@id/nav_guests"></action>
         <action
             android:id="@+id/action_nav_to_msg"
             app:destination="@id/nav_reservation_msg"></action>
@@ -320,6 +345,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_guest_detail"
+        android:name="com.app.bluelimits.view.fragment.GuestDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_guest_detail">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home">
+        </action>
+
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_visitors"
         android:name="com.app.bluelimits.view.fragment.VisitorsFragment"
         android:label=""
@@ -346,6 +383,37 @@
             <argument
                 android:name="vDetails"
                 app:argType="com.app.bluelimits.model.VisitorResult" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_guests"
+        android:name="com.app.bluelimits.view.fragment.GuestsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_guests">
+        <action
+            android:id="@+id/action_nav_to_home"
+            app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_edit_guests"
+            app:destination="@id/nav_guest_edit">
+
+            <argument
+                android:name="gDetails"
+                app:argType="com.app.bluelimits.model.GuestData" />
+
+        </action>
+
+        <action
+            android:id="@+id/action_view_detail"
+            app:destination="@id/nav_guest_detail">
+
+            <argument
+                android:name="gDetails"
+                app:argType="com.app.bluelimits.model.GuestData" />
 
         </action>
 

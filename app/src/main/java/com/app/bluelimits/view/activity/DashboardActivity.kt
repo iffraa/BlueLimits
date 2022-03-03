@@ -1,6 +1,7 @@
 package com.app.bluelimits.view.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,9 @@ import com.google.android.material.navigation.NavigationView
 import android.view.View
 import androidx.navigation.*
 import com.app.bluelimits.util.SharedPreferencesHelper
+import com.app.bluelimits.view.fragment.VisitorInviteFragment
+import com.app.bluelimits.view.fragment.VisitorsFragment
+import com.payfort.fortpaymentsdk.callbacks.FortCallBackManager
 
 
 class DashboardActivity : AppCompatActivity() {
@@ -26,6 +30,8 @@ class DashboardActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
     private lateinit var navController: NavController
     private lateinit var navView: NavigationView
+    private  var fortCallback: FortCallBackManager? = null
+    private var visitorFragment: VisitorInviteFragment? = null
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +50,8 @@ class DashboardActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                 R.id.nav_login,  R.id.userDashboardFragment, R.id.nav_reservation_msg, R.id.nav_home
+                R.id.nav_login, R.id.userDashboardFragment, R.id.nav_reservation_msg, R.id.nav_home,
+                R.id.nav_visitors, R.id.nav_guests
 
             ), drawerLayout
         )
@@ -60,14 +67,12 @@ class DashboardActivity : AppCompatActivity() {
         // changeMenuIcon()
         hideLoginItems()
         changeMenuIcon()
+
+        visitorFragment = VisitorInviteFragment()
+        if (fortCallback == null)
+            fortCallback = FortCallBackManager.Factory.create()
+
     }
-
-    /*  private fun changeMenuIcon() {
-          getSupportActionBar()?.setHomeButtonEnabled(true);
-          getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
-          getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.nav_icon);
-
-      }*/
 
     @SuppressLint("ResourceType")
     private fun setNavGraphStart(navController: NavController, isLogin: Boolean) {
@@ -79,43 +84,20 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
-    //this shows the overflow icon
-    /*  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-          // Inflate the menu; this adds items to the action bar if it is present.
-          menuInflater.inflate(R.menu.main_activity2, menu)
-          return true
-      }*/
-
-
     override fun onSupportNavigateUp(): Boolean {
         // changeMenuIcon()
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun setActionBarTitle(title: String) {
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
-
-        setSupportActionBar(binding.appBarMain2.toolbar)
-
-        //    binding.appBarMain2.toolbar.findViewById<TextView>(R.id.toolbar_title).setText(title)
-    }
-
-    /* private fun clickOverflowIcon()
-     {
-         binding.appBarMain2.toolbar.setOnMenuItemClickListener({
-             Navigation.findNavController(navView).navigate(R.id.nav_home);
-
-             true
-         })
-     }*/
 
     fun makeUserDashboardStart() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.userDashboardFragment,
                 R.id.nav_reservation_msg,
-            //    R.id.nav_home
+                R.id.nav_visitors,
+                R.id.nav_guests
             ), drawerLayout
         )
 
@@ -140,8 +122,8 @@ class DashboardActivity : AppCompatActivity() {
         val nav_reservation = menu.findItem(R.id.nav_guest_space)
         nav_reservation.setVisible(false)
 
-      //  val nav_my_contract = menu.findItem(R.id.nav_contract)
-       // nav_my_contract.setVisible(false)
+        val nav_user_dashboard = menu.findItem(R.id.userDashboardFragment)
+        nav_user_dashboard.setVisible(false)
 
         val nav_req_services = menu.findItem(R.id.nav_services)
         nav_req_services.setVisible(false)
@@ -158,7 +140,6 @@ class DashboardActivity : AppCompatActivity() {
         val nav_login = menu.findItem(R.id.nav_login)
         nav_login.setVisible(false)
 
-
         val nav_logout = menu.findItem(R.id.nav_logout)
         nav_logout.setVisible(true)
 
@@ -174,8 +155,8 @@ class DashboardActivity : AppCompatActivity() {
         val nav_reservation = menu.findItem(R.id.nav_guest_space)
         nav_reservation.setVisible(true)
 
-     //   val nav_my_contract = menu.findItem(R.id.nav_contract)
-     //   nav_my_contract.setVisible(true)
+        val nav_user_dashboard = menu.findItem(R.id.userDashboardFragment)
+        nav_user_dashboard.setVisible(true)
 
         val nav_req_services = menu.findItem(R.id.nav_services)
         nav_req_services.setVisible(true)
@@ -230,19 +211,20 @@ class DashboardActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener(NavController.OnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
             if (
-                navDestination.getId() ==  R.id.nav_reservation_msg
+                navDestination.getId() == R.id.nav_reservation_msg
                 ||
                 (!Constants.isLoggedIn && navDestination.getId() == R.id.nav_home)
                 || navDestination.getId() == R.id.userDashboardFragment
                 || navDestination.getId() == R.id.nav_login
+                || navDestination.getId() == R.id.nav_visitors
+                || navDestination.getId() == R.id.nav_guests
+
             ) {
                 getSupportActionBar()?.setHomeButtonEnabled(true);
                 getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.nav_icon);
             }
         })
-
-
 
 
     }
@@ -260,10 +242,13 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
-    fun getNavController(): NavController
-    {
-        return  navController
+    fun getNavController(): NavController {
+        return navController
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        visitorFragment?.onActivityResult(requestCode,resultCode,data,fortCallback!!)
+    }
 }
 

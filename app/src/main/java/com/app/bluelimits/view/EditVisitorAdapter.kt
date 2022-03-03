@@ -12,7 +12,8 @@ import com.app.bluelimits.databinding.ItemVisitorBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
-import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.util.hideKeyboard
+import com.app.bluelimits.util.showAlertDialog
 import com.app.bluelimits.view.fragment.VisitorEditFragment
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -79,8 +80,8 @@ class EditVisitorAdapter(
             .debounce(3, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                //   if (!textChanged.isNullOrEmpty())
-                visitor.name = et_name.text.toString()
+             //   if (!textChanged.isNullOrEmpty())
+                    visitor.name = et_name.text.toString()
             }
 
         et_mobile.textChanges()
@@ -98,26 +99,38 @@ class EditVisitorAdapter(
                 val id = et_id.text.toString()
                 if (!id.isNullOrEmpty()) {
                     if(id.length < 10){
-                        showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.id_length_error))
+                        showAlertDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.id_length_error))
                     }
                     else
                         visitor.id_no = id
                 }
             }
 
-        //onItemClick = onItemCheckListener
-        // setGenderCheck(holder,visitor,position)
         fetchGenderPackage(cb_female, cb_male, visitor, price)
-        //  visitor.who_will_pay = getWhoWillPay(cb_pay)
-        enteredData.add(visitor)
+
+        if (!isContain(enteredData, visitor))
+            enteredData.add(visitor)
+        getWhoWillPay(rbSender, rbVisitor, visitor)
 
         price.setText(visitor.price)
 
         setData(visitor, holder)
     }
 
+    private fun isContain(enteredList: ArrayList<VisitorDetail>, visitor: VisitorDetail): Boolean {
+        for (enteredVisitor in enteredList) {
+            val enteredName = enteredVisitor.name
+            val name = visitor.name
+            if (enteredName == name) {
+                return true
+            }
+        }
 
-    fun fetchGenderPackage(
+        return false
+    }
+
+
+    private fun fetchGenderPackage(
         femaleChkBx: CheckBox,
         maleChkBx: CheckBox,
         visitor: VisitorDetail,
@@ -173,10 +186,34 @@ class EditVisitorAdapter(
         return gender
     }
 
+    private fun getWhoWillPay(senderRB: RadioButton, visitorRB: RadioButton, visitor: VisitorDetail) {
+        var who_will_pay = "visitor"
+
+        senderRB.setOnClickListener {
+            hideKeyboard(context as Activity)
+            who_will_pay = "sender"
+            visitor.who_will_pay = who_will_pay
+            notifyDataSetChanged();
+
+
+        }
+
+        visitorRB.setOnClickListener {
+            hideKeyboard(context as Activity)
+            who_will_pay = "visitor"
+            visitor.who_will_pay = who_will_pay
+            notifyDataSetChanged();
+
+        }
+    }
+
+
+
     private fun setData(visitor: VisitorDetail, holder: VisitorViewHolder) {
         holder.view.etVisitorsName.setText(visitor.name)
         holder.view.etVisitorsId.setText(visitor.id_no)
-        holder.view.layoutMobile.etMobile.setText(visitor.contact_no?.substring(4))
+        if (!visitor.contact_no.isNullOrEmpty())
+             holder.view.layoutMobile.etMobile.setText(visitor.contact_no?.substring(4))
        // holder.view.layoutMobile.tvCode.visibility = View.GONE
 
         if (visitor.gender.equals("male"))

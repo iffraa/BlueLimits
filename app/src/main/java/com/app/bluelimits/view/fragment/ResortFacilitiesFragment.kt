@@ -13,7 +13,7 @@ import com.app.bluelimits.R
 import com.app.bluelimits.databinding.FragmentResortFacilitiesBinding
 import com.app.bluelimits.model.Resort
 import com.app.bluelimits.util.Constants
-import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.util.showAlertDialog
 import com.app.bluelimits.view.RoleListAdapter
 import com.app.bluelimits.viewmodel.ResortFacilityViewModel
 
@@ -91,7 +91,7 @@ class ResortFacilitiesFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)

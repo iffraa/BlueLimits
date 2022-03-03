@@ -16,7 +16,7 @@ import com.app.bluelimits.databinding.ItemViewGuestBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
-import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.util.showAlertDialog
 import com.app.bluelimits.view.fragment.GuestsFragmentDirections
 import com.app.bluelimits.viewmodel.GuestsViewModel
 import com.google.gson.Gson
@@ -121,7 +121,7 @@ class GuestListAdapter(val guests: ArrayList<GuestData>, context: Context, frag:
         viewModel.delResponse.observe(fragment.viewLifecycleOwner) { data ->
             data?.let {
                 binding.rlInclude.visibility = View.GONE
-                showSuccessDialog(
+                showAlertDialog(
                     mContext as Activity,
                     mContext.getString(R.string.app_name),
                     data.message
@@ -137,7 +137,7 @@ class GuestListAdapter(val guests: ArrayList<GuestData>, context: Context, frag:
             isError?.let {
                 if (it) {
                     binding.rlInclude.visibility = View.GONE
-                    showSuccessDialog(
+                    showAlertDialog(
                         mContext as Activity,
                         mContext.getString(R.string.app_name),
                         mContext.getString(R.string.delete_error_guest)

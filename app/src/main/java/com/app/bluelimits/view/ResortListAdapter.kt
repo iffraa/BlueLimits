@@ -42,7 +42,8 @@ class ResortListAdapter(val resortList: ArrayList<Resort>) :
 
         holder.view.ivResort.setOnClickListener(View.OnClickListener {
             val action = HomeFragmentDirections.actionNavHomeToResortInfoFrag(resortList.get(position))
-            Navigation.findNavController(holder.view.root).navigate(action)
+            val navC =  Navigation.findNavController(holder.view.root)
+           navC.navigate(action)
 
         })
 

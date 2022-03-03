@@ -42,7 +42,7 @@ fun isValidID(id: String): Boolean {
 fun checkGuestsID(guests: ArrayList<Guest>, context: Context): String {
     for (guest in guests) {
         val id = guest.id_no
-        if (!isValidID(id))
+        if (!id?.let { isValidID(it) }!!)
             return context.getString(R.string.id_length_error)
     }
 
@@ -64,8 +64,11 @@ fun getPayableAmount(visitors: ArrayList<Visitor>): String {
     var price = 0
     for (visitor in visitors) {
         if (!visitor.price.isNullOrEmpty()) {
-            val amount = visitor.price.toInt()
-            price += amount
+            val payment = visitor.who_will_pay
+            if (payment == "sender") {
+                val amount = visitor.price.toInt()
+                price += amount
+            }
         }
     }
     return price.toString()
@@ -120,7 +123,7 @@ fun loadImage(view: ImageView, url: String, context: Context) {
 
 }
 
-fun showSuccessDialog(activity: Activity, title: String, msg: String) {
+fun showAlertDialog(activity: Activity, title: String, msg: String) {
     val builder: AlertDialog.Builder? = activity?.let {
         AlertDialog.Builder(it)
     }

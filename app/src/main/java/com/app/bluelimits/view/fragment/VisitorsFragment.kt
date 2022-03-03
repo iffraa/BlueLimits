@@ -18,7 +18,7 @@ import com.app.bluelimits.model.VisitorsData
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
 import com.app.bluelimits.util.setHomeNavigation
-import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.util.showAlertDialog
 import com.app.bluelimits.view.VisitorsListAdapter
 import com.app.bluelimits.viewmodel.VisitorsViewModel
 import com.google.gson.Gson
@@ -50,6 +50,7 @@ class VisitorsFragment : Fragment() {
         return view
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -79,7 +80,7 @@ class VisitorsFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)

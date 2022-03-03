@@ -31,9 +31,9 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="@dimen/_104sdp"
+                android:layout_width="@dimen/_105sdp"
                 android:layout_height="@dimen/_24sdp"
-                android:background="@drawable/rectangle"
+                android:background="@drawable/rect_profile"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -50,14 +50,14 @@
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="@string/name"
                     android:textColor="@color/navy_blue"
-                    android:textSize="@dimen/_6ssp"></TextView>
+                    android:textSize="@dimen/_7ssp"></TextView>
 
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:textSize="@dimen/_6ssp"
+                    android:textSize="@dimen/_7ssp"
                     android:textColor="@color/navy_blue"
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="@{familyMember.name}"></TextView>
@@ -66,10 +66,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="@dimen/_104sdp"
+                android:layout_width="@dimen/_105sdp"
                 android:layout_height="@dimen/_24sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle"
+                android:background="@drawable/rect_profile"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -86,7 +86,7 @@
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="Gender:"
                     android:textColor="@color/navy_blue"
-                    android:textSize="@dimen/_6ssp"></TextView>
+                    android:textSize="@dimen/_7ssp"></TextView>
 
                 <TextView
                     android:id="@+id/tv_email"
@@ -96,7 +96,7 @@
                     android:fontFamily="@font/jura_demi_bold"
                     android:text="@{familyMember.gender}"
                     android:textColor="@color/navy_blue"
-                    android:textSize="@dimen/_6ssp"></TextView>
+                    android:textSize="@dimen/_7ssp"></TextView>
 
             </LinearLayout>
 
@@ -111,9 +111,9 @@ s
 
 
             <LinearLayout
-                android:layout_width="@dimen/_105sdp"
+                android:layout_width="@dimen/_107sdp"
                 android:layout_height="@dimen/_24sdp"
-                android:background="@drawable/rectangle"
+                android:background="@drawable/rect_profile"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -126,7 +126,7 @@ s
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_6ssp"
+                    android:textSize="@dimen/_7ssp"
                     android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_2sdp"
                     android:fontFamily="@font/jura_demi_bold"
@@ -136,7 +136,8 @@ s
                     android:id="@+id/tv_mobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_6ssp"
+                    android:textSize="@dimen/_7ssp"
+                    android:textStyle="bold"
                     android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/jura_demi_bold"
@@ -147,10 +148,10 @@ s
 
 
             <LinearLayout
-                android:layout_width="@dimen/_105sdp"
+                android:layout_width="@dimen/_107sdp"
                 android:layout_height="@dimen/_24sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle"
+                android:background="@drawable/rect_profile"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -163,7 +164,7 @@ s
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_6ssp"
+                    android:textSize="@dimen/_7ssp"
                     android:layout_marginLeft="@dimen/_2sdp"
                     android:textColor="@color/navy_blue"
                     android:fontFamily="@font/jura_demi_bold"
@@ -173,7 +174,7 @@ s
                     android:id="@+id/tv_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_6ssp"
+                    android:textSize="@dimen/_7ssp"
                     android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/jura_demi_bold"

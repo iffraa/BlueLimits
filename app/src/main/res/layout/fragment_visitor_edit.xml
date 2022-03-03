@@ -204,7 +204,7 @@
             android:layout_height="@dimen/_50sdp"
             android:background="@drawable/btn_bg"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="@string/submit"
+            android:text="@string/edit"
             android:textStyle="bold"
             android:textSize="@dimen/_15ssp"
             android:fontFamily="@font/jura_demi_bold"

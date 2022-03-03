@@ -44,14 +44,12 @@ class GuestDetailAdapter(val guests: ArrayList<Guest>, context: Context) :
         val status = holder.view.tvStatus
         holder.view.tvWho.visibility = View.GONE
 
-
         name.setText(mContext.getString(R.string.name) +": "+ guestsData.name)
         id.setText(mContext.getString(R.string.id_no) +": "+ guestsData.id_no)
-        contact.setText(mContext.getString(R.string.contact) +": "+ guestsData.contact_no)
+        contact.setText(mContext.getString(R.string.mobile) +" "+ guestsData.contact_no)
         gender.setText(mContext.getString(R.string.gender) +": "+ guestsData.gender)
         status.setText("Status: "+ guestsData.status)
         guestsData.qr_code?.let { loadImage(qrImg, it, mContext) }
-
 
     }
 

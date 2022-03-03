@@ -29,9 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line"
-        android:layout_marginTop="@dimen/_25sdp"
         android:layout_centerHorizontal="true"
-        android:fontFamily="@font/jura_semi_bold"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:fontFamily="@font/jura_demi_bold"
         android:text="@string/reservation_title"
         android:textColor="@color/navy_blue"
         android:textSize="@dimen/_16ssp"></TextView>
@@ -52,7 +52,7 @@
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
         android:background="@drawable/rectangle"
-        android:fontFamily="@font/jura_semi_bold"
+        android:fontFamily="@font/jura_demi_bold"
         android:text="@string/reservation_msg"
         android:textColor="@color/navy_blue"
         android:textSize="@dimen/_16ssp"></TextView>

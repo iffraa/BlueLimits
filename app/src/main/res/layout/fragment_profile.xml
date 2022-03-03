@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
+    android:layout_marginTop="@dimen/_40sdp"
     tools:context=".view.fragment.ProfileFragment">
 
     <RelativeLayout
@@ -77,7 +78,7 @@
                     android:layout_width="@dimen/_160sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rectangle"
+                    android:background="@drawable/rect_profile"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -103,7 +104,7 @@
                     android:layout_width="@dimen/_160sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:background="@drawable/rectangle"
+                    android:background="@drawable/rect_profile"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -129,7 +130,7 @@
                     android:layout_width="@dimen/_160sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:background="@drawable/rectangle"
+                    android:background="@drawable/rect_profile"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -156,7 +157,7 @@
                     android:layout_width="@dimen/_160sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:background="@drawable/rectangle"
+                    android:background="@drawable/rect_profile"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -184,7 +185,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:background="@drawable/rectangle"
+                    android:background="@drawable/rect_profile"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -213,7 +214,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:background="@drawable/rectangle"
+                    android:background="@drawable/rect_profile"
                     android:orientation="horizontal">
 
                     <ImageView

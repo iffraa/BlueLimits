@@ -97,14 +97,14 @@ class MarineFormFragment : Fragment() {
                     hideKeyboard(context as Activity)
                     submitApplication()
                 } else {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.booking_unavailable)
                     )
                 }
             } else {
-                showSuccessDialog(
+                showAlertDialog(
                     context as Activity,
                     getString(R.string.app_name),
                     getString(R.string.no_pckg_error)
@@ -157,7 +157,7 @@ class MarineFormFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -188,7 +188,7 @@ class MarineFormFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -358,50 +358,62 @@ class MarineFormFragment : Fragment() {
         val hrs: String = binding.etHrs.text.toString()
         val gender: String = getGender(binding.cbFemale, binding.cbMale)
 
-        if (!name.isNullOrEmpty() && !id.isNullOrEmpty()) {
-            if (id.length < 10) {
-                showSuccessDialog(
-                    requireActivity(),
-                    getString(R.string.app_name),
-                    getString(R.string.id_length_error)
-                )
-            } else {
-                val contact = binding.layoutMobile.etMobile.text
-                if (contact.isNullOrEmpty() || contact.length < 8) {
-                    showSuccessDialog(
-                        requireActivity(),
-                        getString(R.string.app_name),
-                        getString(R.string.contact_error)
-                    )
-                } else {
-                    val request = MarineServiceRequest(
-                        service_id,
-                        package_id,
-                        resort_id,
-                        name,
-                        getString(R.string.number_code) + contact,
-                        id,
-                        email,
-                        reserv_date,
-                        package_id,
-                        hrs,
-                        total_price.toString(),
-                        gender
-                    )
+        val errorMsg = getEmptyFieldsMsg()
 
-                    viewModel.addApplication(request, requireContext())
-                    observeAddApplicationVM()
-                }
-            }
-        } else {
-            showSuccessDialog(
+        if (!errorMsg.isNullOrEmpty()) {
+            showAlertDialog(
                 requireActivity(),
-                getString(R.string.app_name),
-                getString(R.string.empty_fields)
+                getString(R.string.app_name), errorMsg
             )
+
+        } else {
+            val request = MarineServiceRequest(
+                service_id,
+                package_id,
+                resort_id,
+                name,
+                getString(R.string.number_code) + contact,
+                id,
+                email,
+                reserv_date,
+                package_id,
+                hrs,
+                total_price.toString(),
+                gender
+            )
+
+            viewModel.addApplication(request, requireContext())
+            observeAddApplicationVM()
+
         }
 
     }
+
+    private fun getEmptyFieldsMsg(): String {
+        var errorMsg = ""
+        val name = binding.etName.text.toString()
+        val member_id: String = binding.etId.text.toString()
+        val email = binding.etEmail.text.toString()
+        val mobile = "9665" + binding.layoutMobile.etMobile.text.toString()
+
+        //employee required fields
+        if (mobile.isNullOrEmpty() || mobile.length < 8) {
+            errorMsg = getString(R.string.contact_error)
+        } else if (mobile.length > 12) {
+            errorMsg = "Contact number cannot be of more than 12 digits."
+        } else if (email.isNullOrEmpty() || !email.isEmailValid()) {
+            errorMsg = getString(R.string.email_error)
+        } else if (name.isNullOrEmpty()) {
+            errorMsg = getString(R.string.empty_fields)
+        } else if (member_id.isNullOrEmpty()) {
+            errorMsg = getString(R.string.id_error)
+        } else if (member_id.length < 10) {
+            errorMsg = getString(R.string.id_length_error)
+        }
+
+        return errorMsg
+    }
+
 
     private fun selectReservDate() {
 
@@ -442,7 +454,7 @@ class MarineFormFragment : Fragment() {
             observeBookingVM()
 
         } else {
-            showSuccessDialog(
+            showAlertDialog(
                 context as Activity,
                 getString(R.string.app_name),
                 getString(R.string.no_pckg_error)
@@ -456,7 +468,7 @@ class MarineFormFragment : Fragment() {
             isError?.let {
                 if (it) {
                     binding.progressBar.progressbar.visibility = View.GONE
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.booking_unavailable)
@@ -482,7 +494,7 @@ class MarineFormFragment : Fragment() {
                     binding.etTPrice.setText(total_price.toString())
                 } else {
                     isBookingAvailable = false
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name), getString(R.string.booking_unavailable)
                     )
@@ -500,7 +512,7 @@ class MarineFormFragment : Fragment() {
             isError?.let {
                 if (it) {
                     binding.progressBar.progressbar.visibility = View.GONE
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.adding_member_error)

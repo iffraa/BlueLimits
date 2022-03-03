@@ -60,13 +60,13 @@ class PaymentHelper {
     fun getFortRequest(sdkToken: String, amount: String): FortRequest {
 
         val fortRequest = FortRequest()
-        fortRequest.isShowResponsePage = true
+        fortRequest.isShowResponsePage = false
         val map: MutableMap<String, Any> = TreeMap()
         map["language"] = "en"
         map["sdk_token"] = sdkToken
         map["command"] = "PURCHASE"//"AUTHORIZATION"
         map["currency"] = "SAR"
-        map["amount"] = "1"
+        map["amount"] = amount
         map["merchant_reference"] = "OrderNo_" + getRandomNumber()
         map["customer_email"] = "mustafa@bluelimits.com"
 

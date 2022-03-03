@@ -18,7 +18,8 @@ import com.app.bluelimits.model.Data
 import com.app.bluelimits.model.VisitorResult
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
-import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.util.showAlertDialog
+import com.app.bluelimits.view.activity.DashboardActivity
 import com.app.bluelimits.view.fragment.VisitorsFragmentDirections
 import com.app.bluelimits.viewmodel.VisitorsViewModel
 import com.google.gson.Gson
@@ -73,15 +74,16 @@ class VisitorsListAdapter(val visitors: ArrayList<VisitorResult>, context: Conte
 
         btnEdit.setOnClickListener{
             val action = VisitorsFragmentDirections.actionEditVisitors(visitorsData)
+            val navController = (mContext as DashboardActivity).getNavController()
 
             if (action != null &&
-                Navigation.findNavController(holder.view.root).currentDestination?.id == R.id.nav_visitors
-                && Navigation.findNavController(holder.view.root).currentDestination?.id != action.actionId
+                navController.currentDestination?.id == R.id.nav_visitors
+                && navController.currentDestination?.id != action.actionId
             ) {
-                action?.let { Navigation.findNavController(holder.view.root).navigate(it) }
+                action?.let { navController.navigate(it) }
             } else {
                 Timer().schedule(2000) {
-                    action?.let { Navigation.findNavController(holder.view.root).navigate(it) }
+                    action?.let { navController.navigate(it) }
                 }
             }
 
@@ -124,7 +126,7 @@ class VisitorsListAdapter(val visitors: ArrayList<VisitorResult>, context: Conte
         viewModel.delResponse.observe(fragment.viewLifecycleOwner, Observer { data ->
             data?.let {
                 binding.rlInclude.visibility = View.GONE
-                showSuccessDialog(
+                showAlertDialog(
                     mContext as Activity,
                     mContext.getString(R.string.app_name),
                     data.message
@@ -140,7 +142,7 @@ class VisitorsListAdapter(val visitors: ArrayList<VisitorResult>, context: Conte
             isError?.let {
                 if (it) {
                     binding.rlInclude.visibility = View.GONE
-                    showSuccessDialog(
+                    showAlertDialog(
                         mContext as Activity,
                         mContext.getString(R.string.app_name),
                         mContext.getString(R.string.delete_error)

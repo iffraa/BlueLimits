@@ -92,7 +92,7 @@ class GuestRegistrationFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)

@@ -46,11 +46,6 @@ class GReservationMsgFragment : Fragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            pdf = it.getString("url").toString()
-
-        }
-
        }
 
 

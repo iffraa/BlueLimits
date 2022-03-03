@@ -68,9 +68,9 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
 
             if (context?.let { it1 -> ConnectivityUtils.isConnected(it1) } == true) {
-               binding.etEmail.setText("warsi@gmail.com")
+           //   binding.etEmail.setText("warsi@gmail.com")
            //         binding.etEmail.setText("test@gmail.com")
-                binding.etPwd.setText("12345678")
+            //    binding.etPwd.setText("12345678")
 
                 if (!binding.etEmail.text.isEmpty() && !binding.etPwd.text.isEmpty()) {
                     binding.rlInclude.visibility = View.VISIBLE
@@ -84,7 +84,7 @@ class LoginFragment : Fragment() {
                     observeViewModel(it)
                 } else {
                     activity?.let { it1 ->
-                        showSuccessDialog(
+                        showAlertDialog(
                             it1,
                             getString(R.string.app_name),
                             getString(R.string.empty_fields)
@@ -93,7 +93,7 @@ class LoginFragment : Fragment() {
                 }
             } else {
                 activity?.let { it1 ->
-                    showSuccessDialog(
+                    showAlertDialog(
                         it1,
                         getString(R.string.app_name),
                         getString(R.string.connectivity_error)
@@ -131,7 +131,7 @@ class LoginFragment : Fragment() {
                     Constants.isLoggedIn = false
                     binding.rlInclude.visibility = View.GONE
                     binding.progressBar.progressbar.visibility = View.GONE
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.login_error)

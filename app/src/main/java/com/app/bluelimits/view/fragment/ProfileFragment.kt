@@ -72,7 +72,7 @@ class ProfileFragment : Fragment() {
             isError?.let {
                 if (it) {
                     binding.progressbar.visibility = View.GONE
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.login_error)

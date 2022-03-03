@@ -15,7 +15,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.bluelimits.R
@@ -30,6 +30,7 @@ import com.google.gson.Gson
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.payfort.fortpaymentsdk.FortSdk
 import com.payfort.fortpaymentsdk.callbacks.FortCallBackManager
+import com.payfort.fortpaymentsdk.callbacks.FortCallback
 import com.payfort.fortpaymentsdk.callbacks.FortInterfaces.OnTnxProcessed
 import com.payfort.fortpaymentsdk.domain.model.FortRequest
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -41,7 +42,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.schedule
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -58,6 +58,8 @@ class VisitorInviteFragment : Fragment() {
 
     private lateinit var binding: FragmentVisitorInviteBinding
     private lateinit var viewModel: VisitorInviteViewModel
+    private var builder: AlertDialog.Builder? = null
+    private var mAlertDialog: AlertDialog? = null
     private var prefsHelper = SharedPreferencesHelper()
     private lateinit var resortId: String
     private var totalVisitors = 0
@@ -65,8 +67,11 @@ class VisitorInviteFragment : Fragment() {
     private lateinit var visitorListAdapter: AddVisitorsAdapter
     private lateinit var data: Data
     private var packages: HashMap<String, ServicePackage> = hashMapOf()
-    private var fortCallback: FortCallBackManager? = null
+
+    // private var fortCallback: FortCallBackManager? = null
     private var paymentHelper: PaymentHelper? = null
+    private var navController: NavController? = null
+    private var fortCallBackManager: FortCallBackManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,8 +87,10 @@ class VisitorInviteFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(VisitorInviteViewModel::class.java)
         prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
 
-        if (fortCallback == null)
-            fortCallback = FortCallBackManager.Factory.create()
+        navController = (activity as DashboardActivity).getNavController()
+
+        if (fortCallBackManager == null)
+            fortCallBackManager = FortCallBackManager.Factory.create()
 
         val data_string = prefsHelper.getData(Constants.USER_DATA)
         val gson = Gson()
@@ -104,28 +111,27 @@ class VisitorInviteFragment : Fragment() {
             val visitors = binding.etVisitorsNum.text.toString()
 
             if (date.isNullOrEmpty() || visitors.isNullOrEmpty()) {
-                showSuccessDialog(
+                showAlertDialog(
                     requireActivity(),
                     getString(R.string.app_name),
                     getString(R.string.empty_fields)
                 )
-            } else if(this::visitorListAdapter.isInitialized){
+            } else if (this::visitorListAdapter.isInitialized) {
                 val idMsg = checkVisitorsID(visitorListAdapter.getData(), requireContext())
                 if (idMsg.isEmpty()) {
                     if (willSenderPay(visitorListAdapter.getData())) {
                         val amount = getPayableAmount(visitorListAdapter.getData())
                         if (!amount.equals("0")) {
                             payForVisitor()
-                        }
-                        else
-                        {
+                        } else {
                             addServerVisitor()
                         }
                     } else {
                         addServerVisitor()
                     }
+
                 } else {
-                    showSuccessDialog(requireActivity(), getString(R.string.app_name), idMsg)
+                    showAlertDialog(requireActivity(), getString(R.string.app_name), idMsg)
                 }
             }
 
@@ -138,11 +144,10 @@ class VisitorInviteFragment : Fragment() {
             getResorts(data)
         }
 
-        //   setVisitorList()
     }
 
-    private fun addServerVisitor()
-    {
+
+    private fun addServerVisitor() {
         binding.rlInclude.visibility = View.VISIBLE
         addVisitor()
         observeViewModel()
@@ -202,9 +207,7 @@ class VisitorInviteFragment : Fragment() {
                     activity?.let { hideKeyboard(it) }
 
                     if (visitorPolicyPresent && noOfVisitors.toInt() > totalVisitors) {
-                        showSuccessDialog(
-                            context as Activity,
-                            getString(R.string.app_name),
+                        showAlertDialog(
                             totalVisitors.toString() + " " + getString(R.string.max_visitors)
                         )
                     } else {
@@ -214,7 +217,8 @@ class VisitorInviteFragment : Fragment() {
                             for (i in 1..no_of_visitors) {
                                 val person = Visitor(
                                     "0", "", "", "", "",
-                                    null, "", "","","",Constants.UN_PAID
+                                    null, "", "", "", "",
+                                    Constants.UN_PAID
                                 )
                                 visitors.add(person)
                             }
@@ -352,9 +356,7 @@ class VisitorInviteFragment : Fragment() {
             token?.let { viewModel.addVisitor(it, visitorReq, requireContext()) }
 
         } else {
-            showSuccessDialog(
-                context as Activity,
-                getString(R.string.app_name), errorMsg
+            showAlertDialog( errorMsg
             )
         }
 
@@ -367,9 +369,7 @@ class VisitorInviteFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
-                        context as Activity,
-                        getString(R.string.app_name),
+                    showAlertDialog(
                         getString(R.string.units_loading_error)
                     )
                 }
@@ -405,9 +405,7 @@ class VisitorInviteFragment : Fragment() {
             isError?.let {
                 binding.rlInclude.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
-                        context as Activity,
-                        getString(R.string.app_name),
+                    showAlertDialog(
                         getString(R.string.units_loading_error)
                     )
                 }
@@ -504,32 +502,13 @@ class VisitorInviteFragment : Fragment() {
     }
 
 
-    fun getDateTime(): String {
-        val dateTime = binding.etVisitorsTime.text.toString()
-
-        if (dateTime.isNullOrEmpty()) {
-            activity?.let {
-                showSuccessDialog(
-                    it,
-                    getString(R.string.app_name),
-                    getString(R.string.missing_date)
-                )
-            }
-        } else {
-            return dateTime
-        }
-
-        return ""
-    }
-
     fun observeViewModel() {
         viewModel.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
                 binding.rlInclude.visibility = View.GONE
-                showAlertDialog(
-                    requireContext().getString(R.string.app_name),
-                    msg
-                )
+                if(mAlertDialog?.isShowing == true)
+                    mAlertDialog?.dismiss()
+                showSuccessDialog()
             }
 
         })
@@ -538,9 +517,7 @@ class VisitorInviteFragment : Fragment() {
             isError?.let {
                 if (it) {
                     binding.rlInclude.visibility = View.GONE
-                    showSuccessDialog(
-                        context as Activity,
-                        getString(R.string.app_name),
+                    showAlertDialog(
                         getString(R.string.add_visitor_error)
                     )
                 }
@@ -555,7 +532,7 @@ class VisitorInviteFragment : Fragment() {
         })
     }
 
-    fun showDateDialog(data: Data) {
+    private fun showDateDialog(data: Data) {
 
         hideKeyboard(context as Activity)
 
@@ -569,7 +546,7 @@ class VisitorInviteFragment : Fragment() {
             .backgroundColor(getResources().getColor(R.color.white))
             .mainColor(getResources().getColor(R.color.blue_text))
             .listener { date ->
-                val DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm aa"
+                val DATE_TIME_FORMAT = "yyyy-MM-dd   hh:mm aa"
                 val sdf = SimpleDateFormat(DATE_TIME_FORMAT)
                 val sdate = sdf.format(date)
                 binding.etVisitorsTime.setText(sdate)
@@ -610,9 +587,7 @@ class VisitorInviteFragment : Fragment() {
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
                 if (it) {
-                    showSuccessDialog(
-                        requireActivity(),
-                        getString(R.string.app_name),
+                    showAlertDialog(
                         getString(R.string.loading_error)
                     )
                 }
@@ -637,9 +612,7 @@ class VisitorInviteFragment : Fragment() {
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
                 if (it) {
-                    showSuccessDialog(
-                        requireActivity(),
-                        getString(R.string.app_name),
+                    showAlertDialog(
                         getString(R.string.loading_error)
                     )
                 }
@@ -666,46 +639,39 @@ class VisitorInviteFragment : Fragment() {
 
     private fun navigateToListing() {
         val action = VisitorInviteFragmentDirections.actionNavToList()
-        if (action != null &&
-            Navigation.findNavController(binding.btnSubmit).currentDestination?.id == R.id.nav_invite
-            && Navigation.findNavController(binding.btnSubmit).currentDestination?.id != action.actionId
-        ) {
-            (activity as DashboardActivity).navigateToVisitorsList(action)
-        } else {
-            Timer().schedule(2000) {
+        try {
+            action?.let {
                 (activity as DashboardActivity).navigateToVisitorsList(action)
             }
+        } catch (e: IllegalArgumentException) {
+            // User tried tapping 2 links at once!
+            Log.i("nav error", "Can't open 2 links at once!")
         }
 
     }
 
-    private var builder: AlertDialog.Builder? = null
+    private fun showSuccessDialog() {
 
-    fun showAlertDialog(title: String, msg: String) {
-        if (builder == null) {
+        val action = VisitorInviteFragmentDirections.actionNavToList()
+        try {
+            navController?.navigate(action)
+        } catch (e: IllegalArgumentException) {
+            // User tried tapping 2 links at once!
+        }
+
+       /* if (builder == null) {
             builder = activity?.let {
                 AlertDialog.Builder(it)
             }
-
-            builder?.setMessage(msg)
-                ?.setTitle(title)?.setPositiveButton(
-                    R.string.ok
-                ) { dialog, id ->
-                    val action = VisitorInviteFragmentDirections.actionNavToList()
-                    if (action != null &&
-                        Navigation.findNavController(binding.btnSubmit).currentDestination?.id == R.id.nav_invite
-                        && Navigation.findNavController(binding.btnSubmit).currentDestination?.id != action.actionId
-                    ) {
-                        Navigation.findNavController(binding.btnSubmit).navigate(action)
-                    } else {
-                        Timer().schedule(2000) {
-                            Navigation.findNavController(binding.btnSubmit).navigate(action)
-                        }
-                    }
-
-                }
-            builder?.create()?.show()
         }
+        builder?.setMessage(msg)
+            ?.setTitle(title)?.setPositiveButton(
+                R.string.ok
+            ) { dialog, id ->
+
+            }
+        builder?.create()?.show()*/
+
     }
 
     private fun adjustLayout() {
@@ -726,7 +692,7 @@ class VisitorInviteFragment : Fragment() {
 
     private fun payForVisitor() {
         val url = "https://sbpaymentservices.payfort.com/FortAPI/"
-     //   val url = "https://paymentservices.payfort.com/FortAPI/"
+        //   val url = "https://paymentservices.payfort.com/FortAPI/"
 
         paymentHelper = PaymentHelper()
         val request = paymentHelper?.getTokenRequest(requireContext())
@@ -748,16 +714,16 @@ class VisitorInviteFragment : Fragment() {
             override fun onResponse(call: Call<PayFortData?>?, response: Response<PayFortData?>) {
                 val sdkToken = response.body()?.sdk_token
 
-                if(sdkToken != null) {
+                if (sdkToken != null) {
                     val fortRequest = paymentHelper?.getFortRequest(
                         sdkToken,
                         getPayableAmount(visitorListAdapter.getData())
                     )
                     processPayment(fortRequest!!)
-                }
-                else
-                {
-                    showAlertDialog(getString(R.string.app_name),"Token not fetched")
+                } else {
+                    showAlertDialog(
+                        "Token not fetched"
+                    )
                 }
             }
 
@@ -770,10 +736,15 @@ class VisitorInviteFragment : Fragment() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+        fortCallback: FortCallBackManager
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
-
         try {
+            fortCallBackManager = fortCallback
             fortCallback!!.onActivityResult(requestCode, resultCode, data)
             Log.i("fort", "onActivityResult")
         } catch (e: Exception) {
@@ -789,29 +760,28 @@ class VisitorInviteFragment : Fragment() {
                     fortRequest,
                     FortSdk.ENVIRONMENT.TEST,
                     paymentHelper?.getRandomNumber()!!,
-                    fortCallback,
+                    fortCallBackManager,
                     true,
                     object : OnTnxProcessed {
                         override fun onCancel(
                             requestParamsMap: Map<String, Any>,
                             responseMap: Map<String, Any>
                         ) {
-                            println("onCancel==REQ=>> $responseMap")
-                            Log.e("callPaymentSDK: ", responseMap.toString())
-                            if (responseMap.size > 0) {
-                                Log.e("callPaymentSDK: ", responseMap.toString())
-                            }
+                            Log.e("onCancel: ", responseMap.toString())
+                            updatePaymentStatus(false)
+                            addServerVisitor()
+
                         }
 
                         override fun onSuccess(
                             requestParamsMap: Map<String, Any>,
                             fortResponseMap: Map<String, Any>
                         ) {
-                            println("onSuccess==REQ=>> $requestParamsMap")
-                            Log.e("callPaymentSDK: ", requestParamsMap.toString())
-
+                            Log.e("onSuccess: ", requestParamsMap.toString())
                             if (requestParamsMap.size > 0) {
-                                Log.e("callPaymentSDK: ", requestParamsMap.toString())
+                                updatePaymentStatus(true)
+                                addServerVisitor()
+
                             }
                         }
 
@@ -819,11 +789,10 @@ class VisitorInviteFragment : Fragment() {
                             requestParamsMap: Map<String, Any>,
                             fortResponseMap: Map<String, Any>
                         ) {
-                            println("onFailure==REQ=>> $requestParamsMap")
-                            Log.e("callPaymentSDK: ", requestParamsMap.toString())
-                            if (requestParamsMap.size > 0) {
-                                Log.e("callPaymentSDK: ", requestParamsMap.toString())
-                            }
+                            Log.e("onFailure: ", requestParamsMap.toString())
+                            updatePaymentStatus(false)
+                            addServerVisitor()
+
 
                         }
                     })
@@ -831,4 +800,33 @@ class VisitorInviteFragment : Fragment() {
             e.printStackTrace()
         }
     }
+
+    private fun updatePaymentStatus(isSuccess: Boolean) {
+        for (visitor in visitorListAdapter.getData()) {
+            val payment = visitor.who_will_pay
+            if (payment == "sender" && isSuccess) {
+                visitor.payment_status = Constants.PAID
+            }
+        }
+        Log.i("visitor", visitorListAdapter.getData().toString())
+    }
+
+
+    fun showAlertDialog(msg: String) {
+        if (builder == null) {
+            builder = activity?.let {
+                AlertDialog.Builder(it)
+            }
+
+            builder?.setMessage(msg)
+                ?.setTitle(getString(R.string.app_name))?.setPositiveButton(
+                    R.string.ok
+                ) { _, _ ->
+
+                }
+            mAlertDialog = builder?.create()
+            mAlertDialog?.show()
+        }
+    }
+
 }

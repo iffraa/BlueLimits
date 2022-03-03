@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.app.bluelimits.util.*
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.ItemVisitorBinding
 import com.app.bluelimits.model.Data
+import com.app.bluelimits.model.Guest
 import com.app.bluelimits.model.ServicePackage
 import com.app.bluelimits.model.Visitor
 import com.app.bluelimits.util.Constants
@@ -102,10 +104,13 @@ class AddVisitorsAdapter(
             .subscribe { textChanged ->
                 val id = et_id.text.toString()
                 if (!id.isNullOrEmpty()) {
-                    if(id.length < 10){
-                        showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.id_length_error))
-                    }
-                    else
+                    if (id.length < 10) {
+                        showAlertDialog(
+                            context as Activity,
+                            context.getString(R.string.app_name),
+                            context.getString(R.string.id_length_error)
+                        )
+                    } else
                         visitor.id_no = id
                 }
             }
@@ -132,27 +137,47 @@ class AddVisitorsAdapter(
 
     private fun getWhoWillPay(senderRB: RadioButton, visitorRB: RadioButton, visitor: Visitor) {
         var who_will_pay = "visitor"
-        senderRB.setOnCheckedChangeListener { buttonView, isChecked ->
+        /*   senderRB.setOnCheckedChangeListener { buttonView, isChecked ->
+               hideKeyboard(context as Activity)
+               isCBClicked = true
+               if (isChecked) {
+                   who_will_pay = "sender"
+                   visitor.who_will_pay = who_will_pay
+                   notifyDataSetChanged();
+               }
+
+           }
+
+           visitorRB.setOnCheckedChangeListener { buttonView, isChecked ->
+               isCBClicked = true
+               hideKeyboard(context as Activity)
+               if (isChecked) {
+                   who_will_pay = "visitor"
+                   visitor.who_will_pay = who_will_pay
+                   notifyDataSetChanged();
+               }
+           }*/
+
+        senderRB.setOnClickListener {
             hideKeyboard(context as Activity)
             isCBClicked = true
-            if (isChecked) {
-                who_will_pay = "sender"
-                visitor.who_will_pay = who_will_pay
-                notifyDataSetChanged();
-            }
+            who_will_pay = "sender"
+            visitor.who_will_pay = who_will_pay
+            notifyDataSetChanged();
+
 
         }
 
-        visitorRB.setOnCheckedChangeListener { buttonView, isChecked ->
+        visitorRB.setOnClickListener {
             isCBClicked = true
             hideKeyboard(context as Activity)
-            if (isChecked) {
-                who_will_pay = "visitor"
-                visitor.who_will_pay = who_will_pay
-                notifyDataSetChanged();
-            }
+            who_will_pay = "visitor"
+            visitor.who_will_pay = who_will_pay
+            notifyDataSetChanged();
+
         }
     }
+
 
     private fun fetchGenderPackage(
         femaleChkBx: CheckBox,
@@ -220,13 +245,12 @@ class AddVisitorsAdapter(
             etPrice.setText(visitor.price)
 
             val pInfo = getDiscountInfo(visitor.price)
-            visitor.discount =pInfo.first
-            visitor.total =pInfo.second
+            visitor.discount = pInfo.first
+            visitor.total = pInfo.second
         }
     }
 
-    private fun getDiscountInfo(priceTxt: String): Pair<String, String>
-    {
+    private fun getDiscountInfo(priceTxt: String): Pair<String, String> {
         var discount = 0
         var total = 0
 
@@ -243,7 +267,7 @@ class AddVisitorsAdapter(
         }
         total = priceTxt.toInt() - discount
 
-        return  Pair(discount.toString(), total.toString())
+        return Pair(discount.toString(), total.toString())
     }
 
     fun getData(): ArrayList<Visitor> {

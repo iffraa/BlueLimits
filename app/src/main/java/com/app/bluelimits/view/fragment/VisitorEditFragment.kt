@@ -30,6 +30,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.schedule
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -100,7 +101,7 @@ class VisitorEditFragment : Fragment() {
             val visitors = binding.etVisitorsNum.text.toString()
 
             if (date.isNullOrEmpty() || visitors.isNullOrEmpty()) {
-                showSuccessDialog(
+                showAlertDialog(
                     requireActivity(),
                     getString(R.string.app_name),
                     getString(R.string.empty_fields)
@@ -114,7 +115,7 @@ class VisitorEditFragment : Fragment() {
                 }
                 else
                 {
-                    showSuccessDialog(requireActivity(), getString(R.string.app_name), idMsg)
+                    showAlertDialog(requireActivity(), getString(R.string.app_name), idMsg)
                 }
 
             }
@@ -302,10 +303,12 @@ class VisitorEditFragment : Fragment() {
                     val price = servicePackage?.price
 
                     //update list
-                    visitor.servicePackage = servicePackage
-                    visitor.price = price!!
+                    if(visitor != null) {
+                        visitor.servicePackage = servicePackage
+                        visitor.price = price!!
 
-                    visitorListAdapter.notifyItemChanged(i)
+                        visitorListAdapter.notifyItemChanged(i)
+                    }
                 }
 
             }
@@ -376,7 +379,7 @@ class VisitorEditFragment : Fragment() {
             }
 
         } else {
-            showSuccessDialog(
+            showAlertDialog(
                 requireActivity(),
                 getString(R.string.app_name), errorMsg
             )
@@ -391,7 +394,7 @@ class VisitorEditFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.units_loading_error)
@@ -421,7 +424,7 @@ class VisitorEditFragment : Fragment() {
             isError?.let {
                 binding.rlInclude.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.units_loading_error)
@@ -546,7 +549,7 @@ class VisitorEditFragment : Fragment() {
             isError?.let {
                 if (it) {
                     binding.rlInclude.visibility = View.GONE
-                    showSuccessDialog(
+                    showAlertDialog(
                         requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.add_visitor_error)
@@ -618,7 +621,7 @@ class VisitorEditFragment : Fragment() {
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -645,7 +648,7 @@ class VisitorEditFragment : Fragment() {
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         requireActivity(),
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -677,7 +680,18 @@ class VisitorEditFragment : Fragment() {
             mAlertDialog!!.dismiss()
 
         val action = VisitorEditFragmentDirections.actionNavToList()
-        (activity as DashboardActivity).navigateToVisitorsList(action)
+
+        if (action != null &&
+            Navigation.findNavController(binding.btnSubmit).currentDestination?.id == R.id.nav_edit
+            && Navigation.findNavController(binding.btnSubmit).currentDestination?.id != action.actionId
+        ) {
+            (activity as DashboardActivity).navigateToVisitorsList(action)
+        } else {
+            Timer().schedule(2000) {
+                (activity as DashboardActivity).navigateToVisitorsList(action)
+            }
+        }
+
 
 
     }

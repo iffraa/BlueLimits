@@ -8,11 +8,13 @@ import androidx.lifecycle.MutableLiveData
 import com.app.bluelimits.R
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
-import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.util.showAlertDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import org.json.JSONObject
+import retrofit2.HttpException
 
 
 class VisitorEditViewModel(application: Application): BaseViewModel(application) {
@@ -130,7 +132,22 @@ class VisitorEditViewModel(application: Application): BaseViewModel(application)
                             override fun onError(e: Throwable) {
                                 loading.value = false
                                 e?.printStackTrace()
-                                showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.add_visitor_error))
+                                if (e is HttpException) {
+                                    val jObjError = JSONObject(e.response()?.errorBody()?.string())
+
+                                    if (jObjError.has("errors")) {
+
+                                        if (jObjError.has("errors")) {
+                                            val errors  =
+                                                jObjError.getJSONObject("errors").toString()
+                                            showAlertDialog(context as Activity,
+                                                context.getString(R.string.app_name),
+                                                errors)
+
+                                        }
+                                    }
+                                }
+                               // showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.add_visitor_error))
                             }
 
                         }))

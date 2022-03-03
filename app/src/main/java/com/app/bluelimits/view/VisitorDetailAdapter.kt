@@ -49,10 +49,10 @@ class VisitorDetailAdapter(val visitors: ArrayList<VisitorDetail>, context: Cont
 
         name.setText(mContext.getString(R.string.name_visi) +": "+ visitorsData.name)
         id.setText(mContext.getString(R.string.id_no) +": "+ visitorsData.id_no)
-        contact.setText(mContext.getString(R.string.contact) +": "+ visitorsData.contact_no)
+        contact.setText(mContext.getString(R.string.mobile) +": "+ visitorsData.contact_no)
         gender.setText(mContext.getString(R.string.gender) +": "+ visitorsData.gender)
         status.setText("Status: "+ visitorsData.status)
-        whoPays.setText("Who Pays: "+ visitorsData.who_will_pay)
+        whoPays.setText("Who will Pay: "+ visitorsData.who_will_pay)
         visitorsData.qr_code?.let { loadImage(qrImg, it, mContext) }
 
 

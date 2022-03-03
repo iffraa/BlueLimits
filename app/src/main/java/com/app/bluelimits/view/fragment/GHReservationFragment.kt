@@ -3,6 +3,7 @@ package com.app.bluelimits.view.fragment
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -119,7 +120,7 @@ class GHReservationFragment : Fragment() {
             if (!noOGuests.isNullOrEmpty() && noOGuests != "0") {
                 val idMsg = checkGuestsID(guestListAdapter.getData(), requireContext())
                 if (idMsg.isNotEmpty()) {
-                    showSuccessDialog(requireActivity(),getString(R.string.app_name), idMsg)
+                    showAlertDialog(requireActivity(),getString(R.string.app_name), idMsg)
                 } else {
                     addGuests()
                     observeReservationVM()
@@ -136,7 +137,13 @@ class GHReservationFragment : Fragment() {
 
     private fun navigateToListing() {
         val action = GHReservationFragmentDirections.actionNavToList()
-        (activity as DashboardActivity).navigateToVisitorsList(action)
+        try {
+            (activity as DashboardActivity).navigateToVisitorsList(action)
+        } catch (e: IllegalArgumentException) {
+            // User tried tapping 2 links at once!
+            Log.i("nav error", "Can't open 2 links at once!")
+        }
+
     }
 
     private fun addGuests() {
@@ -590,17 +597,12 @@ class GHReservationFragment : Fragment() {
     private fun showSuccessMsg() {
         val action = GHReservationFragmentDirections.actionNavToMsg();
 
-        if (action != null &&
-            Navigation.findNavController(binding.btnSubmit).currentDestination?.id == R.id.nav_reservation
-            && Navigation.findNavController(binding.btnSubmit).currentDestination?.id != action.actionId
-        ) {
+        try {
             action?.let { Navigation.findNavController(binding.btnSubmit).navigate(it) }
-        } else {
-            Timer().schedule(2000) {
-                action?.let { Navigation.findNavController(binding.btnSubmit).navigate(it) }
-            }
+        } catch (e: IllegalArgumentException) {
+            // User tried tapping 2 links at once!
+            Log.i("nav error", "Can't open 2 links at once!")
         }
-
 
     }
 

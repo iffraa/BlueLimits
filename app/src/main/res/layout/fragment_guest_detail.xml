@@ -90,10 +90,11 @@
             android:id="@+id/tv_no_of_guests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_20sdp"
             android:fontFamily="@font/jura_demi_bold"
             android:text="@string/no_of_guests"
             android:textColor="@color/navy_blue"
-            android:layout_alignParentRight="true"
             android:textSize="@dimen/_12ssp" />
 
     </RelativeLayout>

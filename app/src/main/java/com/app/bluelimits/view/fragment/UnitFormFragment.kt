@@ -159,7 +159,7 @@ class UnitFormFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)
@@ -225,7 +225,7 @@ class UnitFormFragment : Fragment() {
                     val no_of_fam_members: Int = noOfFam.toInt()
                     val members = ArrayList<FamilyMemberRequest>(no_of_fam_members)
                     for (i in 1..no_of_fam_members) {
-                        val person = FamilyMemberRequest("0", "", "", "", "", "")
+                        val person = FamilyMemberRequest("0", "", "", "", "", "", "")
                         members.add(person)
                     }
                     binding.rvFamily.visibility = View.VISIBLE
@@ -328,13 +328,12 @@ class UnitFormFragment : Fragment() {
             val member_id: String = binding.etId.text.toString()
             val dob: String = binding.etDob.text.toString()
 
-            val family_data: ArrayList<FamilyMemberRequest> = familyListAdapter.getData()
-            Log.i("family_data", family_data.toString())
+            val familyData: ArrayList<FamilyMemberRequest> = familyListAdapter.getData()
 
             if (role_id.isNullOrEmpty())
                 role_id = role?.id.toString()
 
-            val errorMsg = getEmptyFieldsMsg()
+            val errorMsg = getEmptyFieldsMsg(familyData)
             if (errorMsg.isNullOrEmpty()) {
                 binding.rlPb.visibility = View.VISIBLE
                 binding.scrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -357,7 +356,7 @@ class UnitFormFragment : Fragment() {
                     country_offc,
                     "",
                     no_of_fam_member,
-                    family_data
+                    familyData
                 )
 
                 if (!package_id.isEmpty()) {
@@ -367,14 +366,14 @@ class UnitFormFragment : Fragment() {
                     observeAddMemberViewModel()
 
                 } else {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.no_pckg_error)
                     )
                 }
             } else {
-                showSuccessDialog(
+                showAlertDialog(
                     context as Activity,
                     getString(R.string.app_name), errorMsg
                 )
@@ -385,14 +384,18 @@ class UnitFormFragment : Fragment() {
     }
 
 
+    var isErrorShown = false
+    var isSuccessShown = false
+
     fun observeAddMemberViewModel() {
         viewModel.errorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
             errorMsg?.let {
-                if (!it.isNullOrEmpty()) {
+                if (!it.isNullOrEmpty() && !isErrorShown) {
                     binding.rlPb.visibility = View.GONE
                     val errorMsg =
                         getServerErrors(viewModel.errorMsg.value.toString(), requireContext())
                     showAlertDialog(errorMsg)
+                    isErrorShown = true
                 }
             }
         })
@@ -407,9 +410,14 @@ class UnitFormFragment : Fragment() {
         viewModel.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
                 binding.rlPb.visibility = View.GONE
+                if (mAlertDialog?.isShowing == true) {
+                    mAlertDialog?.dismiss()
+                }
+                //  if(!isSuccessShown) {
+                isSuccessShown = true
                 showSuccessDialog(
-                    getString(R.string.app_name), msg
                 )
+                // }
             }
 
         })
@@ -421,46 +429,61 @@ class UnitFormFragment : Fragment() {
             builder = activity?.let {
                 androidx.appcompat.app.AlertDialog.Builder(it)
             }
-
-            builder?.setMessage(msg)
-                ?.setTitle(getString(R.string.app_name))?.setPositiveButton(
-                    R.string.ok
-                ) { _, _ ->
-
-                }
-            mAlertDialog = builder?.create()
-            mAlertDialog?.show()
         }
-    }
-
-
-    fun showSuccessDialog(title: String, msg: String) {
-        if (mAlertDialog?.isShowing == true) {
-            mAlertDialog?.dismiss()
-        }
-
-        val builder: androidx.appcompat.app.AlertDialog.Builder? = activity?.let {
-            androidx.appcompat.app.AlertDialog.Builder(it)
-        }
-
         builder?.setMessage(msg)
-            ?.setTitle(title)?.setPositiveButton(
+            ?.setTitle(getString(R.string.app_name))?.setPositiveButton(
                 R.string.ok
-            ) { dialog, id ->
-                val action = UnitFormFragmentDirections.actionNavToHome()
-                (activity as DashboardActivity).getNavController().navigate(action)
+            ) { _, _ ->
 
             }
-        builder?.create()?.show()
+        mAlertDialog = builder?.create()
+        mAlertDialog?.show()
+
     }
 
-    private fun getEmptyFieldsMsg(): String {
+
+    private fun showSuccessDialog() {
+        val action = UnitFormFragmentDirections.actionNavToMsg()
+        val navC = (activity as DashboardActivity).getNavController()
+
+        try {
+            action?.let {
+                navC.navigate(action)
+            }
+        } catch (e: IllegalArgumentException) {
+            // User tried tapping 2 links at once!
+            Log.i("nav error", "Can't open 2 links at once!")
+        }
+        /*  if (action != null &&
+              navC.currentDestination?.id == R.id.unitFormFragment
+              && navC.currentDestination?.id != action.actionId
+          ) {
+              action?.let {
+                  navC.navigate(action)
+              }
+          } else {
+              if (mAlertDialog?.isShowing == true) {
+                  mAlertDialog?.dismiss()
+              }
+              action?.let {
+                  navC.navigate(action)
+              }
+             /* Timer().schedule(2000) {
+                  action?.let {
+                  }
+              }*/
+          }*/
+
+    }
+
+    private fun getEmptyFieldsMsg(familyData: ArrayList<FamilyMemberRequest>): String {
         var errorMsg = ""
         val firstName = binding.etFname.text.toString()
         val lastName = binding.etLname.text.toString()
         val member_id: String = binding.etId.text.toString()
         val email = binding.etEmail.text.toString()
         val mobile = "9665" + binding.layoutMobile.etMobile.text.toString()
+        val familyDataError = getFamilyDataError(familyData)
 
         //employee required fields
         if (mobile.isNullOrEmpty() || mobile.length < 8) {
@@ -477,11 +500,37 @@ class UnitFormFragment : Fragment() {
             errorMsg = getString(R.string.id_error)
         } else if (member_id.length < 10) {
             errorMsg = getString(R.string.id_length_error)
+        } else if (!familyDataError.isNullOrEmpty()) {
+            errorMsg = familyDataError
         }
+
 
         return errorMsg
     }
 
+    private fun getFamilyDataError(familyData: ArrayList<FamilyMemberRequest>): String {
+        var errorMsg = ""
+
+        for (member in familyData) {
+            val id = member.member_id
+            val lName = member.last_name
+            val mobile = "9665" + member.contact_no
+            val email = member.email
+
+            if (id.isNullOrEmpty()) {
+                errorMsg = getString(R.string.id_error)
+            } else if (id.length < 10) {
+                errorMsg = getString(R.string.id_length_error)
+            } else if (mobile.isNullOrEmpty() || mobile.length < 8) {
+                errorMsg = getString(R.string.contact_error)
+            } else if (email.isNullOrEmpty() || !email.isEmailValid()) {
+                errorMsg = getString(R.string.email_error)
+            }
+
+        }
+
+        return errorMsg
+    }
 
     //    --------chosing image dialog-------------
 

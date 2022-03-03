@@ -99,7 +99,7 @@ class CreateServiceFragment : Fragment() {
              //   token?.let { it1 -> viewModel.addService(it1, request) }
                 setServiceCreationObserver(it)
             } else {
-                showSuccessDialog(
+                showAlertDialog(
                     context as Activity,
                     getString(R.string.app_name),
                     getString(R.string.empty_fields)

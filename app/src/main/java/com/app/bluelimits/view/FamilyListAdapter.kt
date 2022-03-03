@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
 import com.app.bluelimits.databinding.ItemAddFamilyBinding
@@ -16,6 +18,8 @@ import com.app.bluelimits.model.FamilyMember
 import com.app.bluelimits.model.FamilyMemberRequest
 import com.app.bluelimits.model.User
 import com.app.bluelimits.util.hideKeyboard
+import com.app.bluelimits.util.isEmailValid
+import com.app.bluelimits.util.showAlertDialog
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -45,7 +49,7 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FamilyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        _binding = ItemAddFamilyBinding.inflate(inflater,parent,false)
+        _binding = ItemAddFamilyBinding.inflate(inflater, parent, false)
         return FamilyViewHolder(binding)
     }
 
@@ -64,6 +68,25 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
         val cb_male: CheckBox = holder.view.checkboxMale
         val cb_female: CheckBox = holder.view.checkboxFemale
 
+        et_email.textChanges()
+            .debounce(3, TimeUnit.SECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { textChanged ->
+                val email = et_email.text.toString()
+              //  person.email = email
+
+                 if (!email.isNullOrEmpty()) {
+                     if (!email.isEmailValid()) {
+                         showAlertDialog(
+                             context as Activity, context.getString(R.string.app_name),
+                             context.getString(R.string.email_error)
+                         )
+                     } else
+                         person.email = email
+                 }
+            }
+
+
         et_fName.textChanges()
             .debounce(3, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
@@ -75,35 +98,56 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
             .debounce(3, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-                person.last_name =  et_lName.text.toString()
+                person.last_name = et_lName.text.toString()
             }
 
         et_mobile.textChanges()
-            .debounce(3, TimeUnit.SECONDS)
+            .debounce(4, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-                person.contact_no = et_mobile.text.toString()
+                val mobile = et_mobile.text.toString()
+                if (!mobile.isNullOrEmpty()) {
+                    if (mobile.length < 8) {
+                        showAlertDialog(
+                            context as Activity,
+                            context.getString(R.string.app_name),
+                            context.getString(R.string.contact_error)
+                        )
+
+                    } else
+                        person.contact_no = mobile
+                }
+
             }
 
         et_dob.setOnClickListener(View.OnClickListener {
-            showDate(person,et_dob)
+            showDate(person, et_dob)
         })
 
         et_id.textChanges()
-            .debounce(3, TimeUnit.SECONDS)
+            .debounce(4, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-                if(!et_id.text.toString().isEmpty())
-                    person.member_id = et_id.text.toString()
+                val id = et_id.text.toString()
+
+                  if (!id.isNullOrEmpty()) {
+                      if (id.length < 10) {
+                          showAlertDialog(
+                              context as Activity, context.getString(R.string.app_name),
+                              context.getString(R.string.id_length_error)
+                          )
+
+                      } else
+                          person.member_id = id
+                }
             }
 
-        person.gender = com.app.bluelimits.util.getGender(cb_female,cb_male)
+        person.gender = com.app.bluelimits.util.getGender(cb_female, cb_male)
 
         enteredData.add(person)
     }
 
-    fun getData(): ArrayList<FamilyMemberRequest>
-    {
+    fun getData(): ArrayList<FamilyMemberRequest> {
         return enteredData
     }
 
@@ -140,7 +184,6 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
             }.display()
 
     }
-
 
 
 }

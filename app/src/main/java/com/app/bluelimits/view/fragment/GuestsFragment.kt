@@ -18,7 +18,7 @@ import com.app.bluelimits.model.GuestData
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
 import com.app.bluelimits.util.setHomeNavigation
-import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.util.showAlertDialog
 import com.app.bluelimits.viewmodel.GuestsViewModel
 import com.google.gson.Gson
 
@@ -75,7 +75,7 @@ class GuestsFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showSuccessDialog(
+                    showAlertDialog(
                         context as Activity,
                         getString(R.string.app_name),
                         getString(R.string.loading_error)

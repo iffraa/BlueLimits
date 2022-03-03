@@ -100,7 +100,7 @@
                 <EditText
                     android:id="@+id/et_visitors_time"
                     android:layout_width="@dimen/_180sdp"
-                    android:layout_height="52dp"
+                    android:layout_height="@dimen/_35sdp"
                     android:background="@drawable/rectangle"
                     android:focusableInTouchMode="false"
                     android:fontFamily="@font/jura_demi_bold"
@@ -197,6 +197,7 @@
             android:layout_height="@dimen/_40sdp"
             android:background="@drawable/btn_form_grey"
             android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:text="@string/submit"
             android:textStyle="bold"
             android:textSize="@dimen/_15ssp"

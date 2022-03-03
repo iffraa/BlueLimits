@@ -247,6 +247,11 @@
         <action
             android:id="@+id/action_nav_to_home"
             app:destination="@id/nav_home"></action>
+
+        <action
+            android:id="@+id/action_nav_to_msg"
+            app:destination="@id/nav_reservation_msg"></action>
+
     </fragment>
 
     <fragment

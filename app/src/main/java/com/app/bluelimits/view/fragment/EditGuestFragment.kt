@@ -120,7 +120,7 @@ class EditGuestFragment : Fragment() {
             if (!noOfGuests.isNullOrEmpty() && noOfGuests != "0") {
                 val idMsg = checkGuestsID(guestListAdapter.getData(), requireContext())
                 if (idMsg.isNotEmpty()) {
-                    showSuccessDialog(requireActivity(), getString(R.string.app_name), idMsg)
+                    showAlertDialog(requireActivity(), getString(R.string.app_name), idMsg)
                 } else {
                     addGuests()
                     observeReservationVM()

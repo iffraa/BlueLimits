@@ -14,7 +14,7 @@ import com.app.bluelimits.R
 import com.app.bluelimits.databinding.ItemGuestBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
-import com.app.bluelimits.util.showSuccessDialog
+import com.app.bluelimits.util.showAlertDialog
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
@@ -79,7 +79,7 @@ class AddGuestAdapter() :
                 val id = et_id.text.toString()
                 if (!id.isNullOrEmpty()) {
                     if(id.length < 10){
-                        showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.id_length_error))
+                        showAlertDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.id_length_error))
                     }
                     else
                         guest.id_no = id

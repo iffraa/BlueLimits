@@ -318,6 +318,7 @@ data class FamilyMemberRequest(
     var contact_no: String,
     var birth_date: String,
     var gender: String,
+    var email: String,
 
     )
 
@@ -408,9 +409,44 @@ data class RegisterMemberRequest(
 )
 
 data class Guest(
-    var id: String, var name: String, var gender: String, var id_no: String, var contact_no: String,
-    val qr_code: String, val status: String
-)
+    var id: String?, var name: String?, var gender: String?, var id_no: String?, var contact_no: String?,
+    val qr_code: String?, val status: String?
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(name)
+        parcel.writeString(gender)
+        parcel.writeString(id_no)
+        parcel.writeString(contact_no)
+        parcel.writeString(qr_code)
+        parcel.writeString(status)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Guest> {
+        override fun createFromParcel(parcel: Parcel): Guest {
+            return Guest(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Guest?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 data class GHReservationRequest(
     var setup_unit_id: String,

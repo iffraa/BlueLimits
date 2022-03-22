@@ -647,6 +647,7 @@ data class VisitorDetail(
     var gender: String?,
     val status: String?,
     var package_id: String?,
+    var payment_status: String?,
 
     @SerializedName("package")
     var servicePackage: ServicePackage?,
@@ -656,6 +657,7 @@ data class VisitorDetail(
 
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -675,6 +677,7 @@ data class VisitorDetail(
         parcel.writeString(name)
         parcel.writeString(contact_no)
         parcel.writeString(id_no)
+        parcel.writeString(payment_status)
         parcel.writeString(gender)
         parcel.writeString(status)
         parcel.writeString(package_id)

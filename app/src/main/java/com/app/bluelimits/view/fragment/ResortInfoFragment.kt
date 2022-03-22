@@ -2,7 +2,6 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.content.res.Resources
-import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import com.app.bluelimits.databinding.FragmentResortInfoBinding
 import com.app.bluelimits.model.Resort
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.setHomeNavigation
-import com.daimajia.slider.library.SliderLayout
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView
 import androidx.viewpager.widget.ViewPager
 import com.app.bluelimits.view.ViewPagerAdapter
@@ -56,22 +54,27 @@ class ResortInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         when {
-            type.name?.contains(Constants.OIA) == true -> setLayout(
-                R.drawable.oia_logo,
-                R.drawable.boho_slide1,
-                getString(R.string.oia_info)
-            )
+            type.name?.contains(Constants.OIA) == true -> {
+                setLayout(
+                    R.drawable.oia_logo,
+                    R.drawable.boho_slide1,
+                    getString(R.string.oia_info)
+                )
+                setOIASlider()
+            }
+
             type.name?.contains(Constants.BOHO) == true -> setLayout(
                 R.drawable.boho_logo,
                 R.drawable.boho_slide1,
                 getString(R.string.boho_info)
             )
-            type.name?.contains(Constants.MARINE) == true ->
+            type.name?.contains(Constants.MARINE) == true -> {
                 setMarineLayout(R.drawable.splash_logo)
+                setMarineSlider()
+            }
 
         }
 
-        setSliderImgs()
 
         if (type.name?.contains(Constants.MARINE) == true) {
             setReqTripLayout()
@@ -157,9 +160,12 @@ class ResortInfoFragment : Fragment() {
         binding.tvInfo.visibility = View.GONE
         binding.llMarine.visibility = View.VISIBLE
 
+        binding.llArrows.visibility = View.INVISIBLE
+
+
     }
 
-    private fun setSliderImgs() {
+    private fun setOIASlider() {
         val images = intArrayOf(
             R.drawable.boho_slide1,
             R.drawable.boho_slide2,
@@ -184,6 +190,20 @@ class ResortInfoFragment : Fragment() {
             mViewPager!!.setCurrentItem(mViewPager!!.getCurrentItem() + 1, true);
 
         }
+    }
+
+    private fun setMarineSlider() {
+        val images = intArrayOf(
+            R.drawable.marine_image
+        )
+
+        mViewPager = binding.viewPager
+
+        // Initializing the ViewPagerAdapter
+        mViewPagerAdapter = ViewPagerAdapter(requireContext(), images)
+
+        // Adding the Adapter to the ViewPager
+        mViewPager!!.adapter = mViewPagerAdapter
     }
 
 }

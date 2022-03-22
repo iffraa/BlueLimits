@@ -22,7 +22,7 @@ class LogoutFragment : DialogFragment() {
         AlertDialog.Builder(requireContext())
             .setMessage(getString(R.string.logout_msg))
             .setPositiveButton(getString(R.string.yes)) { _,_ ->
-                (activity as DashboardActivity).changeLoginDisplay(false)
+                (activity as DashboardActivity).changeLoginDisplay(false,false)
                 clearData()
 
                 val intent = Intent(activity, MainActivity::class.java)

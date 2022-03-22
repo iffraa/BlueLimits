@@ -14,6 +14,7 @@ import com.app.bluelimits.R
 import com.app.bluelimits.databinding.ItemGuestBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
+import com.app.bluelimits.util.hideKeyboard
 import com.app.bluelimits.util.showAlertDialog
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -86,11 +87,11 @@ class AddGuestAdapter() :
                 }
 
             }
+        getGender(cb_female, cb_male, guest)
 
-        if(!isContain(guest))
+     //   if(!isContain(guest))
             enteredData.add(guest)
 
-        getGender(cb_female, cb_male, guest)
 
     }
 
@@ -108,6 +109,8 @@ class AddGuestAdapter() :
                     femaleChkBx.setChecked(true)
                     selectFemale(maleChkBx,guest)
                 }
+                hideKeyboard(context as Activity)
+
             }
         })
 
@@ -122,6 +125,9 @@ class AddGuestAdapter() :
                     maleChkBx.setChecked(true)
                     selectMale(femaleChkBx,guest)
                 }
+
+                hideKeyboard(context as Activity)
+
             }
         })
 
@@ -131,13 +137,13 @@ class AddGuestAdapter() :
     private fun selectFemale(maleChkBx: CheckBox, guest: Guest){
         maleChkBx.setChecked(false)
         guest.gender = Constants.FEMALE
-        notifyDataSetChanged();
+      //  notifyDataSetChanged();
     }
 
     private fun selectMale(femaleChkBx: CheckBox, guest: Guest){
         femaleChkBx.setChecked(false)
         guest.gender = Constants.MALE
-        notifyDataSetChanged();
+     //   notifyDataSetChanged();
 
     }
 

@@ -67,10 +67,15 @@ class LoginFragment : Fragment() {
 
         binding.btnLogin.setOnClickListener {
 
+
             if (context?.let { it1 -> ConnectivityUtils.isConnected(it1) } == true) {
-           //   binding.etEmail.setText("warsi@gmail.com")
-           //         binding.etEmail.setText("test@gmail.com")
-            //    binding.etPwd.setText("12345678")
+               //    binding.etEmail.setText("warsi@gmail.com")
+               //      binding.etPwd.setText("12345678")
+
+             //   binding.etEmail.setText("drosa@bluelimits.com")
+             //   binding.etPwd.setText("Maleeka@123")
+
+                viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
                 if (!binding.etEmail.text.isEmpty() && !binding.etPwd.text.isEmpty()) {
                     binding.rlInclude.visibility = View.VISIBLE
@@ -148,8 +153,9 @@ class LoginFragment : Fragment() {
             }
         })
 
-        viewModel.user.observe(viewLifecycleOwner, Observer { user ->
+        viewModel.userLiveEvent.observe(viewLifecycleOwner, Observer { user ->
             user?.let {
+
                 Constants.isLoggedIn = true
 
                 setPermissions(user)
@@ -169,32 +175,37 @@ class LoginFragment : Fragment() {
             .setPopUpTo(R.id.nav_login, true)
             .build()
 
-        val action = viewModel.user.value?.let {
+        val action = viewModel.userLiveEvent.value?.let {
             LoginFragmentDirections.actionNavLoginFragToUserDashboardFragment(
                 it
             )
         }
-        action?.let { Navigation.findNavController(view).navigate(it, navOptions) }
+        try {
+            action?.let { Navigation.findNavController(view).navigate(it, navOptions) }
+        } catch (e: Exception) {
+        }
     }
 
 
-    private fun setPermissions(user: User)
-    {
+    private fun setPermissions(user: User) {
         val permissions = user.permissions
-        var guestCheck  = false
+        var guestCheck = false
         var visitorCheck = false
 
-        for(value in permissions)
-        {
+        for (value in permissions) {
             val permission = value.name
-            if(!guestCheck)
+            if (!guestCheck)
                 guestCheck = Constants.PERMISSION_GUEST in permission
 
-            if(!visitorCheck)
+            if (!visitorCheck)
                 visitorCheck = Constants.PERMISSION_VISITOR in permission
         }
 
-        (activity as DashboardActivity).changeLoginDisplay(true)
+        var isAdmin = false
+        if (user.user_type == Constants.admin)
+            isAdmin = true
+
+        (activity as DashboardActivity).changeLoginDisplay(true, isAdmin)
 
         (activity as DashboardActivity).setPermissions(guestCheck, true)
         (activity as DashboardActivity).setPermissions(visitorCheck, false)

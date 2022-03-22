@@ -107,14 +107,12 @@ class EditVisitorAdapter(
             }
 
         fetchGenderPackage(cb_female, cb_male, visitor, price)
-
-        if (!isContain(enteredData, visitor))
-            enteredData.add(visitor)
         getWhoWillPay(rbSender, rbVisitor, visitor)
 
         price.setText(visitor.price)
-
         setData(visitor, holder)
+        enteredData.add(visitor)
+
     }
 
     private fun isContain(enteredList: ArrayList<VisitorDetail>, visitor: VisitorDetail): Boolean {
@@ -193,7 +191,6 @@ class EditVisitorAdapter(
             hideKeyboard(context as Activity)
             who_will_pay = "sender"
             visitor.who_will_pay = who_will_pay
-            notifyDataSetChanged();
 
 
         }
@@ -202,7 +199,6 @@ class EditVisitorAdapter(
             hideKeyboard(context as Activity)
             who_will_pay = "visitor"
             visitor.who_will_pay = who_will_pay
-            notifyDataSetChanged();
 
         }
     }

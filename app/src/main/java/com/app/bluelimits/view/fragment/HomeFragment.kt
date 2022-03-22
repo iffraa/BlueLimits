@@ -118,6 +118,11 @@ class HomeFragment : Fragment() {
                             if (resort.name.equals("BOHO Resort")) {
                                 iterator.remove()
                             }
+                            else if(resort.name.equals("OIA Resort") && Constants.isLoggedIn)
+                            {
+                                iterator.remove()
+
+                            }
                         }
 
                         addMarine(it)

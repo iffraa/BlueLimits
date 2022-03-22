@@ -114,7 +114,7 @@
 
         <LinearLayout
             android:id="@+id/ll_squares"
-            android:layout_width="@dimen/_234sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_progress"
             android:layout_centerHorizontal="true"
@@ -292,7 +292,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/jura_demi_bold"
-                android:text="200 POINTS"
+                android:text="0 POINTS"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_23ssp"></TextView>
 

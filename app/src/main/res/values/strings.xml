@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BlueLimits</string>
+    <string name="app_name">BlueLimit</string>
     <string name="login">LOGIN</string>
     <string name="apply">APPLY</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -20,7 +20,7 @@
     <string name="pwd_confirm">Confirm Password</string>
     <string name="password">Password</string>
     <string name="update">Update</string>
-    <string name="update_pwd">Update Password</string>
+    <string name="update_pwd">Change Password</string>
     <string name="new_pwd">New Password</string>
     <string name="chnge_pwd">CHANGE PASSWORD</string>
 
@@ -168,6 +168,7 @@
     <string name="booking_unavailable">Sorry.Booking not avaialble.</string>
     <string name="brochure">BROCHURE</string>
 
+    <string name="pckg_unavialable">Pacakges not available at selected time.</string>
     <string name="reserv_date">Reservation date</string>
     <string name="full_name">Full Name</string>
     <string name="contact_num">Contact Number</string>

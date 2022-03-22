@@ -1,8 +1,8 @@
 package com.app.bluelimits.viewmodel
 
 
+import SingleLiveEvent
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import com.app.bluelimits.model.APIResponse
 import com.app.bluelimits.model.ResortApiService
 import com.app.bluelimits.model.User
@@ -14,47 +14,46 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
-class LoginViewModel(application: Application): BaseViewModel(application) {
+class LoginViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefsHelper = SharedPreferencesHelper(getApplication())
     private val resortService = ResortApiService()
     private val disposable = CompositeDisposable()
 
-    var user = MutableLiveData<User>()
-    val loadError = MutableLiveData<Boolean>()
-    val loading = MutableLiveData<Boolean>()
+    var userLiveEvent = SingleLiveEvent<User>()
+    val loadError = SingleLiveEvent<Boolean>()
+    val loading = SingleLiveEvent<Boolean>()
 
-    fun loginUser(user_name: String, pwd: String, type: String)
-    {
+    fun loginUser(user_name: String, pwd: String, type: String) {
         loading.value = true
-        resortService.login(user_name,pwd,type)
+        resortService.login(user_name, pwd, type)
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())?.let {
                 disposable.add(
-                it
-                    .subscribeWith(object : DisposableSingleObserver<APIResponse>() {
-                        override fun onSuccess(response: APIResponse) {
-                            val gson = Gson()
-                            val user_data = gson.toJson(response.data)
-                            prefsHelper.saveData(user_data,Constants.USER_DATA)
-                            response.data.user?.let { it1 -> userRetrieved(it1) }
-                        }
+                    it
+                        .subscribeWith(object : DisposableSingleObserver<APIResponse>() {
+                            override fun onSuccess(response: APIResponse) {
+                                val gson = Gson()
+                                val user_data = gson.toJson(response.data)
+                                prefsHelper.saveData(user_data, Constants.USER_DATA)
+                                response.data.user?.let { it1 -> userRetrieved(it1) }
+                            }
 
-                        override fun onError(e: Throwable) {
-                            loadError.value = true
-                            loading.value = false
-                            e?.printStackTrace()
-                        }
+                            override fun onError(e: Throwable) {
+                                loadError.value = true
+                                loading.value = false
+                                e?.printStackTrace()
+                            }
 
-                    }))
+                        })
+                )
             }
 
     }
 
 
-    private fun userRetrieved(user: User)
-    {
-        this.user.value = user
+    fun userRetrieved(user: User) {
+        this.userLiveEvent.value = user
         loadError.value = false
         loading.value = false
 
@@ -64,5 +63,6 @@ class LoginViewModel(application: Application): BaseViewModel(application) {
         super.onCleared()
         disposable.clear()
     }
+
 
 }

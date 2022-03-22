@@ -222,6 +222,7 @@
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="number"
                 android:lines="1"
+                android:nextFocusDown="@+id/et_dob"
                 android:maxLength="10"
                 android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/navy_blue"
@@ -245,6 +246,10 @@
                 android:focusableInTouchMode="false"
                 android:fontFamily="@font/jura_demi_bold"
                 android:lines="1"
+                android:inputType="text"
+                android:nextFocusDown="@+id/cb_male"
+                android:nextFocusForward="@+id/cb_male"
+
                 android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>

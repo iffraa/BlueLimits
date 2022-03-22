@@ -22,6 +22,7 @@ import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import com.app.bluelimits.databinding.ActivityMainBinding
 import com.app.bluelimits.util.Constants
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 
 
 class MainActivity : Activity() {
@@ -35,6 +36,8 @@ class MainActivity : Activity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        Constants.isLoggedIn = false
 
     }
 
@@ -97,7 +100,7 @@ class MainActivity : Activity() {
         super.onResume()
 
         loadGif()
-  //      binding.llBtns.visibility = View.VISIBLE
+        binding.llBtns.visibility = View.VISIBLE
 
     }
 

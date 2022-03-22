@@ -101,6 +101,7 @@
                 android:background="@drawable/rectangle"
                 android:fontFamily="@font/jura_demi_bold"
                 android:lines="1"
+                android:inputType="number"
                 android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>
@@ -124,6 +125,10 @@
                 android:focusableInTouchMode="false"
                 android:fontFamily="@font/jura_demi_bold"
                 android:lines="1"
+                android:inputType="text"
+                android:nextFocusDown="@+id/cb_male"
+                android:nextFocusForward="@+id/cb_male"
+                android:singleLine="true"
                 android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>

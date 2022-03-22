@@ -2,7 +2,9 @@ package com.app.bluelimits.view.fragment
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +29,16 @@ import com.app.bluelimits.viewmodel.VisitorInviteViewModel
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.google.gson.Gson
 import com.jakewharton.rxbinding4.widget.textChanges
+import com.payfort.fortpaymentsdk.FortSdk
+import com.payfort.fortpaymentsdk.callbacks.FortCallBackManager
+import com.payfort.fortpaymentsdk.callbacks.FortInterfaces
+import com.payfort.fortpaymentsdk.domain.model.FortRequest
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -58,6 +70,9 @@ class VisitorEditFragment : Fragment() {
     private var packages: HashMap<String, ServicePackage> = hashMapOf()
     private lateinit var visitorsData: VisitorResult
     private var isNewVisitor: Boolean = false
+    private var paymentHelper: PaymentHelper? = null
+    private var navController: NavController? = null
+    private var fortCallBackManager: FortCallBackManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +108,9 @@ class VisitorEditFragment : Fragment() {
                 showDateDialog(data)
             })*/
 
+        if (fortCallBackManager == null)
+            fortCallBackManager = FortCallBackManager.Factory.create()
+
         navigateToListing();
 
         binding.btnSubmit.setOnClickListener(View.OnClickListener {
@@ -109,9 +127,17 @@ class VisitorEditFragment : Fragment() {
             } else {
                 val idMsg = checkVisitorsID(visitorListAdapter.getData(), requireContext())
                 if (idMsg.isEmpty()) {
-                    binding.rlInclude.visibility = View.VISIBLE
-                    updateVisitors()
-                    observeViewModel()
+
+                    if (willSenderPay(visitorListAdapter!!.getData())) {
+                        val amount =getPayableAmount(visitorListAdapter!!.getData())
+                        if (!amount.equals("0")) {
+                            payForVisitor()
+                        } else {
+                            updateServerVisitor()
+                        }
+                    } else {
+                        updateServerVisitor()
+                    }
                 }
                 else
                 {
@@ -131,6 +157,25 @@ class VisitorEditFragment : Fragment() {
 
         populateDetails()
         setHomeNavigation(context as Activity, VisitorEditFragmentDirections.actionNavToHome())
+    }
+
+    fun willSenderPay(visitors: ArrayList<VisitorDetail>): Boolean {
+        for (visitor in visitors) {
+            val payment = visitor.who_will_pay
+            if (payment == "sender") {
+                return true
+            }
+        }
+
+        return false
+    }
+
+
+    private fun updateServerVisitor()
+    {
+        binding.rlInclude.visibility = View.VISIBLE
+        updateVisitors()
+        observeViewModel()
     }
 
     private fun checkVisitorsID(visitors: ArrayList<VisitorDetail>, context: Context): String
@@ -174,7 +219,7 @@ class VisitorEditFragment : Fragment() {
     }
 
     private fun getResorts(data: Data) {
-        data.token?.let { viewModel.getCustomerResorts(it) }
+        data.token?.let { viewModel.getCustomerResorts(it,requireContext()) }
         observeResortVM()
     }
 
@@ -255,7 +300,7 @@ class VisitorEditFragment : Fragment() {
             isNewVisitor = true
             repeat(visitorsAdded) {
                 val person = VisitorDetail(
-                    "0", "", "", "", "", "", "",
+                    "0", "", "", "", "", "", "","",
                     null, "", "", ""
                 )
                 visitorsData.visitors?.add(person)
@@ -336,9 +381,28 @@ class VisitorEditFragment : Fragment() {
         return Triple(total.toString(), subTotal.toString(), discount.toString())
     }
 
+    private fun setWhoWillPay()
+    {
+        val visitors: ArrayList<VisitorDetail> = visitorListAdapter.getData()
+        for(visitor in visitors)
+        {
+            val whoWillPay = visitor.who_will_pay
+            if(whoWillPay == "I will pay")
+            {
+                visitor.who_will_pay = "sender"
+            }
+            else if(whoWillPay == "Visitor will pay")
+            {
+                visitor.who_will_pay = "visitor"
+            }
+        }
+
+    }
+
+
     fun updateVisitors() {
         var visitors: ArrayList<VisitorDetail> = visitorListAdapter.getData()
-        //  visitors = visitors.distinct() as ArrayList<VisitorDetail>
+        setWhoWillPay()
         var (total, subTotal, discount) = getPriceInfo(visitors)
 
         prefsHelper = context?.let { SharedPreferencesHelper(it) }!!
@@ -523,8 +587,6 @@ class VisitorEditFragment : Fragment() {
                 ?.setTitle(title)?.setPositiveButton(
                     R.string.ok
                 ) { dialog, id ->
-                    val action = VisitorEditFragmentDirections.actionNavToList()
-                    Navigation.findNavController(binding.btnSubmit).navigate(action)
 
                 }
             mAlertDialog = builder?.create()
@@ -537,10 +599,12 @@ class VisitorEditFragment : Fragment() {
         updateVM.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
                 binding.rlInclude.visibility = View.GONE
-                showAlertDialog(
-                    requireContext().getString(R.string.app_name),
-                    msg
-                )
+                try {
+                    val action = VisitorEditFragmentDirections.actionNavToList()
+                    Navigation.findNavController(binding.btnSubmit).navigate(action)
+                }
+                catch (e: Exception){}
+
             }
 
         })
@@ -552,7 +616,7 @@ class VisitorEditFragment : Fragment() {
                     showAlertDialog(
                         requireActivity(),
                         getString(R.string.app_name),
-                        getString(R.string.add_visitor_error)
+                        "Sorry. Cannot update."
                     )
                 }
             }
@@ -566,33 +630,6 @@ class VisitorEditFragment : Fragment() {
         })
     }
 
-    fun showDateDialog(data: Data) {
-
-        hideKeyboard(context as Activity)
-
-        val d = Date()
-        val dateDialog = SingleDateAndTimePickerDialog.Builder(context)
-
-        dateDialog.title(getString(R.string.select_date))
-            .titleTextColor(getResources().getColor(R.color.white))
-            .minutesStep(1)
-            .minDateRange(d).mustBeOnFuture()
-            .backgroundColor(getResources().getColor(R.color.white))
-            .mainColor(getResources().getColor(R.color.blue_text))
-            .listener { date ->
-                val DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm aa"
-                val sdf = SimpleDateFormat(DATE_TIME_FORMAT)
-                val sdate = sdf.format(date)
-                binding.etVisitorsTime.setText(sdate)
-
-                data.token?.let {
-                    getTotalVisitors(it, sdate)
-
-                }
-            }.display()
-
-    }
-
     private fun getPackages() {
 
         val visitingDate = binding.etVisitorsTime.text.toString()
@@ -600,7 +637,7 @@ class VisitorEditFragment : Fragment() {
         data.token?.let {
             viewModel.getMalePackage(
                 it, visitingDate,
-                data.user?.resort_id.toString()
+                data.user?.resort_id.toString(), requireContext()
             )
             observeMalePckgVM()
 
@@ -608,7 +645,7 @@ class VisitorEditFragment : Fragment() {
             viewModel.getFemalePackage(
                 it,
                 visitingDate,
-                data.user?.resort_id.toString()
+                data.user?.resort_id.toString(),requireContext()
             )
             observeFemalePckgVM()
 
@@ -709,6 +746,162 @@ class VisitorEditFragment : Fragment() {
 
         val typeface = ResourcesCompat.getFont(requireContext(), R.font.jura_demi_bold)
         binding.tvVisitorsLbl.typeface = typeface
+    }
+
+    //-----------------payment methods------------------
+
+    private fun payForVisitor() {
+           val url = "https://sbpaymentservices.payfort.com/FortAPI/"
+      //  val url = "https://paymentservices.payfort.com/FortAPI/"
+
+        paymentHelper = PaymentHelper()
+        val request = paymentHelper?.getTokenRequest(requireContext())
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(PaymentAPI::class.java)
+
+        val repos: Call<PayFortData>? = request?.let {
+            service.postRequest(
+                it
+            )
+        }
+
+        repos?.enqueue(object : Callback<PayFortData?> {
+            override fun onResponse(call: Call<PayFortData?>?, response: Response<PayFortData?>) {
+                val sdkToken = response.body()?.sdk_token
+
+                if (sdkToken != null) {
+                    val fortRequest = paymentHelper?.getFortRequest(
+                        sdkToken,
+                        getPayableAmount(visitorListAdapter!!.getData())
+                    )
+                    processPayment(fortRequest!!)
+                } else {
+                    showAlertDialog(
+                        "Token not fetched"
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<PayFortData?>?, t: Throwable?) {
+                t?.stackTraceToString()?.let { Log.e("onResponse: ", it) }
+
+            }
+        })
+
+    }
+
+    fun showAlertDialog(msg: String) {
+        if (builder == null) {
+            builder = activity?.let {
+                AlertDialog.Builder(it)
+            }
+
+            builder?.setMessage(msg)
+                ?.setTitle(getString(R.string.app_name))?.setPositiveButton(
+                    R.string.ok
+                ) { _, _ ->
+
+                }
+            mAlertDialog = builder?.create()
+            mAlertDialog?.show()
+        }
+    }
+
+
+
+    fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+        fortCallback: FortCallBackManager
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        try {
+            fortCallBackManager = fortCallback
+            fortCallback!!.onActivityResult(requestCode, resultCode, data)
+            Log.i("fort", "onActivityResult")
+        } catch (e: Exception) {
+            Log.i("fort", e.message!!)
+        }
+
+    }
+
+    private fun processPayment(fortRequest: FortRequest) {
+        try {
+            FortSdk.getInstance()
+                .registerCallback(requireActivity(),
+                    fortRequest,
+                    FortSdk.ENVIRONMENT.TEST,
+                    paymentHelper?.getRandomNumber()!!,
+                    fortCallBackManager,
+                    true,
+                    object : FortInterfaces.OnTnxProcessed {
+                        override fun onCancel(
+                            requestParamsMap: Map<String, Any>,
+                            responseMap: Map<String, Any>
+                        ) {
+                            Log.e("onCancel: ", responseMap.toString())
+                            updatePaymentStatus(false)
+                            updateVisitors()
+
+                        }
+
+                        override fun onSuccess(
+                            requestParamsMap: Map<String, Any>,
+                            fortResponseMap: Map<String, Any>
+                        ) {
+                            Log.e("onSuccess: ", requestParamsMap.toString())
+                            if (requestParamsMap.size > 0) {
+                                updatePaymentStatus(true)
+                                updateVisitors()
+
+                            }
+                        }
+
+                        override fun onFailure(
+                            requestParamsMap: Map<String, Any>,
+                            fortResponseMap: Map<String, Any>
+                        ) {
+                            Log.e("onFailure: ", requestParamsMap.toString())
+                            updatePaymentStatus(false)
+                            updateServerVisitor()
+
+
+                        }
+                    })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun updatePaymentStatus(isSuccess: Boolean) {
+        for (visitor in visitorListAdapter!!.getData()) {
+            val payment = visitor.who_will_pay
+            if (payment == "sender" && isSuccess) {
+                visitor.payment_status = Constants.PAID
+            }
+        }
+        Log.i("visitor", visitorListAdapter!!.getData().toString())
+    }
+
+
+    fun getPayableAmount(visitors: ArrayList<VisitorDetail>): String {
+        var price = 0
+        for (visitor in visitors) {
+            if (!visitor.price.isNullOrEmpty()) {
+                val payment = visitor.who_will_pay
+                if (payment == "sender") {
+                    val amount = visitor.price!!.toInt()
+                    price += amount
+                }
+            }
+        }
+        return price.toString()
     }
 
 

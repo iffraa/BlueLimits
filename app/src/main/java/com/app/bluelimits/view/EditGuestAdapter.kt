@@ -92,8 +92,8 @@ class EditGuestAdapter() :
             }
 
 
-        enteredData.add(guest)
         getGender(cb_female, cb_male, guest)
+        enteredData.add(guest)
 
         setData(guest, holder)
     }
@@ -149,13 +149,11 @@ class EditGuestAdapter() :
     private fun selectFemale(maleChkBx: CheckBox, guest: Guest){
         maleChkBx.setChecked(false)
         guest.gender = Constants.FEMALE
-        notifyDataSetChanged();
     }
 
     private fun selectMale(femaleChkBx: CheckBox, guest: Guest){
         femaleChkBx.setChecked(false)
         guest.gender = Constants.MALE
-        notifyDataSetChanged();
 
     }
 

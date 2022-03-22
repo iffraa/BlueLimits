@@ -1,6 +1,7 @@
 package com.app.bluelimits.viewmodel
 
 
+import SingleLiveEvent
 import android.app.Activity
 import android.app.Application
 import android.content.Context
@@ -21,14 +22,15 @@ class VisitorEditViewModel(application: Application): BaseViewModel(application)
 
     private val resortService = ResortApiService()
     private val disposable = CompositeDisposable()
-    var resorts = MutableLiveData<ArrayList<Resort>>()
-    var totalVisitors = MutableLiveData<TotalVisitorsResponse>()
+    var resorts = SingleLiveEvent<ArrayList<Resort>>()
+    var totalVisitors = SingleLiveEvent<TotalVisitorsResponse>()
 
-    var message = MutableLiveData<String>()
-    var malePackage = MutableLiveData<ServicePackage>()
-    var femalePackage = MutableLiveData<ServicePackage>()
-    val loadError = MutableLiveData<Boolean>()
-    val loading = MutableLiveData<Boolean>()
+    var message = SingleLiveEvent<String>()
+    var malePackage = SingleLiveEvent<ServicePackage>()
+    var femalePackage = SingleLiveEvent<ServicePackage>()
+    val loadError = SingleLiveEvent<Boolean>()
+    val loading = SingleLiveEvent<Boolean>()
+    val errorMsg = SingleLiveEvent<String>()
 
     fun getCustomerResorts(token: String)
     {
@@ -145,6 +147,13 @@ class VisitorEditViewModel(application: Application): BaseViewModel(application)
                                                 errors)
 
                                         }
+                                    }
+                                    else if (jObjError.has("message")) {
+                                        val errors=
+                                            jObjError.getString("message")
+                                        showAlertDialog(context as Activity,
+                                            context.getString(R.string.app_name),
+                                            errors)
                                     }
                                 }
                                // showSuccessDialog(context as Activity, context.getString(R.string.app_name), context.getString(R.string.add_visitor_error))

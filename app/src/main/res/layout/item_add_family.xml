@@ -182,7 +182,6 @@
                     android:button="@drawable/chkbox_bg"
                     android:paddingLeft="@dimen/_10sdp"
                     android:buttonTint="@color/grey_text"
-                    android:checked="true"
                     android:textSize="@dimen/_11ssp"
                     android:textColor="@color/navy_blue" />
 s

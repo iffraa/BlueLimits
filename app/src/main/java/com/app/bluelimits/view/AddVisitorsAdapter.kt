@@ -116,11 +116,12 @@ class AddVisitorsAdapter(
             }
 
         fetchGenderPackage(cb_female, cb_male, visitor, price)
-        if (!isContain(enteredData, visitor))
-            enteredData.add(visitor)
+      //  if (!isContain(enteredData, visitor))
         getWhoWillPay(rbSender, rbVisitor, visitor)
 
         price.setText(visitor.price)
+        enteredData.add(visitor)
+
     }
 
     private fun isContain(enteredList: ArrayList<Visitor>, visitor: Visitor): Boolean {
@@ -163,7 +164,7 @@ class AddVisitorsAdapter(
             isCBClicked = true
             who_will_pay = "sender"
             visitor.who_will_pay = who_will_pay
-            notifyDataSetChanged();
+         //   notifyDataSetChanged();
 
 
         }
@@ -173,7 +174,7 @@ class AddVisitorsAdapter(
             hideKeyboard(context as Activity)
             who_will_pay = "visitor"
             visitor.who_will_pay = who_will_pay
-            notifyDataSetChanged();
+           // notifyDataSetChanged();
 
         }
     }
@@ -216,7 +217,8 @@ class AddVisitorsAdapter(
 
             if (visitor.gender.isNullOrEmpty()) {
                 visitor.gender = gender
-            } else if (visitor.gender.equals(Constants.MALE)) {
+            } else
+                if (visitor.gender.equals(Constants.MALE)) {
                 gender = Constants.MALE
                 femaleChkBx.setChecked(false)
                 maleChkBx.setChecked(true)

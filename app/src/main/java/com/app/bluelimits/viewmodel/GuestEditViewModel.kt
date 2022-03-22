@@ -1,6 +1,7 @@
 package com.app.bluelimits.viewmodel
 
 
+import SingleLiveEvent
 import android.app.Activity
 import android.app.Application
 import android.content.Context
@@ -20,12 +21,12 @@ class GuestEditViewModel(application: Application) : BaseViewModel(application) 
     private val resortService = ResortApiService()
     private val disposable = CompositeDisposable()
 
-    var availableUnit = MutableLiveData<AvailableUnit>()
-    var resorts = MutableLiveData<ArrayList<Resort>>()
-    val loadError = MutableLiveData<Boolean>()
-    val loading = MutableLiveData<Boolean>()
-    val message = MutableLiveData<String>()
-    var errorMsg = MutableLiveData<String>()
+    var availableUnit = SingleLiveEvent<AvailableUnit>()
+    var resorts = SingleLiveEvent<ArrayList<Resort>>()
+    val loadError = SingleLiveEvent<Boolean>()
+    val loading = SingleLiveEvent<Boolean>()
+    val message = SingleLiveEvent<String>()
+    var errorMsg = SingleLiveEvent<String>()
 
     fun getCustomerResorts(token: String) {
         loading.value = true

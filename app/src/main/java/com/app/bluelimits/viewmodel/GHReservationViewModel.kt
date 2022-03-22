@@ -1,6 +1,7 @@
 package com.app.bluelimits.viewmodel
 
 
+import SingleLiveEvent
 import android.app.Activity
 import android.app.Application
 import android.content.Context
@@ -20,12 +21,12 @@ class GHReservationViewModel(application: Application) : BaseViewModel(applicati
     private val resortService = ResortApiService()
     private val disposable = CompositeDisposable()
 
-    var availableUnit = MutableLiveData<AvailableUnit>()
-    var resorts = MutableLiveData<ArrayList<Resort>>()
-    val loadError = MutableLiveData<Boolean>()
-    val loading = MutableLiveData<Boolean>()
-    val message = MutableLiveData<String>()
-    var errorMsg = MutableLiveData<String>()
+    var availableUnit = SingleLiveEvent<AvailableUnit>()
+    var resorts = SingleLiveEvent<ArrayList<Resort>>()
+    val loadError = SingleLiveEvent<Boolean>()
+    val loading = SingleLiveEvent<Boolean>()
+    val message = SingleLiveEvent<String>()
+    var errorMsg = SingleLiveEvent<String>()
 
     fun getCustomerResorts(token: String) {
         loading.value = true
@@ -50,7 +51,7 @@ class GHReservationViewModel(application: Application) : BaseViewModel(applicati
 
     }
 
-    fun getAvailableUnits(
+    fun getAvailableUnits(context: Context,
         token: String,
         resort_id: String,
         reservation_date: String,
@@ -73,7 +74,12 @@ class GHReservationViewModel(application: Application) : BaseViewModel(applicati
                     it
                         .subscribeWith(object : DisposableSingleObserver<UnitsResponse>() {
                             override fun onSuccess(value: UnitsResponse) {
-                                unitsRetrieved(value.data[0])
+                                if(!value.data.isNullOrEmpty())
+                                    unitsRetrieved(value.data[0])
+                                else
+                                    showAlertDialog(context as Activity,"Bluelimit", "Units not available for selected dates.")
+
+
                             }
 
                             override fun onError(e: Throwable) {
@@ -96,7 +102,7 @@ class GHReservationViewModel(application: Application) : BaseViewModel(applicati
 
     }
 
-    private fun unitsRetrieved(availableUnits: AvailableUnit) {
+    private fun unitsRetrieved(availableUnits: AvailableUnit?) {
         this.availableUnit.value = availableUnits
         loadError.value = false
         loading.value = false

@@ -291,7 +291,7 @@ class GHReservationFragment : Fragment() {
             if (!discount.isNullOrEmpty()) {
                 binding.progressBar.progressbar.visibility = View.VISIBLE
                 obj.token?.let {
-                    viewModel.getAvailableUnits(
+                    viewModel.getAvailableUnits(requireContext(),
                         it,
                         resortId,
                         chk_in_date,
@@ -443,18 +443,10 @@ class GHReservationFragment : Fragment() {
         if (isUnits) {
             viewModel.availableUnit.observe(viewLifecycleOwner, Observer {
                 binding.progressBar.progressbar.visibility = View.GONE
-                selectedUnit = viewModel.availableUnit.value!!
-                /* populateSpinners(true)
-                 for(availableUnit in it) {
-                     val unitName = availableUnit.unit
-                     Log.i("unitName", unitName)
-                     if (unitName.contains(spaceId) && !unitName.equals("G 00"))
-                     {
-                         selectedUnit = availableUnit
-                     }
-                 }*/
-
-                setUnitDetails()
+                if(it != null) {
+                    selectedUnit = viewModel.availableUnit.value!!
+                    setUnitDetails()
+                }
 
 
             })

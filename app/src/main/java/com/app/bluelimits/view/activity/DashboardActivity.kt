@@ -16,8 +16,10 @@ import com.app.bluelimits.util.Constants
 import com.google.android.material.navigation.NavigationView
 
 import android.view.View
+import android.view.WindowManager
 import androidx.navigation.*
 import com.app.bluelimits.util.SharedPreferencesHelper
+import com.app.bluelimits.view.fragment.VisitorEditFragment
 import com.app.bluelimits.view.fragment.VisitorInviteFragment
 import com.app.bluelimits.view.fragment.VisitorsFragment
 import com.payfort.fortpaymentsdk.callbacks.FortCallBackManager
@@ -30,8 +32,9 @@ class DashboardActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
     private lateinit var navController: NavController
     private lateinit var navView: NavigationView
-    private  var fortCallback: FortCallBackManager? = null
+    private var fortCallback: FortCallBackManager? = null
     private var visitorFragment: VisitorInviteFragment? = null
+    private var visitorEditFragment: VisitorEditFragment? = null
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +42,8 @@ class DashboardActivity : AppCompatActivity() {
 
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         //  setActionBarTitle()
         setSupportActionBar(binding.appBarMain2.toolbar)
@@ -69,6 +74,8 @@ class DashboardActivity : AppCompatActivity() {
         changeMenuIcon()
 
         visitorFragment = VisitorInviteFragment()
+        visitorEditFragment = VisitorEditFragment()
+
         if (fortCallback == null)
             fortCallback = FortCallBackManager.Factory.create()
 
@@ -108,6 +115,7 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
+
     private fun hideLoginItems() {
         val menu: Menu = binding.navView.getMenu()
         val nav_logout = menu.findItem(R.id.nav_logout)
@@ -130,7 +138,6 @@ class DashboardActivity : AppCompatActivity() {
 
         val nav_pwd = menu.findItem(R.id.nav_update_pwd)
         nav_pwd.setVisible(false)
-
 
     }
 
@@ -164,11 +171,49 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
-    fun changeLoginDisplay(isLogin: Boolean) {
+
+    private fun setAdminLoginItems() {
         val menu: Menu = binding.navView.getMenu()
 
+        val nav_login = menu.findItem(R.id.nav_login)
+        nav_login.setVisible(false)
+
+        val nav_logout = menu.findItem(R.id.nav_logout)
+        nav_logout.setVisible(true)
+
+        val nav_pwd = menu.findItem(R.id.nav_update_pwd)
+        nav_pwd.setVisible(true)
+
+        val nav_invite = menu.findItem(R.id.nav_invite)
+        nav_invite.setVisible(true)
+
+        val nav_profile = menu.findItem(R.id.nav_profile)
+        nav_profile.setVisible(true)
+
+        val nav_reservation = menu.findItem(R.id.nav_guest_space)
+        nav_reservation.setVisible(true)
+
+        val nav_user_dashboard = menu.findItem(R.id.userDashboardFragment)
+        nav_user_dashboard.setVisible(true)
+
+        val navAbout = menu.findItem(R.id.nav_about)
+        navAbout.setVisible(false)
+
+        val navContact = menu.findItem(R.id.nav_contact)
+        navContact.setVisible(false)
+
+        val navTerms = menu.findItem(R.id.nav_terms)
+        navTerms.setVisible(false)
+
+
+    }
+
+    fun changeLoginDisplay(isLogin: Boolean, isAdmin: Boolean) {
         if (isLogin) {
-            showLoginItems()
+            if (isAdmin)
+                setAdminLoginItems()
+            else
+                showLoginItems()
         } else {
             hideLoginItems()
         }
@@ -192,7 +237,11 @@ class DashboardActivity : AppCompatActivity() {
         tvVisitors.visibility = View.VISIBLE
 
         tvVisitors.setOnClickListener {
-            navController.navigate(action)
+            try {
+                navController.navigate(action)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -248,7 +297,9 @@ class DashboardActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        visitorFragment?.onActivityResult(requestCode,resultCode,data,fortCallback!!)
+        visitorFragment?.onActivityResult(requestCode, resultCode, data, fortCallback!!)
+        visitorEditFragment?.onActivityResult(requestCode, resultCode, data, fortCallback!!)
+
     }
 }
 

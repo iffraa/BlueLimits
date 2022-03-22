@@ -16,6 +16,8 @@ import com.app.bluelimits.view.activity.DashboardActivity as DashboardActivity
 import android.R.string
 import android.app.Activity
 import android.text.TextUtils.split
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import com.app.bluelimits.model.Data
 import com.app.bluelimits.util.SharedPreferencesHelper
 import com.app.bluelimits.util.setHomeNavigation
@@ -97,13 +99,10 @@ class UserDashboardFragment : Fragment() {
             }
         }
 
-        binding.tvRole.setText(user_data?.resort + " - " + user_data?.role)
         user_data?.total_invitees?.let { binding.tvInviteNo.setText(it.toString()) }
 
         if (user_data!!.user_type.equals(Constants.admin)) {
-            binding.rlProgress.visibility = View.GONE
-            binding.rlContract.visibility = View.GONE
-            binding.rlPoints.visibility = View.GONE
+            setAdminLayout()
         } else {
             var rDays = user_data?.contract_remaining_days
             if (!rDays.isNullOrEmpty()) {
@@ -112,6 +111,7 @@ class UserDashboardFragment : Fragment() {
                 binding.tvProgress.setText(rDays + "\nDAYS" )
             }
             binding.tvTotalPoints.setText(user_data?.loyalty_points + " " + getString(R.string.points))
+            binding.tvRole.setText(user_data?.resort + " - " + user_data?.role)
 
             val date = user_data?.contract_end_date // "2021-07-12"
             if (!date.isNullOrEmpty()) {
@@ -133,5 +133,21 @@ class UserDashboardFragment : Fragment() {
 
     }
 
+    private fun setAdminLayout()
+    {
+        binding.rlContract.visibility = View.GONE
+        binding.rlProgress.visibility = View.GONE
+        binding.tvRole.setText(user_data?.role)
+
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.topMargin = 100
+        params.bottomMargin = 100
+
+        binding.rlInvites.layoutParams = params
+
+    }
 }
 

@@ -32,14 +32,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <TextView
                 android:layout_width="@dimen/_81sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/name_visi"
+                android:textStyle="bold"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_14ssp"></TextView>
 
@@ -176,10 +175,13 @@
                 layout="@layout/layout_contact_number"
                 android:layout_width="@dimen/_163sdp"
                 android:layout_height="@dimen/_35sdp"
+                android:nextFocusForward="@+id/cb_male"
+                android:nextFocusDown="@+id/cb_male"
                 android:layout_marginTop="@dimen/_20sdp"></include>
 
 
             <LinearLayout
+                android:id="@+id/ll_gender"
                 android:layout_width="@dimen/_250sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_20sdp"

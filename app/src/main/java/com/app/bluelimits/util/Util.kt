@@ -63,6 +63,7 @@ fun willSenderPay(visitors: ArrayList<Visitor>): Boolean {
 fun getPayableAmount(visitors: ArrayList<Visitor>): String {
     var price = 0
     for (visitor in visitors) {
+
         if (!visitor.price.isNullOrEmpty()) {
             val payment = visitor.who_will_pay
             if (payment == "sender") {
@@ -197,7 +198,7 @@ fun selectDOB(context: Context, dobField: EditText) {
 }
 
 fun getGender(femaleChkBx: CheckBox, maleChkBx: CheckBox): String {
-    var gender = Constants.MALE
+    var gender = ""
 
     femaleChkBx.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
         if (isChecked) {

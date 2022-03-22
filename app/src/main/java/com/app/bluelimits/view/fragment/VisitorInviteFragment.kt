@@ -64,7 +64,7 @@ class VisitorInviteFragment : Fragment() {
     private lateinit var resortId: String
     private var totalVisitors = 0
     private var visitorPolicyPresent = false
-    private lateinit var visitorListAdapter: AddVisitorsAdapter
+    private var visitorListAdapter: AddVisitorsAdapter? = null
     private lateinit var data: Data
     private var packages: HashMap<String, ServicePackage> = hashMapOf()
 
@@ -103,6 +103,8 @@ class VisitorInviteFragment : Fragment() {
             showDateDialog(data)
         })
 
+        visitorListAdapter = context?.let { AddVisitorsAdapter(arrayListOf(), it, this) }!!
+
         navigateToListing();
 
         binding.btnSubmit.setOnClickListener {
@@ -116,11 +118,18 @@ class VisitorInviteFragment : Fragment() {
                     getString(R.string.app_name),
                     getString(R.string.empty_fields)
                 )
-            } else if (this::visitorListAdapter.isInitialized) {
-                val idMsg = checkVisitorsID(visitorListAdapter.getData(), requireContext())
+            } else if (!isFemalePckgAvailable) {
+                showAlertDialog(
+                    requireActivity(),
+                    getString(R.string.app_name),
+                    getString(R.string.pckg_unavialable)
+                )
+                binding.etVisitorsNum.setText("")
+            } else if (!visitorListAdapter!!.getData().isNullOrEmpty()) {
+                val idMsg = checkVisitorsID(visitorListAdapter!!.getData(), requireContext())
                 if (idMsg.isEmpty()) {
-                    if (willSenderPay(visitorListAdapter.getData())) {
-                        val amount = getPayableAmount(visitorListAdapter.getData())
+                    if (willSenderPay(visitorListAdapter!!.getData())) {
+                        val amount = getPayableAmount(visitorListAdapter!!.getData())
                         if (!amount.equals("0")) {
                             payForVisitor()
                         } else {
@@ -167,7 +176,7 @@ class VisitorInviteFragment : Fragment() {
     }
 
     private fun getResorts(data: Data) {
-        data.token?.let { viewModel.getCustomerResorts(it) }
+        data.token?.let { viewModel.getCustomerResorts(it, requireContext()) }
         observeResortVM()
     }
 
@@ -182,8 +191,6 @@ class VisitorInviteFragment : Fragment() {
 
 
     private fun setVisitorList() {
-
-        visitorListAdapter = context?.let { AddVisitorsAdapter(arrayListOf(), it, this) }!!
 
         binding.rvVisitor.addItemDecoration(
             DividerItemDecoration(
@@ -240,36 +247,9 @@ class VisitorInviteFragment : Fragment() {
 
     }
 
-    /* private fun updateList() {
-         visitorListAdapter.clear()
-
-         val num = binding.etVisitorsNum.text.toString()
-         if (!num.isNullOrEmpty()) {
-             val no_of_visitors = num.toInt()
-             if (no_of_visitors > 0) {
-                 val visitors = ArrayList<Visitor>(no_of_visitors)
-                 for (i in 1..no_of_visitors) {
-                     val person = Visitor(
-                         "0", "", "", "", "",
-                         null, "", ""
-                     )
-                     visitors.add(person)
-                 }
-                 visitorListAdapter?.setVisitorList(
-                     visitors, packages
-                 )
-
-             } else {
-                 binding.rvVisitor.visibility = View.GONE
-                 binding.btnSubmit.visibility = View.GONE
-
-             }
-         }
-     }*/
-
     private fun updateList() {
-        if (visitorListAdapter != null) {
-            val visitors: ArrayList<Visitor> = visitorListAdapter.getData()
+        if (!visitorListAdapter!!.getData().isNullOrEmpty()) {
+            val visitors: ArrayList<Visitor> = visitorListAdapter!!.getData()
             val num = binding.etVisitorsNum.text.toString()
             if (visitors.size > 0 && !num.isNullOrEmpty()) {
                 for (i in 0 until num.toInt()) {
@@ -283,7 +263,7 @@ class VisitorInviteFragment : Fragment() {
                         visitor.servicePackage = servicePackage
                         visitor.price = price!!
 
-                        visitorListAdapter.notifyItemChanged(i)
+                        visitorListAdapter!!.notifyItemChanged(i)
                     }
                 }
 
@@ -321,7 +301,7 @@ class VisitorInviteFragment : Fragment() {
     }
 
     private fun addVisitor() {
-        var visitors: ArrayList<Visitor> = visitorListAdapter.getData()
+        var visitors: ArrayList<Visitor> = visitorListAdapter!!.getData()
         //  visitors = removeDuplicateElemets(visitors)
         var (total, subTotal, discount) = getPriceInfo(visitors)
 
@@ -356,7 +336,8 @@ class VisitorInviteFragment : Fragment() {
             token?.let { viewModel.addVisitor(it, visitorReq, requireContext()) }
 
         } else {
-            showAlertDialog( errorMsg
+            showAlertDialog(
+                errorMsg
             )
         }
 
@@ -388,15 +369,7 @@ class VisitorInviteFragment : Fragment() {
     private fun getTotalVisitors(token: String, date: String) {
         binding.rlInclude.visibility = View.VISIBLE
         viewModel.getTotalVisitors(token, date, resortId)
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-
-                // This method will be executed once the timer is over
-                observeTotalVisitorsVM()
-            },
-            2000 // value in milliseconds
-        )
-
+        observeTotalVisitorsVM()
     }
 
     private fun observeTotalVisitorsVM() {
@@ -436,7 +409,6 @@ class VisitorInviteFragment : Fragment() {
                 }
 
                 viewModel.totalVisitors.removeObservers(viewLifecycleOwner)
-                getPackages()
             }
 
         })
@@ -506,20 +478,20 @@ class VisitorInviteFragment : Fragment() {
         viewModel.message.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
                 binding.rlInclude.visibility = View.GONE
-                if(mAlertDialog?.isShowing == true)
+                if (mAlertDialog?.isShowing == true)
                     mAlertDialog?.dismiss()
                 showSuccessDialog()
             }
 
         })
 
-        viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
-            isError?.let {
-                if (it) {
+        viewModel.inviteErrorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
+            errorMsg?.let {
+                if (!it.isNullOrEmpty()) {
                     binding.rlInclude.visibility = View.GONE
-                    showAlertDialog(
-                        getString(R.string.add_visitor_error)
-                    )
+                    val errorMsg =
+                        getServerErrors(it, requireContext())
+                    showAlertDialog(errorMsg)
                 }
             }
         })
@@ -550,33 +522,36 @@ class VisitorInviteFragment : Fragment() {
                 val sdf = SimpleDateFormat(DATE_TIME_FORMAT)
                 val sdate = sdf.format(date)
                 binding.etVisitorsTime.setText(sdate)
+                binding.etVisitorsNum.setText("")
 
-                data.token?.let {
-                    getTotalVisitors(it, sdate)
+                getPackages()
 
-                }
+
             }.display()
 
     }
+
+    var isFemalePckgAvailable = true
 
     private fun getPackages() {
 
         val visitingDate = binding.etVisitorsTime.text.toString()
 
         data.token?.let {
-            viewModel.getMalePackage(
-                it, visitingDate,
-                data.user?.resort_id.toString()
-            )
-            observeMalePckgVM()
-
 
             viewModel.getFemalePackage(
                 it,
                 visitingDate,
-                data.user?.resort_id.toString()
+                data.user?.resort_id.toString(), requireContext()
             )
-            observeFemalePckgVM()
+            observeFemalePckgVM(it)
+
+            /*  viewModel.getMalePackage(
+                  it, visitingDate,
+                  data.user?.resort_id.toString(), requireContext()
+              )
+              observeMalePckgVM()*/
+
 
         }
     }
@@ -584,12 +559,13 @@ class VisitorInviteFragment : Fragment() {
 
     private fun observeMalePckgVM() {
 
-        viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
-            isError?.let {
-                if (it) {
-                    showAlertDialog(
-                        getString(R.string.loading_error)
-                    )
+        viewModel.errorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
+            errorMsg?.let {
+                if (!it.isNullOrEmpty() && isFemalePckgAvailable) {
+                    binding.rlInclude.visibility = View.GONE
+                    showAlertDialog(errorMsg + ". Cannot add visitor for the selected time.")
+                    // Toast.makeText(requireContext(), it + ". Please select another time.", Toast.LENGTH_LONG).show()
+
                 }
             }
         })
@@ -599,7 +575,10 @@ class VisitorInviteFragment : Fragment() {
 
                 packages.put(Constants.MALE, sPackage)
 
-                //     viewModel.malePackage.removeObservers(viewLifecycleOwner)
+                data.token?.let {
+                    getTotalVisitors(it, binding.etVisitorsTime.text.toString())
+
+                }
 
             }
 
@@ -607,21 +586,32 @@ class VisitorInviteFragment : Fragment() {
 
     }
 
-    private fun observeFemalePckgVM() {
+    private fun observeFemalePckgVM(token: String) {
 
-        viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
-            isError?.let {
-                if (it) {
-                    showAlertDialog(
-                        getString(R.string.loading_error)
-                    )
+        viewModel.errorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
+            errorMsg?.let {
+                if (!it.isNullOrEmpty()) {
+                    isFemalePckgAvailable = false
+                    binding.rlInclude.visibility = View.GONE
+                    showAlertDialog(errorMsg + ". Cannot add visitor for the selected time.")
+                    //Toast.makeText(requireContext(), it + ". Please select another time.", Toast.LENGTH_LONG).show()
+
                 }
             }
         })
 
+
         viewModel.femalePackage.observe(viewLifecycleOwner, Observer { sPackage ->
             sPackage?.let {
 
+                viewModel.getMalePackage(
+                    token, binding.etVisitorsTime.text.toString(),
+                    data.user?.resort_id.toString(), requireContext()
+                )
+                observeMalePckgVM()
+
+
+                isFemalePckgAvailable = true
                 packages.put(Constants.FEMALE, sPackage)
                 Log.i("Fprice", sPackage.price)
                 val num = binding.etVisitorsNum.text.toString()
@@ -639,15 +629,9 @@ class VisitorInviteFragment : Fragment() {
 
     private fun navigateToListing() {
         val action = VisitorInviteFragmentDirections.actionNavToList()
-        try {
-            action?.let {
-                (activity as DashboardActivity).navigateToVisitorsList(action)
-            }
-        } catch (e: IllegalArgumentException) {
-            // User tried tapping 2 links at once!
-            Log.i("nav error", "Can't open 2 links at once!")
+        action?.let {
+            (activity as DashboardActivity).navigateToVisitorsList(action)
         }
-
     }
 
     private fun showSuccessDialog() {
@@ -659,18 +643,18 @@ class VisitorInviteFragment : Fragment() {
             // User tried tapping 2 links at once!
         }
 
-       /* if (builder == null) {
-            builder = activity?.let {
-                AlertDialog.Builder(it)
-            }
-        }
-        builder?.setMessage(msg)
-            ?.setTitle(title)?.setPositiveButton(
-                R.string.ok
-            ) { dialog, id ->
+        /* if (builder == null) {
+             builder = activity?.let {
+                 AlertDialog.Builder(it)
+             }
+         }
+         builder?.setMessage(msg)
+             ?.setTitle(title)?.setPositiveButton(
+                 R.string.ok
+             ) { dialog, id ->
 
-            }
-        builder?.create()?.show()*/
+             }
+         builder?.create()?.show()*/
 
     }
 
@@ -717,7 +701,7 @@ class VisitorInviteFragment : Fragment() {
                 if (sdkToken != null) {
                     val fortRequest = paymentHelper?.getFortRequest(
                         sdkToken,
-                        getPayableAmount(visitorListAdapter.getData())
+                        getPayableAmount(visitorListAdapter!!.getData())
                     )
                     processPayment(fortRequest!!)
                 } else {
@@ -802,13 +786,13 @@ class VisitorInviteFragment : Fragment() {
     }
 
     private fun updatePaymentStatus(isSuccess: Boolean) {
-        for (visitor in visitorListAdapter.getData()) {
+        for (visitor in visitorListAdapter!!.getData()) {
             val payment = visitor.who_will_pay
             if (payment == "sender" && isSuccess) {
                 visitor.payment_status = Constants.PAID
             }
         }
-        Log.i("visitor", visitorListAdapter.getData().toString())
+        Log.i("visitor", visitorListAdapter!!.getData().toString())
     }
 
 
@@ -817,16 +801,16 @@ class VisitorInviteFragment : Fragment() {
             builder = activity?.let {
                 AlertDialog.Builder(it)
             }
-
-            builder?.setMessage(msg)
-                ?.setTitle(getString(R.string.app_name))?.setPositiveButton(
-                    R.string.ok
-                ) { _, _ ->
-
-                }
-            mAlertDialog = builder?.create()
-            mAlertDialog?.show()
         }
+        builder?.setMessage(msg)
+            ?.setTitle(getString(R.string.app_name))?.setPositiveButton(
+                R.string.ok
+            ) { _, _ ->
+
+            }
+        mAlertDialog = builder?.create()
+        mAlertDialog?.show()
     }
+
 
 }

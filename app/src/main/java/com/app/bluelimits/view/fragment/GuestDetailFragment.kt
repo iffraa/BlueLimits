@@ -84,7 +84,7 @@ class GuestDetailFragment : Fragment() {
         binding.tvReservDate.setText(getString(R.string.reserv_date) + " : " + guestDetail.from)
         binding.tvNoOfDays.setText(getString(R.string.no_of_days) + " " + guestDetail.no_of_day)
         binding.tvNoOfGuests.setText(getString(R.string.no_of_guests) + " " + guestDetail.no_of_guest)
-        binding.tvReference.setText(getString(R.string.reference_by) + guestDetail.ref_name)
+        binding.tvReference.setText(getString(R.string.reference_by) + "\n" + guestDetail.ref_name)
         binding.tvUnit.setText(getString(R.string.setup_unit) + " " + guestDetail.unit_no)
 
         setServiceName(guestDetail.unit_no!!)

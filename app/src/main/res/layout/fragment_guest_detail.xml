@@ -24,10 +24,10 @@
             android:id="@+id/tv_facility"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:fontFamily="@font/jura_demi_bold"
             android:text="Facility Location :\nOIA Resort"
             android:textColor="@color/navy_blue"
-            android:layout_alignParentRight="true"
             android:textSize="@dimen/_12ssp" />
 
     </RelativeLayout>

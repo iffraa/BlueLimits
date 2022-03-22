@@ -1,5 +1,6 @@
 package com.app.bluelimits.view.fragment
 
+import android.app.Activity
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.app.bluelimits.R
+import com.app.bluelimits.util.setHomeNavigation
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -44,5 +46,8 @@ class ContactUsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+        setHomeNavigation(context as Activity, ContactUsFragmentDirections.actionNavToHome())
+
     }
 }

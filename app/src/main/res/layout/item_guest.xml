@@ -112,12 +112,15 @@
                 layout="@layout/layout_contact_number"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
+                android:nextFocusDown="@+id/ll_gender"
                 android:layout_marginTop="@dimen/_20sdp"></include>
 
             <LinearLayout
+                android:id="@+id/ll_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
+                android:nextFocusDown="@id/et_guest_name"
                 android:orientation="horizontal">
 
                 <CheckBox
@@ -129,6 +132,7 @@
                     android:fontFamily="@font/jura_demi_bold"
                     android:paddingLeft="@dimen/_10sdp"
                     android:text="@string/male"
+                    android:nextFocusDown="@id/et_guest_name"
                     android:textColor="@color/navy_blue" />
 
                 <CheckBox
@@ -141,6 +145,7 @@
                     android:fontFamily="@font/jura_demi_bold"
                     android:paddingLeft="@dimen/_10sdp"
                     android:text="@string/female"
+                    android:nextFocusDown="@id/et_guest_name"
                     android:textColor="@color/navy_blue" />
             </LinearLayout>
 

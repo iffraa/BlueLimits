@@ -1,24 +1,50 @@
 package com.app.bluelimits.model
 
 import io.reactivex.Single
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 class ResortApiService {
 
     private val BASE_URL = "http://bluelimits.net/api/"
-
-    private val api = Retrofit.Builder()
+    //val client =  OkHttpClient().connectTimeoutMi;
+   /* private var api = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
         .create(
             ResortAPI::class.java
-        )
+        )*/
+
+    private val api = getAPI()
+
+    private fun getAPI(): ResortAPI{
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        val okHttpClient = OkHttpClient().newBuilder()
+            .connectTimeout(100, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS)
+            .writeTimeout(100, TimeUnit.SECONDS)
+            .addInterceptor(logging)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(okHttpClient)
+            .build()
+
+        return retrofit.create(ResortAPI::class.java)
+
+    }
 
     fun login(user_name: String, password: String, user_type: String): Single<APIResponse?>? {
         return api.login(user_name, password, user_type)

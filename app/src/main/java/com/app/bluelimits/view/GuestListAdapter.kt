@@ -64,7 +64,12 @@ class GuestListAdapter(val guests: ArrayList<GuestData>, context: Context, frag:
         tvFromDate.setText(mContext.getString(R.string.from) + " " +  guestsData.from)
         tvToDate.setText(mContext.getString(R.string.to) + " " + guestsData.to)
         tvDays.setText(mContext.getString(R.string.no_of_days) + " " + guestsData.no_of_day)
-        tvGuests.setText(mContext.getString(R.string.no_of_guests) + " " + guestsData.no_of_guest)
+
+        var guests = guestsData.no_of_guest
+        if(guests.isNullOrEmpty())
+            guests = "0"
+
+        tvGuests.setText(mContext.getString(R.string.no_of_guests) + " " + guests)
 
         btnDetail.setOnClickListener{
             val action = GuestsFragmentDirections.actionViewDetail(guestsData)

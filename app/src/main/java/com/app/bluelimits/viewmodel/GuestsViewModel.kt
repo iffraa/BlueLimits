@@ -1,6 +1,7 @@
 package com.app.bluelimits.viewmodel
 
 
+import SingleLiveEvent
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.app.bluelimits.model.*
@@ -16,12 +17,10 @@ class GuestsViewModel(application: Application): BaseViewModel(application) {
     private val resortService = ResortApiService()
     private val disposable = CompositeDisposable()
 
-    var delResponse = MutableLiveData<APIResponse>()
-    var guests = MutableLiveData<ArrayList<GuestData>>()
-    val loadError = MutableLiveData<Boolean>()
-    val loading = MutableLiveData<Boolean>()
-
-
+    var delResponse = SingleLiveEvent<APIResponse>()
+    var guests = SingleLiveEvent<ArrayList<GuestData>>()
+    val loadError = SingleLiveEvent<Boolean>()
+    val loading = SingleLiveEvent<Boolean>()
 
     fun deleteGuest(token: String, reservID: String )
     {

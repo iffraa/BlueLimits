@@ -284,6 +284,10 @@ data class ServicePackage(
     val price: String,
     val discount_percentage: Int,
     val hour: String,
+    val sub_total: String,
+    val discount: String,
+    val total_price: String,
+
 )
 
 data class VisitorPackage(
@@ -477,7 +481,10 @@ data class GuestData(
     var from: String?,
     var custom_discount_percentage: String?,
     var ref_name: String?,
-    var guests: ArrayList<Guest>?
+    var guests: ArrayList<Guest>?,
+
+    @SerializedName("package")
+    var packagee: ServicePackage?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -495,7 +502,9 @@ data class GuestData(
         parcel.readString(),
         parcel.readString(),
         parcel.readArrayList(GuestData::class.java.classLoader) as ArrayList<Guest>?,
-    ) {
+        TODO("packagee"),
+
+        ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

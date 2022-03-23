@@ -76,9 +76,14 @@ class GHReservationViewModel(application: Application) : BaseViewModel(applicati
                             override fun onSuccess(value: UnitsResponse) {
                                 if(!value.data.isNullOrEmpty())
                                     unitsRetrieved(value.data[0])
-                                else
-                                    showAlertDialog(context as Activity,"Bluelimit", "Units not available for selected dates.")
-
+                                else {
+                                    loadError.value = true
+                                    showAlertDialog(
+                                        context as Activity,
+                                        "Bluelimit",
+                                        "Units not available for selected dates."
+                                    )
+                                }
 
                             }
 
@@ -127,14 +132,20 @@ class GHReservationViewModel(application: Application) : BaseViewModel(applicati
                                 override fun onError(e: Throwable) {
                                     if (e is HttpException) {
                                         val jObjError = JSONObject(e.response()?.errorBody()?.string())
-
                                         if (jObjError.has("errors")) {
-
                                             if (jObjError.has("errors")) {
                                                 errorMsg.value =
                                                     jObjError.getJSONObject("errors").toString()
                                             }
                                         }
+                                        else if(jObjError.has("message"))
+                                        {
+                                            showAlertDialog(
+                                                context as Activity,
+                                                context.getString(R.string.app_name), jObjError.getString("message")
+                                            )
+                                        }
+
                                     } else {
                                         e.message?.let { it1 ->
                                             showAlertDialog(

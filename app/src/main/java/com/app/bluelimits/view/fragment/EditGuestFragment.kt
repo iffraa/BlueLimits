@@ -126,10 +126,16 @@ class EditGuestFragment : Fragment() {
                     observeReservationVM()
                 }
             } else {
-                showAlertDialog(
-                    getString(R.string.app_name),
-                    "Please add any guest."
-                )
+                if(this::selectedUnit.isInitialized && selectedUnit != null) {
+                    addGuests()
+                    observeReservationVM()
+                } else {
+                    showAlertDialog(
+                        requireActivity(),
+                        getString(R.string.app_name),
+                        "Units not available for selected dates."
+                    )
+                }
             }
         })
 
@@ -144,8 +150,10 @@ class EditGuestFragment : Fragment() {
         resortId = guestData.resort_id!!
         unitId = guestData.unit_type_id!!
 
-        val discount = getDiscount()
-        getAvailableUnits(discount)
+        val price = guestData.packagee?.price
+        binding.tvPrice.setText(price)
+
+        setGuestList()
 
     }
 
@@ -153,12 +161,29 @@ class EditGuestFragment : Fragment() {
         val guests: ArrayList<Guest>? = guestListAdapter.getData()
 
         val no_of_guests = binding.etGuestsNo.text.toString()
-        val setup_unit_id = selectedUnit.id
-        val discount = selectedUnit.discount
-        val package_id = selectedUnit.package_id
-        val sub_total = selectedUnit.sub_total
-        val total_price = selectedUnit.total_price
-        val custom_discount_percentage = selectedUnit.discount_percentage
+        var setup_unit_id =0
+        var discount = ""
+        var package_id = ""
+        var sub_total = ""
+        var total_price = ""
+        var custom_discount_percentage = ""
+        if(this::selectedUnit.isInitialized && selectedUnit != null) {
+            setup_unit_id = selectedUnit.id
+            discount = selectedUnit.discount
+             package_id = selectedUnit.package_id
+             sub_total = selectedUnit.sub_total
+             total_price = selectedUnit.total_price
+             custom_discount_percentage = selectedUnit.discount_percentage
+        }
+        else
+        {
+            setup_unit_id = unitId.toInt()
+            discount = guestData.discount.toString()
+            package_id = guestData.package_id!!
+            sub_total = guestData.packagee?.sub_total ?: "0"
+            total_price = guestData.packagee?.total_price ?: "0"
+            custom_discount_percentage = guestData.packagee!!.discount_percentage.toString()
+        }
         val reservation_date = binding.etChkIn.text.toString()
         val check_out_date = binding.etChkOut.text.toString()
 
@@ -294,7 +319,7 @@ class EditGuestFragment : Fragment() {
             if (!discount.isNullOrEmpty()) {
                 binding.progressBar.progressbar.visibility = View.VISIBLE
                 obj.token?.let {
-                    viewModel.getAvailableUnits(
+                    viewModel.getAvailableUnits(requireContext(),
                         it,
                         resortId,
                         chk_in_date,
@@ -414,19 +439,20 @@ class EditGuestFragment : Fragment() {
     private fun setUnitDetails() {
 
         binding.tvPrice.setText(selectedUnit.price)
-        binding.tvMaxGuests.setText(
+       /* binding.tvMaxGuests.setText(
             getString(R.string.max) + " " + selectedUnit.no_of_guest + " " + getString(
                 R.string.max_guests
             )
-        )
+        )*/
         guestsLimit = selectedUnit.no_of_guest.toInt()
         binding.tvPayment.setText(getString(R.string.payable) + " " + selectedUnit.total_price)
 
-        chkGuestLimit()
+        if(!guestData.no_of_guest.isNullOrEmpty())
+            chkGuestLimit()
     }
 
     private fun chkGuestLimit() {
-        if (guestData.no_of_guest?.toInt()!! > guestsLimit) {
+        if (guestData?.no_of_guest?.toInt()!! > guestsLimit) {
             showAlertDialog(
                 getString(R.string.app_name),
                 guestsLimit.toString() + " " + getString(R.string.max_guests) + " on selected dates."
@@ -447,12 +473,13 @@ class EditGuestFragment : Fragment() {
         })
 
 
-        viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
+        viewModel.loadError.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading.let {
-                binding.progressBar.progressbar.visibility = if (it) View.VISIBLE else View.GONE
+                binding.progressBar.progressbar.visibility = View.GONE
 
             }
         })
+
 
         if (isUnits) {
             viewModel.availableUnit.observe(viewLifecycleOwner, Observer {
@@ -508,21 +535,24 @@ class EditGuestFragment : Fragment() {
 
                      activity?.let { hideKeyboard(it) }
  */
-        val no_of_entered_guests: Int = guestData.no_of_guest!!.toInt()
-        if (no_of_entered_guests > 0 && no_of_entered_guests <= guestsLimit) {
+     //   val no_of_entered_guests: Int = guestData.no_of_guest!!.toInt()
+     //   if (no_of_entered_guests > 0 && no_of_entered_guests <= guestsLimit) {
             /*  val visitors = ArrayList<Guest>(no_of_entered_guests)
               for (i in 1..no_of_entered_guests) {
                   val person = Guest("", "", "", "","","")
                   visitors.add(person)
               }*/
 
-            binding.rvGuest.visibility = View.VISIBLE
             binding.btnSubmit.visibility = View.VISIBLE
-            guestListAdapter?.setGuestList(
-                guestData.guests!!, requireContext()
-            )
+        guestData.guests?.let {
+            binding.rvGuest.visibility = View.VISIBLE
 
-        } else if (no_of_entered_guests > guestsLimit) {
+            guestListAdapter?.setGuestList(
+                it, requireContext()
+            )
+        }
+
+       /* } else if (no_of_entered_guests > guestsLimit) {
             showAlertDialog(
                 getString(R.string.app_name),
                 getString(R.string.guests_exceeded)
@@ -534,7 +564,7 @@ class EditGuestFragment : Fragment() {
             binding.rvGuest.visibility = View.GONE
             binding.btnSubmit.visibility = View.GONE
 
-        }
+        }*/
     }
 
 

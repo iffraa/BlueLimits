@@ -120,17 +120,24 @@ class GHReservationFragment : Fragment() {
             if (!noOGuests.isNullOrEmpty() && noOGuests != "0") {
                 val idMsg = checkGuestsID(guestListAdapter.getData(), requireContext())
                 if (idMsg.isNotEmpty()) {
-                    showAlertDialog(requireActivity(),getString(R.string.app_name), idMsg)
+                    showAlertDialog(requireActivity(), getString(R.string.app_name), idMsg)
                 } else {
                     addGuests()
                     observeReservationVM()
                 }
             } else {
-                showAlertDialog(
-                    getString(R.string.app_name),
-                    "Please add any guest."
-                )
+                if(this::selectedUnit.isInitialized && selectedUnit != null) {
+                    addGuests()
+                    observeReservationVM()
+                } else {
+                    showAlertDialog(
+                        requireActivity(),
+                        getString(R.string.app_name),
+                        "Units not available for selected dates."
+                    )
+                }
             }
+
         })
 
     }
@@ -291,7 +298,8 @@ class GHReservationFragment : Fragment() {
             if (!discount.isNullOrEmpty()) {
                 binding.progressBar.progressbar.visibility = View.VISIBLE
                 obj.token?.let {
-                    viewModel.getAvailableUnits(requireContext(),
+                    viewModel.getAvailableUnits(
+                        requireContext(),
                         it,
                         resortId,
                         chk_in_date,
@@ -424,8 +432,8 @@ class GHReservationFragment : Fragment() {
 
         viewModel.errorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
             errorMsg?.let {
+                binding.progressBar.progressbar.visibility = View.GONE
                 if (!it.isNullOrEmpty()) {
-                    binding.progressBar.progressbar.visibility = View.GONE
                     val msg = getServerErrors(viewModel.errorMsg.value.toString(), requireContext())
                     showAlertDialog(getString(R.string.title), msg)
                 }
@@ -433,17 +441,25 @@ class GHReservationFragment : Fragment() {
         })
 
 
-        viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
+        /*     viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
+                 isLoading.let {
+                     binding.progressBar.progressbar.visibility = if (it) View.VISIBLE else View.GONE
+
+                 }
+             })*/
+
+        viewModel.loadError.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading.let {
-                binding.progressBar.progressbar.visibility = if (it) View.VISIBLE else View.GONE
+                binding.progressBar.progressbar.visibility = View.GONE
 
             }
         })
 
+
         if (isUnits) {
             viewModel.availableUnit.observe(viewLifecycleOwner, Observer {
                 binding.progressBar.progressbar.visibility = View.GONE
-                if(it != null) {
+                if (it != null) {
                     selectedUnit = viewModel.availableUnit.value!!
                     setUnitDetails()
                 }
@@ -497,7 +513,6 @@ class GHReservationFragment : Fragment() {
 
                         //   adjustLayout()
                         binding.rvGuest.visibility = View.VISIBLE
-                        binding.btnSubmit.visibility = View.VISIBLE
                         guestListAdapter?.setGuestList(
                             visitors, requireContext()
                         )
@@ -508,11 +523,9 @@ class GHReservationFragment : Fragment() {
                             getString(R.string.guests_exceeded)
                         )
                         binding.rvGuest.visibility = View.GONE
-                        binding.btnSubmit.visibility = View.GONE
 
                     } else {
                         binding.rvGuest.visibility = View.GONE
-                        binding.btnSubmit.visibility = View.GONE
 
                     }
                 }

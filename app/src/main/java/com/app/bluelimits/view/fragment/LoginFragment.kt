@@ -72,8 +72,8 @@ class LoginFragment : Fragment() {
                //    binding.etEmail.setText("warsi@gmail.com")
                //      binding.etPwd.setText("12345678")
 
-             //   binding.etEmail.setText("drosa@bluelimits.com")
-             //   binding.etPwd.setText("Maleeka@123")
+               // binding.etEmail.setText("drosa@bluelimits.com")
+                //binding.etPwd.setText("Maleeka@123")
 
                 viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 

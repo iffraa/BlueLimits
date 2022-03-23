@@ -38,7 +38,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:gravity="center_vertical"
                 android:text="@string/name_visi"
-                android:textStyle="bold"
+                android:fontFamily="@font/jura_demi_bold"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_14ssp"></TextView>
 

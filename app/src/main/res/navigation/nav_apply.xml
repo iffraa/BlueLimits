@@ -115,7 +115,7 @@
 
     </fragment>
 
-
+<!--
     <fragment
         android:id="@+id/nav_invite"
         android:name="com.app.bluelimits.view.fragment.VisitorInviteFragment"
@@ -127,7 +127,7 @@
         <action
             android:id="@+id/action_nav_to_list"
             app:destination="@id/nav_visitors"></action>
-    </fragment>
+    </fragment>-->
 
     <fragment
         android:id="@+id/nav_about"
@@ -151,7 +151,7 @@
     </fragment>
 
 
-    <fragment
+   <!-- <fragment
         android:id="@+id/nav_reservation"
         android:name="com.app.bluelimits.view.fragment.GHReservationFragment"
         android:label=""
@@ -167,7 +167,7 @@
             app:destination="@id/nav_guests"></action>
 
     </fragment>
-
+-->
 
     <fragment
         android:id="@+id/nav_login"

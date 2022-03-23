@@ -146,12 +146,12 @@ class VisitorInviteFragment : Fragment() {
 
         }
 
-        if (data.user?.user_type.equals(Constants.admin)) {
+      /*  if (data.user?.user_type.equals(Constants.admin)) {
             binding.spResorts.visibility = View.VISIBLE
             binding.tvResorts.visibility = View.VISIBLE
 
             getResorts(data)
-        }
+        }*/
 
     }
 

@@ -51,7 +51,7 @@ class GuestEditViewModel(application: Application) : BaseViewModel(application) 
 
     }
 
-    fun getAvailableUnits(
+    fun getAvailableUnits(context: Context,
         token: String,
         resort_id: String,
         reservation_date: String,
@@ -74,8 +74,16 @@ class GuestEditViewModel(application: Application) : BaseViewModel(application) 
                     it
                         .subscribeWith(object : DisposableSingleObserver<UnitsResponse>() {
                             override fun onSuccess(value: UnitsResponse) {
-                                unitsRetrieved(value.data[0])
-                            }
+                                if(!value.data.isNullOrEmpty())
+                                    unitsRetrieved(value.data[0])
+                                else {
+                                    loadError.value = true
+                                    showAlertDialog(
+                                        context as Activity,
+                                        "Bluelimit",
+                                        "Units not available for selected dates."
+                                    )
+                                }                            }
 
                             override fun onError(e: Throwable) {
                                 loading.value = false

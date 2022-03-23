@@ -70,6 +70,7 @@
                 android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/gender"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_13ssp"></TextView>
 
@@ -91,6 +92,7 @@
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="text"
                 android:lines="1"
+                android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>
 
@@ -103,6 +105,7 @@
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="number"
                 android:lines="1"
+                android:paddingLeft="@dimen/_10sdp"
                 android:maxLength="10"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>

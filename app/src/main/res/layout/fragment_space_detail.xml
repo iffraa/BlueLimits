@@ -24,9 +24,7 @@
             android:layout_height="@dimen/_170sdp"
             android:layout_below="@+id/iv_logo"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="-50dp"
-            >
-        </androidx.viewpager.widget.ViewPager>
+            android:layout_marginBottom="-50dp"></androidx.viewpager.widget.ViewPager>
 
         <LinearLayout
             android:id="@+id/ll_arrows"
@@ -34,8 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/viewPager"
             android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/iv_left"
                 android:layout_width="@dimen/_25sdp"
@@ -57,15 +55,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_110sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_30sdp"
             android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="-28dp"
             android:background="@drawable/rect_grey"
+            android:elevation="1dp"
+            android:paddingLeft="@dimen/_15sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingRight="@dimen/_15sdp"
-            android:paddingLeft="@dimen/_15sdp"
-            android:elevation="1dp"
-            android:layout_marginBottom="-28dp"
 
             >
 
@@ -252,8 +250,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_14sdp"
+                android:layout_marginBottom="@dimen/_14sdp"
                 android:background="@color/white" />
 
 
@@ -315,6 +313,7 @@
                 android:textSize="@dimen/_10ssp"></TextView>
 
             <TextView
+                android:id="@+id/tv_doublebed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -360,6 +359,7 @@
                 android:textSize="@dimen/_10ssp"></TextView>
 
             <TextView
+                android:id="@+id/tv_sofa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -367,6 +367,17 @@
                 android:text="Sofa Chair"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10ssp"></TextView>
+
+            <TextView
+                android:id="@+id/tv_diningtbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:text="Outdoor Dining Table"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp"
+                android:visibility="gone"></TextView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -378,6 +389,7 @@
                 android:textSize="@dimen/_10ssp"></TextView>
 
             <TextView
+                android:id="@+id/tv_pool"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -390,8 +402,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
                 android:background="@color/white" />
 
 
@@ -510,8 +522,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_14sdp"
+                android:layout_marginBottom="@dimen/_14sdp"
                 android:background="@color/white" />
 
 
@@ -575,9 +587,239 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:layout_marginBottom="@dimen/_14sdp"
                 android:background="@color/white" />
+
+            <LinearLayout
+                android:id="@+id/ll_island"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/kitchenette"></ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_lv"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:fontFamily="@font/jura_demi_bold"
+                        android:text="OUTDOORS"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp"></TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Terrace"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Sun Deck"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Outdoor Showers"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Outdoor Seats"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    android:background="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/safety"></ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_lv"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:fontFamily="@font/jura_demi_bold"
+                        android:text="FRONT DESK SERVICES"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp"></TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="24-hour Front Desk"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Express Check in/out"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Invoice Provided"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Pool/Beach Towels(Additional Charge)"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    android:background="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/safety"></ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_lv"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:fontFamily="@font/jura_demi_bold"
+                        android:text="DEVICES AND ENTERTAINMENT"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp"></TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Phone"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="TV"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="NETFLIX Cable"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    android:background="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/safety"></ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_lv"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:fontFamily="@font/jura_demi_bold"
+                        android:text="BUSINESS FACILITIES"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp"></TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="Conference Room(Additional Charge)"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"></TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    android:background="@color/white" />
+
+            </LinearLayout>
+
 
 
             <LinearLayout
@@ -660,8 +902,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                >
+                android:layout_marginTop="@dimen/_12sdp">
 
                 <ImageView
                     android:layout_width="@dimen/_15sdp"
@@ -679,6 +920,7 @@
                     android:textSize="@dimen/_13ssp"></TextView>
 
             </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -691,8 +933,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
                 android:background="@color/white" />
 
 
@@ -739,8 +981,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
                 android:background="@color/white" />
 
 
@@ -781,11 +1023,11 @@
             android:id="@+id/btn_rsrv"
             android:layout_width="@dimen/_130sdp"
             android:layout_height="@dimen/_50sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/detailsbtn"
             android:text="Reserve"
-            android:textSize="@dimen/_14ssp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:textColor="@color/white"></Button>
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"></Button>
 
     </LinearLayout>
 </ScrollView>

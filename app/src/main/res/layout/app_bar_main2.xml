@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            app:titleMarginStart="@dimen/_60sdp"
+            app:titleMarginStart="@dimen/_53sdp"
             android:paddingStart="@dimen/_7sdp"
             android:theme="@style/Theme.BlueLimits"
             android:background="@drawable/toolbar_bg"
@@ -27,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/iv_logo"
-                android:layout_width="@dimen/_22sdp"
-                android:layout_height="@dimen/_22sdp"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/_7sdp"
                 android:src="@drawable/overflow_icon"></ImageView>

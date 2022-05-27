@@ -19,10 +19,8 @@ import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 
-import android.view.View.OnTouchListener
 import android.widget.*
 
 import android.widget.LinearLayout
@@ -31,6 +29,7 @@ import androidx.navigation.Navigation
 import com.app.bluelimits.databinding.FragmentEditGuestBinding
 import com.app.bluelimits.view.EditGuestAdapter
 import com.app.bluelimits.viewmodel.GuestEditViewModel
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -46,7 +45,8 @@ class EditGuestFragment : Fragment() {
     private var mAlertDialog: AlertDialog? = null
     private val guestListAdapter = EditGuestAdapter()
     private val binding get() = _binding!!
-
+    private var isDiscountAvailable = true
+    private var isDateValid = true
     private lateinit var prefsHelper: SharedPreferencesHelper
     private var resortId = ""
     private lateinit var obj: Data
@@ -55,8 +55,9 @@ class EditGuestFragment : Fragment() {
     private var discount = "0"
     private lateinit var userType: String
     var root: View? = null
-    private lateinit var unitId: String
+    private var setupUnitId: String = ""
     private lateinit var guestData: GuestData
+    private var isUnitAvailable = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,30 +93,59 @@ class EditGuestFragment : Fragment() {
         getResorts()
         setReservationDates()
         setReservationData()
+        showDiscountView()
 
         if (userType.equals(Constants.admin)) {
-            showDiscountView()
 
-            binding.etDiscount.setOnTouchListener(OnTouchListener { v, event ->
+            binding.etDiscount.setOnTouchListener(View.OnTouchListener { v, event ->
                 binding.etDiscount.textChanges()
                     .debounce(2, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { textChanged ->
+                      //  if(isChkOutUpdated || isChkInUpdated){
                         if (!binding.etChkIn.text.toString()
                                 .isNullOrEmpty() && !binding.etChkOut.text.toString()
                                 .isNullOrEmpty()
                         ) {
-                            val discount = getDiscount()
+                            var discount = ""
+                            if (binding.etGuestsNo.text.toString().isNullOrEmpty())
+                                discount =
+                                    getDiscount(obj.user?.guest_house_discount_percentage_self?.toInt()!!)
+                            else
+                                discount =
+                                    getDiscount(obj.user?.guest_house_discount_percentage?.toInt()!!)
                             getAvailableUnits(discount)
 
-                        }
-                    }
+                        }}
+                    //}
 
                 false
             })
         }
 
         binding.btnSubmit.setOnClickListener(View.OnClickListener {
+
+            if (!isDiscountAvailable && obj.user?.user_type.equals(Constants.admin)) {
+                showAlertDialog(
+                    requireActivity(),
+                    getString(R.string.app_name),
+                    "Entered discount not available."
+                )
+                return@OnClickListener
+            } else if (!isDateValid) {
+                showAlertDialog(getString(R.string.app_name), "Invalid Checkin date.")
+                return@OnClickListener
+            }
+            else if(!isUnitAvailable){
+                    showAlertDialog(
+                        requireActivity(),
+                        getString(R.string.app_name),
+                        "Units not available for selected dates."
+                    )
+                return@OnClickListener
+
+            }
+
             val noOfGuests = binding.etGuestsNo.text.toString()
             if (!noOfGuests.isNullOrEmpty() && noOfGuests != "0") {
                 val idMsg = checkGuestsID(guestListAdapter.getData(), requireContext())
@@ -126,7 +156,7 @@ class EditGuestFragment : Fragment() {
                     observeReservationVM()
                 }
             } else {
-                if(this::selectedUnit.isInitialized && selectedUnit != null) {
+                if (this::selectedUnit.isInitialized && selectedUnit != null) {
                     addGuests()
                     observeReservationVM()
                 } else {
@@ -141,14 +171,25 @@ class EditGuestFragment : Fragment() {
 
     }
 
+
+    private fun getAdminEnteredDiscount(): Int {
+        val discount = binding.etDiscount.text.toString()
+        if (!discount.isNullOrEmpty())
+            return discount.toInt()
+        return 0
+
+    }
+
     private fun setReservationData() {
         binding.etChkIn.setText(guestData.from)
         binding.etChkOut.setText(guestData.to)
         binding.etDiscount.setText(guestData.discount)
         binding.etGuestsNo.setText(guestData.no_of_guest)
+        binding.tvPayment.setText(getString(R.string.payable) + " " + guestData.packagee?.total_price)
 
         resortId = guestData.resort_id!!
-        unitId = guestData.unit_type_id!!
+        if (guestData.setup_unit_id != null)
+            setupUnitId = guestData.setup_unit_id!!
 
         val price = guestData.packagee?.price
         binding.tvPrice.setText(price)
@@ -161,29 +202,29 @@ class EditGuestFragment : Fragment() {
         val guests: ArrayList<Guest>? = guestListAdapter.getData()
 
         val no_of_guests = binding.etGuestsNo.text.toString()
-        var setup_unit_id =0
+        var setup_unit_id = 0
         var discount = ""
         var package_id = ""
         var sub_total = ""
         var total_price = ""
         var custom_discount_percentage = ""
-        if(this::selectedUnit.isInitialized && selectedUnit != null) {
+        if (this::selectedUnit.isInitialized && selectedUnit != null) {
             setup_unit_id = selectedUnit.id
             discount = selectedUnit.discount
-             package_id = selectedUnit.package_id
-             sub_total = selectedUnit.sub_total
-             total_price = selectedUnit.total_price
-             custom_discount_percentage = selectedUnit.discount_percentage
-        }
-        else
-        {
-            setup_unit_id = unitId.toInt()
+            package_id = selectedUnit.package_id
+            sub_total = selectedUnit.sub_total
+            total_price = selectedUnit.total_price
+            //  custom_discount_percentage = selectedUnit.discount_percentage
+        } else {
+            if (!setupUnitId.isNullOrEmpty())
+                setup_unit_id = setupUnitId.toInt()
             discount = guestData.discount.toString()
             package_id = guestData.package_id!!
             sub_total = guestData.packagee?.sub_total ?: "0"
             total_price = guestData.packagee?.total_price ?: "0"
-            custom_discount_percentage = guestData.packagee!!.discount_percentage.toString()
+            //  custom_discount_percentage = guestData.packagee?.discount_percentage.toString()
         }
+        custom_discount_percentage = getGHDiscount()!!
         val reservation_date = binding.etChkIn.text.toString()
         val check_out_date = binding.etChkOut.text.toString()
 
@@ -218,10 +259,18 @@ class EditGuestFragment : Fragment() {
     }
 
     private fun showDiscountView() {
-        binding.etDiscount.visibility = View.VISIBLE
-        binding.tvDiscountLbl.visibility = View.VISIBLE
+        if (userType.equals(Constants.admin)) {
+            binding.etDiscount.isEnabled = true
+        }
+        if(binding.etGuestsNo.text.toString().isNullOrEmpty() || binding.etGuestsNo.text.toString() == "0")
+        {
+            binding.etDiscount.setText(obj.user?.guest_house_discount_percentage_self)
+        }
+        else
+        {
+            binding.etDiscount.setText(obj.user?.guest_house_discount_percentage)
 
-        binding.etDiscount.setText(obj.user?.guest_house_discount_percentage)
+        }
     }
 
     private fun getAdminDiscount(): Int {
@@ -232,27 +281,24 @@ class EditGuestFragment : Fragment() {
 
     }
 
-    private fun getDiscount(): String {
-        val serverDiscount = obj.user?.guest_house_discount_percentage?.toInt()
+    private fun getDiscount(serverDiscount: Int): String {
+        //  val serverDiscount = obj.user?.guest_house_discount_percentage?.toInt()
         var discount = ""
 
         if (obj.user?.user_type.equals(Constants.admin)) {
-            val adminDiscount = getAdminDiscount()
+            val adminDiscount = getAdminEnteredDiscount()
             if (adminDiscount > serverDiscount!!) {
                 hideKeyboard(requireActivity())
-
+                isDiscountAvailable = false
                 showAlertDialog(
                     getString(R.string.app_name),
                     getString(R.string.discount_msg) + " " + serverDiscount + "%"
                 )
-                /*  Toast.makeText(
-                      requireContext(),
-                      getString(R.string.discount_msg) + " " + serverDiscount + "%",
-                      Toast.LENGTH_LONG
-                  ).show()*/
 
-            } else
+            } else {
                 discount = adminDiscount.toString()
+                isDiscountAvailable = true
+            }
         } else {
             discount = serverDiscount.toString()
         }
@@ -260,14 +306,15 @@ class EditGuestFragment : Fragment() {
         return discount
     }
 
-    private fun setReservationDates() {
-        binding.etChkIn.setOnClickListener(View.OnClickListener {
-            showDateTime(binding.etChkIn, Constants.CHKIN_TIME)
-        })
 
-        binding.etChkOut.setOnClickListener(View.OnClickListener {
+    private fun setReservationDates() {
+        binding.etChkIn.setOnClickListener {
+            showDateTime(binding.etChkIn, Constants.CHKIN_TIME)
+        }
+
+        binding.etChkOut.setOnClickListener {
             showDateTime(binding.etChkOut, Constants.CHKOUT_TIME)
-        })
+        }
 
     }
 
@@ -294,8 +341,25 @@ class EditGuestFragment : Fragment() {
                 if (!binding.etChkIn.text.toString()
                         .isNullOrEmpty() && !binding.etChkOut.text.toString().isNullOrEmpty()
                 ) {
-                    val discount = getDiscount()
-                    getAvailableUnits(discount)
+                    if (isChkInDateGreater(
+                            binding.etChkIn.text.toString(),
+                            binding.etChkOut.text.toString()
+                        )
+                    ) {
+                        isDateValid = false
+                        showAlertDialog(getString(R.string.app_name), "Invalid Checkin date.")
+                    } else {
+                        isDateValid = true
+                        var discount = ""
+                        if (binding.etGuestsNo.text.toString().isNullOrEmpty())
+                            discount =
+                                getDiscount(obj.user?.guest_house_discount_percentage_self?.toInt()!!)
+                        else
+                            discount =
+                                getDiscount(obj.user?.guest_house_discount_percentage?.toInt()!!)
+
+                        getAvailableUnits(discount)
+                    }
 
                 }
             }.display()
@@ -319,13 +383,15 @@ class EditGuestFragment : Fragment() {
             if (!discount.isNullOrEmpty()) {
                 binding.progressBar.progressbar.visibility = View.VISIBLE
                 obj.token?.let {
-                    viewModel.getAvailableUnits(requireContext(),
+                    viewModel.getAvailableUnits(
+                        requireContext(),
                         it,
                         resortId,
                         chk_in_date,
                         chk_out_date,
                         discount,
-                        unitId
+                        guestData.unit_type_id!!,
+                        guestData.id!!
                     )
                 }
                 observeViewModel(true)
@@ -439,15 +505,10 @@ class EditGuestFragment : Fragment() {
     private fun setUnitDetails() {
 
         binding.tvPrice.setText(selectedUnit.price)
-       /* binding.tvMaxGuests.setText(
-            getString(R.string.max) + " " + selectedUnit.no_of_guest + " " + getString(
-                R.string.max_guests
-            )
-        )*/
         guestsLimit = selectedUnit.no_of_guest.toInt()
         binding.tvPayment.setText(getString(R.string.payable) + " " + selectedUnit.total_price)
 
-        if(!guestData.no_of_guest.isNullOrEmpty())
+        if (!guestData.no_of_guest.isNullOrEmpty())
             chkGuestLimit()
     }
 
@@ -465,6 +526,7 @@ class EditGuestFragment : Fragment() {
         viewModel.errorMsg.observe(viewLifecycleOwner, Observer { errorMsg ->
             errorMsg?.let {
                 if (!it.isNullOrEmpty()) {
+                    isUnitAvailable = false
                     binding.progressBar.progressbar.visibility = View.GONE
                     val msg = getServerErrors(viewModel.errorMsg.value.toString(), requireContext())
                     showAlertDialog(getString(R.string.app_name), msg)
@@ -485,6 +547,7 @@ class EditGuestFragment : Fragment() {
             viewModel.availableUnit.observe(viewLifecycleOwner, Observer {
                 binding.progressBar.progressbar.visibility = View.GONE
                 selectedUnit = viewModel.availableUnit.value!!
+                isUnitAvailable = true
                 /* populateSpinners(true)
                  for(availableUnit in it) {
                      val unitName = availableUnit.unit
@@ -526,77 +589,29 @@ class EditGuestFragment : Fragment() {
             )
         )
 
-        /* binding.etGuestsNo.textChanges()
-             .debounce(1, TimeUnit.SECONDS)
-             .observeOn(AndroidSchedulers.mainThread())
-             .subscribe { textChanged ->
-                 val enteredGuestTxt: String = binding.etGuestsNo.text.toString()
-                 if (!enteredGuestTxt.isEmpty()) {
-
-                     activity?.let { hideKeyboard(it) }
- */
-     //   val no_of_entered_guests: Int = guestData.no_of_guest!!.toInt()
-     //   if (no_of_entered_guests > 0 && no_of_entered_guests <= guestsLimit) {
-            /*  val visitors = ArrayList<Guest>(no_of_entered_guests)
-              for (i in 1..no_of_entered_guests) {
-                  val person = Guest("", "", "", "","","")
-                  visitors.add(person)
-              }*/
-
-            binding.btnSubmit.visibility = View.VISIBLE
+    binding.btnSubmit.visibility = View.VISIBLE
         guestData.guests?.let {
             binding.rvGuest.visibility = View.VISIBLE
 
             guestListAdapter?.setGuestList(
-                it, requireContext()
+                it, requireContext(), guestData.payment_status!!
             )
         }
 
-       /* } else if (no_of_entered_guests > guestsLimit) {
-            showAlertDialog(
-                getString(R.string.app_name),
-                getString(R.string.guests_exceeded)
-            )
-            binding.rvGuest.visibility = View.GONE
-            binding.btnSubmit.visibility = View.GONE
+        /* } else if (no_of_entered_guests > guestsLimit) {
+             showAlertDialog(
+                 getString(R.string.app_name),
+                 getString(R.string.guests_exceeded)
+             )
+             binding.rvGuest.visibility = View.GONE
+             binding.btnSubmit.visibility = View.GONE
 
-        } else {
-            binding.rvGuest.visibility = View.GONE
-            binding.btnSubmit.visibility = View.GONE
+         } else {
+             binding.rvGuest.visibility = View.GONE
+             binding.btnSubmit.visibility = View.GONE
 
-        }*/
+         }*/
     }
-
-
-    private fun adjustLayout() {
-        val config: Configuration = resources.configuration
-        val height = config.screenHeightDp
-
-        if (height >= 900) {
-
-            //linear layout
-            val attributLayoutParams = RelativeLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            attributLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
-            attributLayoutParams.addRule(RelativeLayout.BELOW, R.id.tv_title);
-
-            binding.llMain.layoutParams = attributLayoutParams
-
-            val params = RelativeLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.topMargin = 40
-            params.leftMargin = 125
-            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-            params.addRule(RelativeLayout.BELOW, R.id.ll_main);
-
-            binding.tvPayment.layoutParams = params
-        }
-    }
-
 
     private fun observeReservationVM() {
 
@@ -645,21 +660,30 @@ class EditGuestFragment : Fragment() {
 
     }
 
+    private fun getGHDiscount(): String? {
+        val guests = binding.etGuestsNo.text.toString()
+        if (userType.equals(Constants.admin) && (guests.isNullOrEmpty() || guests == "0")) {
+            return obj.user?.guest_house_discount_percentage_self
+        }
+        return obj.user?.guest_house_discount_percentage
+    }
+
+
     fun showAlertDialog(title: String, msg: String) {
         if (builder == null) {
             builder = activity?.let {
                 AlertDialog.Builder(it)
             }
-
-            builder?.setMessage(msg)
-                ?.setTitle(title)?.setPositiveButton(
-                    R.string.ok
-                ) { _, _ ->
-
-                }
-            mAlertDialog = builder?.create()
-            mAlertDialog?.show()
         }
+        builder?.setMessage(msg)
+            ?.setTitle(title)?.setPositiveButton(
+                R.string.ok
+            ) { _, _ ->
+
+            }
+        mAlertDialog = builder?.create()
+        mAlertDialog?.show()
+
     }
 
 

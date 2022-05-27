@@ -76,6 +76,7 @@ class GuestSpaceFragment : Fragment() {
                                "LOFT SPACE" -> setLoftDetail(space)
                                "VILLA SPACE" -> setVillaDetail(space)
                                "SUITE SPACE" -> setSuiteDetail(space)
+                               "ISLAND SPACE" -> setIslandDetail(space)
                            }
                         }
 
@@ -107,6 +108,23 @@ class GuestSpaceFragment : Fragment() {
         })
 
     }
+
+    private fun setIslandDetail(unit: SpaceType)
+    {
+        binding.tvSpace4.setText(unit.name)
+        binding.tvAccom4.setText("Accomodation for " + unit.accomodation)
+        binding.tvDescription4.setText(unit.description)
+        binding.tvPrice4.setText(unit.start_pirce)
+        saveUnitData(unit, Constants.ISLAND_SPACE)
+
+        binding.btnIsland.setOnClickListener{
+            val action = GuestSpaceFragmentDirections.actionSpaceToDetail(String.format(unit.id),"island")
+            action?.let { Navigation.findNavController(binding.btnIsland).navigate(it) }
+        }
+
+
+    }
+
 
     private fun setLoftDetail(unit: SpaceType)
     {

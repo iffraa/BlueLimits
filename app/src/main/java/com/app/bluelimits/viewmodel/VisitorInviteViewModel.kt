@@ -99,8 +99,7 @@ class VisitorInviteViewModel(application: Application) : BaseViewModel(applicati
                                             errorMsg.value =
                                                 jObjError.getJSONObject("errors").toString()
                                         }
-                                    }
-                                    else if (jObjError.has("message")) {
+                                    } else if (jObjError.has("message")) {
                                         errorMsg.value =
                                             jObjError.getString("message")
                                     }
@@ -141,8 +140,7 @@ class VisitorInviteViewModel(application: Application) : BaseViewModel(applicati
                                             errorMsg.value =
                                                 jObjError.getJSONObject("errors").toString()
                                         }
-                                    }
-                                    else if (jObjError.has("message")) {
+                                    } else if (jObjError.has("message")) {
                                         errorMsg.value =
                                             jObjError.getString("message")
                                     }
@@ -191,11 +189,21 @@ class VisitorInviteViewModel(application: Application) : BaseViewModel(applicati
                             override fun onError(e: Throwable) {
                                 loading.value = false
                                 if (e is HttpException) {
-                                    val jObjError = JSONObject(e.response()?.errorBody()?.string())
-                                    if (jObjError.has("errors")) {
+                                    try {
+                                        val jObjError =
+                                            JSONObject(e.response()?.errorBody()?.string())
                                         if (jObjError.has("errors")) {
-                                            inviteErrorMsg.value =
-                                                jObjError.getJSONObject("errors").toString()
+                                            if (jObjError.has("errors")) {
+                                                inviteErrorMsg.value =
+                                                    jObjError.getJSONObject("errors").toString()
+                                            }
+                                        }
+                                    } catch (ex: Exception) {
+                                        e.response()?.errorBody()?.string()?.let { it1 ->
+                                            showAlertDialog(
+                                                context as Activity,
+                                                context.getString(R.string.app_name), it1
+                                            )
                                         }
                                     }
                                 } else {

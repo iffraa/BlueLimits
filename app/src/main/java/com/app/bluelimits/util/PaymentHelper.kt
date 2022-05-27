@@ -67,7 +67,7 @@ class PaymentHelper {
         map["command"] = "PURCHASE"//"AUTHORIZATION"
         map["currency"] = "SAR"
         map["amount"] = amount
-        map["merchant_reference"] = "OrderNo_" + getRandomNumber()
+        map["merchant_reference"] = "OrderNo." + getRandomNumber()
         map["customer_email"] = "mustafa@bluelimits.com"
 
         fortRequest.requestMap = map

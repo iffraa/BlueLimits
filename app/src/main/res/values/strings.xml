@@ -91,6 +91,7 @@
     <string name="price">Price</string>
     <string name="pay">I will pay</string>
     <string name="pay_visitor">Visitor will pay</string>
+    <string name="free">Free</string>
     <string name="name">Name:</string>
     <string name="pay_now">Pay Now</string>
     <string name="edit">Edit</string>
@@ -109,14 +110,14 @@
     <string name="logout_msg">Do you want to logout?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="discount">Discount</string>
+    <string name="discount">Discount %</string>
     <string name="discount_msg">Discount should be till</string>
     <string name="discount_empty">Please enter discount.</string>
 
     <string name="admin">Admin</string>
     <string name="customer">Customer</string>
     <string name="days_rem">DAYS REMAINING</string>
-    <string name="total_invites">TOTAL INVITES</string>
+    <string name="total_invites">TOTAL INVITEES</string>
     <string name="expiry">CONTRACT EXPIRY</string>
     <string name="my_points">MY POINTS</string>
     <string name="points">POINTS</string>
@@ -146,6 +147,7 @@
     <string name="oia_fax">Fax : +966-12-215-0941</string>
     <string name="po_Box">PO Box : +966-12-215-0942</string>
     <string name="oia_address">Jeddah 118500</string>
+    <string name="oia_email">Email : info@bluelimits.com</string>
 
     <string name="profile_error">Profile loading failed.</string>
     <string name="login_error">Login Failed</string>

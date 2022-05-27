@@ -153,5 +153,12 @@ class VisitorsListAdapter(val visitors: ArrayList<VisitorResult>, context: Conte
 
     }
 
+  /*  private fun deleteVisitor(token: String)
+    {
+        val viewModel = ViewModelProvider(fragment).get(VisitorsViewModel::class.java)
+        viewModel.deleteVisitor(token, visitor.id.toString())
+        observeViewModel(viewModel,visitor )
+
+    }*/
 
 }

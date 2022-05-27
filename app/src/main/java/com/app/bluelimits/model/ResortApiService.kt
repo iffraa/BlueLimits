@@ -111,6 +111,18 @@ class ResortApiService {
         return api.getAvailableUnits(token, resort_id, reservation_date, chk_out, discount, unitId)
     }
 
+    fun getAvailableUnitsEdit(
+        token: String,
+        resort_id: String,
+        reservation_date: String,
+        chk_out: String,
+        discount: String,
+        unitId: String,
+        resrvId: String
+    ): Single<UnitsResponse?>? {
+        return api.getAvailableUnitsEdit(token, resort_id, reservation_date, chk_out, discount, unitId,resrvId)
+    }
+
     fun addGuestReservation(
         token: String,
         guests: GHReservationRequest

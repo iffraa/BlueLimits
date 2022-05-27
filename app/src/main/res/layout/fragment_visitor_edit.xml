@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/_10sdp"
-    android:layout_marginTop="@dimen/_30sdp"
+    android:paddingTop="@dimen/_30sdp"
     tools:context=".view.fragment.VisitorInviteFragment">
 
     <LinearLayout
@@ -103,9 +103,7 @@
                     android:layout_height="@dimen/_35sdp"
                     android:fontFamily="@font/jura_demi_bold"
                     android:focusableInTouchMode="false"
-                    android:clickable="false"
-                    android:enabled="false"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/rectangle"
                     android:paddingLeft="@dimen/_10sdp"
                     android:textColor="@color/navy_blue"
                     android:textSize="@dimen/_11ssp"

@@ -49,7 +49,9 @@ class GuestDetailAdapter(val guests: ArrayList<Guest>, context: Context) :
         contact.setText(mContext.getString(R.string.mobile) +" "+ guestsData.contact_no)
         gender.setText(mContext.getString(R.string.gender) +": "+ guestsData.gender)
         status.setText("Status: "+ guestsData.status)
-        guestsData.qr_code?.let { loadImage(qrImg, it, mContext) }
+
+        if(guestsData.status.equals("active"))
+            guestsData.qr_code?.let { loadImage(qrImg, it, mContext) }
 
     }
 

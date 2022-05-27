@@ -178,7 +178,7 @@ s
                     android:textColor="@color/navy_blue"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:fontFamily="@font/jura_demi_bold"
-                    android:text="@{familyMember.id}"></TextView>
+                    android:text="@{familyMember.id_no}"></TextView>
 
             </LinearLayout>
 

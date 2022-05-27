@@ -91,8 +91,7 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun setProfileDetails(user: User)
-    {
+    private fun setProfileDetails(user: User) {
         context?.let {
             user.profile_image?.let { it1 -> loadImage(binding.ivProfile, it1, it) }
             user.qr_code?.let { it1 -> loadImage(binding.ivBarcode, it1, it) }
@@ -100,19 +99,16 @@ class ProfileFragment : Fragment() {
 
         binding.tvName.setText(user.name)
         binding.tvRole.setText(user?.resort + " - " + user?.role)
-        binding.tvId.setText(getString(R.string.id_no) + " " + user.id.toString())
+        binding.tvId.setText(getString(R.string.id_no) + " " + user.member_id.toString())
         binding.tvMobile.setText(getString(R.string.mobile) + " " + user.contact_no)
         binding.tvEmail.setText(getString(R.string.email_profile) + " " + user.email)
 
-        if(user.user_type.equals(Constants.admin)) {
+        if (user.user_type.equals(Constants.admin)) {
             binding.llFamily.visibility = View.GONE
             binding.llExtra.visibility = View.GONE
             binding.llUnit.visibility = View.GONE
             binding.ivBarcode.visibility = View.GONE
-
-        }
-        else
-        {
+        } else {
             binding.tvExtra.setText(getString(R.string.extra_mems) + " " + user.no_of_extra_family_member.toString())
             binding.tvFamily.setText(getString(R.string.total_mems) + " " + user.no_of_family_member.toString())
             binding.tvUnit.setText(getString(R.string.unit) + " " + user.unit_no)
@@ -122,7 +118,10 @@ class ProfileFragment : Fragment() {
 
         user.members?.let { it1 -> setFamilyList(it1) }
 
-        setExtraFamilyList(user.extra_members)
+        user.extra_members?.let {
+            setExtraFamilyList(it)
+        }
+
     }
 
     private fun setExtraFamilyList(familyMembers: ArrayList<FamilyMember>) {

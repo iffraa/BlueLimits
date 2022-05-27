@@ -10,7 +10,7 @@ import android.widget.*
 import com.app.bluelimits.util.*
 import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
-import com.app.bluelimits.databinding.ItemVisitorBinding
+import com.app.bluelimits.databinding.ItemAddVisitorBinding
 import com.app.bluelimits.model.Data
 import com.app.bluelimits.model.Guest
 import com.app.bluelimits.model.ServicePackage
@@ -33,14 +33,13 @@ class AddVisitorsAdapter(
 
     private var isVisitorClicked = false
     private var isCBClicked = false
-    private var _binding: ItemVisitorBinding? = null
+    private var _binding: ItemAddVisitorBinding? = null
     private val binding get() = _binding!!
     private val enteredData: ArrayList<Visitor> = arrayListOf()
     private val context: Context = mContext
     private val visitorFrag: VisitorInviteFragment = visitorInviteFragment
     private lateinit var prefsHelper: SharedPreferencesHelper
     private lateinit var data: Data
-    private lateinit var dateTime: String
     private var packages: HashMap<String, ServicePackage> = hashMapOf()
 
 
@@ -49,14 +48,13 @@ class AddVisitorsAdapter(
         enteredData.clear()
         visitorList.clear()
         visitorList.addAll(newList)
-
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VisitorViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        _binding = ItemVisitorBinding.inflate(inflater)
+        _binding = ItemAddVisitorBinding.inflate(inflater)
         return VisitorViewHolder(binding)
     }
 
@@ -73,10 +71,17 @@ class AddVisitorsAdapter(
         val cb_male: CheckBox = holder.view.checkboxMale
         val cb_female: CheckBox = holder.view.checkboxFemale
         //  val cb_sender_pay: CheckBox = holder.view.cbSenderPay
-        //val cb_visitor_pay: CheckBox = holder.view.cbVisitorPay
         val payRg: RadioGroup = holder.view.radioGroup
         val rbSender: RadioButton = holder.view.cbSenderPay
         val rbVisitor: RadioButton = holder.view.cbVisitorPay
+        val rbFree: RadioButton = holder.view.cbFree
+
+        if(visitor.showFreeRB)
+        {
+            rbFree.visibility = View.VISIBLE
+        }
+        else
+            rbFree.visibility = View.GONE
 
         val btn_visitor: Button = holder.view.btnVisitor
         btn_visitor.setText(context.getString(R.string.visitor) + " " + (position + 1))
@@ -117,7 +122,7 @@ class AddVisitorsAdapter(
 
         fetchGenderPackage(cb_female, cb_male, visitor, price)
       //  if (!isContain(enteredData, visitor))
-        getWhoWillPay(rbSender, rbVisitor, visitor)
+        getWhoWillPay(rbSender, rbVisitor, rbFree,visitor)
 
         price.setText(visitor.price)
         enteredData.add(visitor)
@@ -136,7 +141,7 @@ class AddVisitorsAdapter(
         return false
     }
 
-    private fun getWhoWillPay(senderRB: RadioButton, visitorRB: RadioButton, visitor: Visitor) {
+    private fun getWhoWillPay(senderRB: RadioButton, visitorRB: RadioButton, freeRB : RadioButton,  visitor: Visitor) {
         var who_will_pay = "visitor"
         /*   senderRB.setOnCheckedChangeListener { buttonView, isChecked ->
                hideKeyboard(context as Activity)
@@ -176,6 +181,14 @@ class AddVisitorsAdapter(
             visitor.who_will_pay = who_will_pay
            // notifyDataSetChanged();
 
+        }
+
+        freeRB.setOnClickListener {
+            isCBClicked = true
+            hideKeyboard(context as Activity)
+            who_will_pay = "free"
+            visitor.who_will_pay = who_will_pay
+            visitor.payment_status = who_will_pay
         }
     }
 
@@ -280,20 +293,23 @@ class AddVisitorsAdapter(
     fun clear() {
 
         enteredData.clear()
-        val size: Int = visitorList.size
-        if (size > 0) {
-            for (i in 0 until size) {
-                visitorList.removeAt(i)
-            }
+        visitorList.clear()
+        notifyDataSetChanged()
 
-            notifyItemRangeRemoved(0, size)
-            notifyDataSetChanged()
-        }
+        /* val size: Int = visitorList.size
+         if (size > 0) {
+             for (i in 0 until size) {
+                 visitorList.removeAt(i)
+             }
+
+             notifyItemRangeRemoved(0, size)
+             notifyDataSetChanged()
+         }*/
     }
 
     override fun getItemCount() = visitorList.size
 
-    class VisitorViewHolder(val view: ItemVisitorBinding) : RecyclerView.ViewHolder(view.root)
+    class VisitorViewHolder(val view: ItemAddVisitorBinding) : RecyclerView.ViewHolder(view.root)
 
 
 }

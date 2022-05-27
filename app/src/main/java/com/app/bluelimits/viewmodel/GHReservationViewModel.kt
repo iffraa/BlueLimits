@@ -77,12 +77,8 @@ class GHReservationViewModel(application: Application) : BaseViewModel(applicati
                                 if(!value.data.isNullOrEmpty())
                                     unitsRetrieved(value.data[0])
                                 else {
-                                    loadError.value = true
-                                    showAlertDialog(
-                                        context as Activity,
-                                        "Bluelimit",
-                                        "Units not available for selected dates."
-                                    )
+                                    errorMsg.value = "Units not available for selected dates."
+
                                 }
 
                             }

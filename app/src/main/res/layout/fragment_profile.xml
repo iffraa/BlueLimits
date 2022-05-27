@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:layout_marginTop="@dimen/_40sdp"
     tools:context=".view.fragment.ProfileFragment">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_40sdp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/_18sdp">
 
@@ -75,7 +75,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="@dimen/_160sdp"
+                    android:layout_width="@dimen/_163sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/rect_profile"
@@ -101,7 +101,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="@dimen/_160sdp"
+                    android:layout_width="@dimen/_163sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_13sdp"
                     android:background="@drawable/rect_profile"
@@ -127,7 +127,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="@dimen/_160sdp"
+                    android:layout_width="@dimen/_163sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_13sdp"
                     android:background="@drawable/rect_profile"
@@ -148,13 +148,13 @@
                         android:fontFamily="@font/jura_demi_bold"
                         android:text="@string/email"
                         android:textColor="@color/navy_blue"
-                        android:textSize="@dimen/_10ssp"></TextView>
+                        android:textSize="@dimen/_9ssp"></TextView>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_unit"
-                    android:layout_width="@dimen/_160sdp"
+                    android:layout_width="@dimen/_163sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_13sdp"
                     android:background="@drawable/rect_profile"
@@ -181,7 +181,7 @@
 
                 <LinearLayout
                     android:id="@+id/ll_extra"
-                    android:layout_width="@dimen/_160sdp"
+                    android:layout_width="@dimen/_163sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="@dimen/_13sdp"
@@ -210,7 +210,7 @@
 
                 <LinearLayout
                     android:id="@+id/ll_family"
-                    android:layout_width="@dimen/_160sdp"
+                    android:layout_width="@dimen/_163sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="@dimen/_13sdp"
@@ -241,6 +241,7 @@
                 android:id="@+id/iv_barcode"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_70sdp"
+                android:visibility="visible"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true">
 
@@ -304,6 +305,7 @@
             android:animationResolution="@android:integer/config_mediumAnimTime"
             android:backgroundTint="@color/navy_blue"
             android:indeterminate="true"
+            android:layout_below="@+id/btn_info"
             android:indeterminateTint="@color/navy_blue"
             android:max="100"
             android:visibility="gone"

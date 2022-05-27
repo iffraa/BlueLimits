@@ -11,7 +11,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
-import com.app.bluelimits.databinding.ItemGuestBinding
+import com.app.bluelimits.databinding.ItemAddGuestBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.hideKeyboard
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 class AddGuestAdapter() :
     RecyclerView.Adapter<AddGuestAdapter.GuestViewHolder>() {
 
-    private var _binding: ItemGuestBinding? = null
+    private var _binding: ItemAddGuestBinding? = null
     private val binding get() = _binding!!
     private val enteredData: ArrayList<Guest> = arrayListOf()
     private val guestList = ArrayList<Guest>()
@@ -37,10 +37,17 @@ class AddGuestAdapter() :
         notifyDataSetChanged()
     }
 
+    fun clearData()
+    {
+        enteredData.clear()
+        guestList.clear()
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuestViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        _binding = ItemGuestBinding.inflate(inflater, parent, false)
+        _binding = ItemAddGuestBinding.inflate(inflater, parent, false)
         return GuestViewHolder(binding)
     }
 
@@ -167,7 +174,7 @@ class AddGuestAdapter() :
 
     override fun getItemCount() = guestList.size
 
-    class GuestViewHolder(val view: ItemGuestBinding) : RecyclerView.ViewHolder(view.root)
+    class GuestViewHolder(val view: ItemAddGuestBinding) : RecyclerView.ViewHolder(view.root)
 
 
 }

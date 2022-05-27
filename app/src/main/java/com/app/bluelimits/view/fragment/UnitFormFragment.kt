@@ -218,8 +218,8 @@ class UnitFormFragment : Fragment() {
             .debounce(0.5.toLong(), TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-                val noOfFam: String = binding.etFamily.text.toString()
-                if (!noOfFam.isEmpty()) {
+                val noOfFam: String = binding.etFamily.text.toString().replace(" ","")
+                if (!noOfFam.isNullOrEmpty() && noOfFam != "0") {
                     activity?.let { hideKeyboard(it) }
 
                     val no_of_fam_members: Int = noOfFam.toInt()
@@ -232,8 +232,16 @@ class UnitFormFragment : Fragment() {
                     familyListAdapter.setFamilyList(members, requireContext())
 
                 }
+                else
+                    removeFamilyList()
             }
 
+    }
+
+    private fun removeFamilyList()
+    {
+        binding.rvFamily.visibility = View.GONE
+        familyListAdapter.clear()
     }
 
     private fun setPackagesList(servicePackages: ArrayList<ServicePackage>) {
@@ -324,9 +332,10 @@ class UnitFormFragment : Fragment() {
             val city_home: String = binding.etHCity.text.toString()
             val country_offc = getSelectedCountry(binding.ccpOffice)
             val country_home = getSelectedCountry(binding.ccpHome)
-            val gender: String = getGender(binding.cbFemale, binding.cbMale)
+            val gender: String = getSelectedGender(binding.cbFemale, binding.cbMale)
             val member_id: String = binding.etId.text.toString()
             val dob: String = binding.etDob.text.toString()
+            val profession: String = binding.etProfession.text.toString()
 
             val familyData: ArrayList<FamilyMemberRequest> = familyListAdapter.getData()
 
@@ -355,6 +364,7 @@ class UnitFormFragment : Fragment() {
                     city_offc,
                     country_offc,
                     "",
+                    profession,
                     no_of_fam_member,
                     familyData
                 )

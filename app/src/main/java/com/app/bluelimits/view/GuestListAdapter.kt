@@ -76,14 +76,29 @@ class GuestListAdapter(val guests: ArrayList<GuestData>, context: Context, frag:
             Navigation.findNavController(holder.view.root).navigate(action)
         }
 
-        btnDelete.setOnClickListener{
-            showDeleteDialog(mContext.getString(R.string.app_name), mContext.getString(R.string.delete_msg_guest),
-                guestsData)
-        }
+        val paymentStatus = guestsData.payment_status
 
-        btnEdit.setOnClickListener{
-            val action = GuestsFragmentDirections.actionEditGuests(guestsData)
-            Navigation.findNavController(holder.view.root).navigate(action)
+        if(paymentStatus == Constants.UN_PAID) {
+            btnEdit.visibility = View.VISIBLE
+            btnDelete.visibility = View.VISIBLE
+
+            btnDelete.setOnClickListener {
+                showDeleteDialog(
+                    mContext.getString(R.string.app_name),
+                    mContext.getString(R.string.delete_msg_guest),
+                    guestsData
+                )
+            }
+
+            btnEdit.setOnClickListener {
+                val action = GuestsFragmentDirections.actionEditGuests(guestsData)
+                Navigation.findNavController(holder.view.root).navigate(action)
+            }
+        }
+        else
+        {
+            btnEdit.visibility = View.GONE
+            btnDelete.visibility = View.GONE
         }
 
     }

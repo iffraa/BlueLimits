@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
-import com.app.bluelimits.databinding.ItemVisitorBinding
+import com.app.bluelimits.databinding.ItemEditVisitorBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.SharedPreferencesHelper
@@ -26,7 +26,7 @@ class EditVisitorAdapter(
 ) :
     RecyclerView.Adapter<EditVisitorAdapter.VisitorViewHolder>() {
 
-    private var _binding: ItemVisitorBinding? = null
+    private var _binding: ItemEditVisitorBinding? = null
     private val binding get() = _binding!!
     private val enteredData: ArrayList<VisitorDetail> = arrayListOf()
     private val context: Context = mContext
@@ -51,7 +51,7 @@ class EditVisitorAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VisitorViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        _binding = ItemVisitorBinding.inflate(inflater)
+        _binding = ItemEditVisitorBinding.inflate(inflater)
         return VisitorViewHolder(binding)
     }
 
@@ -62,7 +62,7 @@ class EditVisitorAdapter(
 
         val et_name: EditText = holder.view.etVisitorsName
         val et_id: EditText = holder.view.etVisitorsId
-        val et_mobile: EditText = holder.view.layoutMobile.etMobile
+        val et_mobile: EditText = holder.view.etMobile
         val price: EditText = holder.view.etPay
 
         val cb_male: CheckBox = holder.view.checkboxMale
@@ -81,7 +81,8 @@ class EditVisitorAdapter(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
              //   if (!textChanged.isNullOrEmpty())
-                    visitor.name = et_name.text.toString()
+                visitor.name = et_name.text.toString()
+
             }
 
         et_mobile.textChanges()
@@ -89,7 +90,8 @@ class EditVisitorAdapter(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
                 //   if (!textChanged.isNullOrEmpty())
-                visitor.contact_no = et_mobile.text.toString()
+                visitor.contact_no =  context.getString(R.string.server_number_code) + et_mobile.text.toString()
+
             }
 
         et_id.textChanges()
@@ -209,8 +211,7 @@ class EditVisitorAdapter(
         holder.view.etVisitorsName.setText(visitor.name)
         holder.view.etVisitorsId.setText(visitor.id_no)
         if (!visitor.contact_no.isNullOrEmpty())
-             holder.view.layoutMobile.etMobile.setText(visitor.contact_no?.substring(4))
-       // holder.view.layoutMobile.tvCode.visibility = View.GONE
+             holder.view.etMobile.setText(visitor.contact_no)
 
         if (visitor.gender.equals("male"))
             holder.view.checkboxMale.isChecked = true
@@ -221,6 +222,9 @@ class EditVisitorAdapter(
             holder.view.cbVisitorPay.isChecked = true
         else if (visitor.who_will_pay.equals("I will pay"))
             holder.view.cbSenderPay.isChecked = true
+        else if (visitor.who_will_pay.equals("free"))
+            holder.view.cbFree.isChecked = true
+
 
     }
 
@@ -257,7 +261,7 @@ class EditVisitorAdapter(
 
     override fun getItemCount() = visitorList.size
 
-    class VisitorViewHolder(val view: ItemVisitorBinding) : RecyclerView.ViewHolder(view.root)
+    class VisitorViewHolder(val view: ItemEditVisitorBinding) : RecyclerView.ViewHolder(view.root)
 
 
 }

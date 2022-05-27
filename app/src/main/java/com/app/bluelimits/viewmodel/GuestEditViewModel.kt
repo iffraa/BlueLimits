@@ -51,22 +51,25 @@ class GuestEditViewModel(application: Application) : BaseViewModel(application) 
 
     }
 
-    fun getAvailableUnits(context: Context,
+    fun getAvailableUnits(
+        context: Context,
         token: String,
         resort_id: String,
         reservation_date: String,
         chk_out: String,
         discount: String,
-        unitId: String
+        unitId: String, rsrvID: String
+
     ) {
         loading.value = true
-        resortService.getAvailableUnits(
+        resortService.getAvailableUnitsEdit(
             "Bearer " + token,
             resort_id,
             reservation_date,
             chk_out,
             discount,
-            unitId
+            unitId,
+            rsrvID
         )
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())?.let {
@@ -74,7 +77,7 @@ class GuestEditViewModel(application: Application) : BaseViewModel(application) 
                     it
                         .subscribeWith(object : DisposableSingleObserver<UnitsResponse>() {
                             override fun onSuccess(value: UnitsResponse) {
-                                if(!value.data.isNullOrEmpty())
+                                if (!value.data.isNullOrEmpty())
                                     unitsRetrieved(value.data[0])
                                 else {
                                     loadError.value = true
@@ -83,7 +86,8 @@ class GuestEditViewModel(application: Application) : BaseViewModel(application) 
                                         "Bluelimit",
                                         "Units not available for selected dates."
                                     )
-                                }                            }
+                                }
+                            }
 
                             override fun onError(e: Throwable) {
                                 loading.value = false
@@ -118,7 +122,7 @@ class GuestEditViewModel(application: Application) : BaseViewModel(application) 
         guests: GHReservationRequest, context: Context
     ) {
         loading.value = true
-        resortService.editGuest("Bearer " + token,rsrvID, guests)
+        resortService.editGuest("Bearer " + token, rsrvID, guests)
             ?.subscribeOn(Schedulers.newThread())
             ?.observeOn(AndroidSchedulers.mainThread())?.let {
                 disposable.add(

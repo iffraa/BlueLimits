@@ -1,6 +1,7 @@
 package com.app.bluelimits.view
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -53,7 +54,9 @@ class VisitorDetailAdapter(val visitors: ArrayList<VisitorDetail>, context: Cont
         gender.setText(mContext.getString(R.string.gender) +": "+ visitorsData.gender)
         status.setText("Status: "+ visitorsData.status)
         whoPays.setText("Who will Pay: "+ visitorsData.who_will_pay)
-        visitorsData.qr_code?.let { loadImage(qrImg, it, mContext) }
+
+        if(visitorsData.payment_status == "paid")
+             visitorsData.qr_code?.let { loadImage(qrImg, it, mContext) }
 
 
     }

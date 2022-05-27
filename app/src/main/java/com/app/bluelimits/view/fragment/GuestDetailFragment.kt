@@ -92,7 +92,9 @@ class GuestDetailFragment : Fragment() {
             guests = "0"
         binding.tvNoOfGuests.setText(getString(R.string.no_of_guests) + " " + guests)
 
-        setServiceName(guestDetail.unit_no!!)
+        guestDetail.unit_no?.let { setServiceName(it) }
+        binding.tvPrice.setText(getString(R.string.price) + " : " + guestDetail.packagee?.total_price)
+
         setVisitorList()
 
     }
@@ -121,7 +123,6 @@ class GuestDetailFragment : Fragment() {
         }
 
         binding.tvService.setText(getString(R.string.serv_name) + " " + serviceText)
-        binding.tvPrice.setText(getString(R.string.price) + " : " + unit?.start_pirce)
 
     }
 }

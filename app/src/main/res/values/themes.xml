@@ -42,6 +42,7 @@
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/_15ssp</item>
         <item name="android:textColor">@color/navy_blue</item>
+        <item name="android:fontFamily">@font/jura_demi_bold</item>
 
     </style>
 

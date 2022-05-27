@@ -36,9 +36,9 @@
                 android:layout_width="@dimen/_81sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/jura_demi_bold"
                 android:gravity="center_vertical"
                 android:text="@string/name_visi"
-                android:fontFamily="@font/jura_demi_bold"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_14ssp"></TextView>
 
@@ -91,27 +91,42 @@
                     android:id="@+id/cb_sender_pay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/jura_demi_bold"
-                    android:text="@string/pay"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:button="@drawable/chkbox_bg"
+                    android:fontFamily="@font/jura_demi_bold"
                     android:paddingLeft="@dimen/_7sdp"
+                    android:text="@string/pay"
                     android:textColor="@color/navy_blue"
                     android:textSize="@dimen/_10ssp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/cb_visitor_pay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/chkbox_bg"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:paddingLeft="@dimen/_7sdp"
+                    android:button="@drawable/chkbox_bg"
                     android:fontFamily="@font/jura_demi_bold"
+                    android:paddingLeft="@dimen/_7sdp"
                     android:text="@string/pay_visitor"
                     android:textColor="@color/navy_blue"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/cb_free"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:button="@drawable/chkbox_bg"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:paddingLeft="@dimen/_7sdp"
+                    android:text="@string/free"
+                    android:visibility="gone"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
+
 
             </RadioGroup>
             <!--  <CheckBox
@@ -170,14 +185,15 @@
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>
 
+
             <include
                 android:id="@+id/layout_mobile"
                 layout="@layout/layout_contact_number"
                 android:layout_width="@dimen/_163sdp"
                 android:layout_height="@dimen/_35sdp"
-                android:nextFocusForward="@+id/cb_male"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:nextFocusDown="@+id/cb_male"
-                android:layout_marginTop="@dimen/_20sdp"></include>
+                android:nextFocusForward="@+id/cb_male"></include>
 
 
             <LinearLayout

@@ -23,6 +23,7 @@ object Constants {
     const val LOFT_SPACE: String = "LoftSpace"
     const val VILLA_SPACE: String = "VillaSpace"
     const val SUITE_SPACE: String = "SuiteSpace"
+    const val ISLAND_SPACE: String = "IslandSpace"
     const val PAID: String = "paid"
     const val UN_PAID: String = "un-paid"
 

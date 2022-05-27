@@ -43,6 +43,24 @@
             android:textSize="@dimen/_18ssp"
             android:textStyle="bold"></TextView>
 
+
+
+
+        <RelativeLayout
+            android:id="@+id/rl_include"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            >
+
+            <include
+                android:id="@+id/progressBar"
+                layout="@layout/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></include>
+
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,6 +75,19 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_resorts"
+                    android:layout_width="@dimen/_81sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_marginBottom="@dimen/_30sdp"
+                    android:text="@string/select_resort"
+                    android:textColor="@color/navy_blue"></TextView>
+
+
+                <TextView
                     android:layout_width="@dimen/_81sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:fontFamily="@font/jura_demi_bold"
@@ -65,17 +96,6 @@
                     android:text="@string/visiting_date"
                     android:textColor="@color/navy_blue"></TextView>
 
-                <TextView
-                    android:id="@+id/tv_resorts"
-                    android:layout_width="@dimen/_101sdp"
-                    android:layout_height="@dimen/_35sdp"
-                    android:fontFamily="@font/jura_demi_bold"
-                    android:gravity="center_vertical"
-                    android:visibility="gone"
-                    android:textSize="@dimen/_14ssp"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:text="@string/select_resort"
-                    android:textColor="@color/navy_blue"></TextView>
 
                 <TextView
                     android:id="@+id/tv_visitors_lbl"
@@ -88,7 +108,9 @@
                     android:textSize="@dimen/_13ssp"
                     android:textColor="@color/navy_blue"></TextView>
 
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -96,6 +118,17 @@
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:orientation="vertical">
 
+                <Spinner
+                    android:id="@+id/sp_resorts"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:background="@drawable/rectangle"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_33sdp"
+                    android:visibility="gone"
+                    android:textColor="@color/navy_blue"></Spinner>
 
                 <EditText
                     android:id="@+id/et_visitors_time"
@@ -110,17 +143,6 @@
                     android:textSize="@dimen/_11ssp"></EditText>
 
 
-                <Spinner
-                    android:id="@+id/sp_resorts"
-                    android:layout_width="@dimen/_180sdp"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:background="@drawable/rectangle"
-                    android:fontFamily="@font/jura_demi_bold"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:visibility="gone"
-                    android:textColor="@color/navy_blue"></Spinner>
                 <TextView
                     android:id="@+id/tv_per_day"
                     android:layout_width="@dimen/_180sdp"
@@ -140,6 +162,7 @@
                     android:background="@drawable/rectangle"
                     android:fontFamily="@font/jura_demi_bold"
                     android:inputType="number"
+                    android:maxLength="2"
                     android:textColor="@color/navy_blue"
                     android:paddingLeft="@dimen/_10sdp"
                     android:textSize="@dimen/_11ssp"
@@ -161,22 +184,18 @@
 
         </LinearLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/rl_include"
+        <TextView
+            android:id="@+id/tv_free"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/jura_demi_bold"
+            android:text="Free Slots/month:"
             android:visibility="gone"
-            >
-
-            <include layout="@layout/progress_bar"
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                ></include>
-
-        </RelativeLayout>
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_17sdp"
+            android:layout_gravity="start"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@color/navy_blue"></TextView>
 
 
         <androidx.recyclerview.widget.RecyclerView

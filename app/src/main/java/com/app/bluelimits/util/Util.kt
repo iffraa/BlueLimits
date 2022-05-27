@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 import android.text.TextUtils
+import android.util.Log
 
 import androidx.core.view.ViewCompat
 import androidx.navigation.NavDirections
@@ -47,6 +48,17 @@ fun checkGuestsID(guests: ArrayList<Guest>, context: Context): String {
     }
 
     return ""
+}
+
+//if entered date is greater than current date, return true
+fun isChkInDateGreater(chkInDate: String, chkOutDate: String): Boolean
+{
+    if (chkOutDate.compareTo(chkInDate) < 0) {
+        return true
+    } else {
+        Log.d("Return", "chkInDate older than chkOutDate ")
+        return false
+    }
 }
 
 fun willSenderPay(visitors: ArrayList<Visitor>): Boolean {
@@ -197,21 +209,32 @@ fun selectDOB(context: Context, dobField: EditText) {
     mDatePickerDialog.show()
 }
 
+fun getSelectedGender(femaleChkBx: CheckBox, maleChkBx: CheckBox): String {
+
+    if(femaleChkBx.isChecked)
+        return Constants.FEMALE
+    else if(maleChkBx.isChecked)
+        return Constants.MALE
+
+    return ""
+}
+
+
 fun getGender(femaleChkBx: CheckBox, maleChkBx: CheckBox): String {
     var gender = ""
 
     femaleChkBx.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
         if (isChecked) {
-            maleChkBx.setChecked(false)
             gender = Constants.FEMALE
+            maleChkBx.setChecked(false)
         }
 
     })
 
     maleChkBx.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
         if (isChecked) {
-            femaleChkBx.setChecked(false)
             gender = Constants.MALE
+            femaleChkBx.setChecked(false)
         }
     })
     return gender

@@ -11,7 +11,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.app.bluelimits.R
-import com.app.bluelimits.databinding.ItemGuestBinding
+import com.app.bluelimits.databinding.ItemEditGuestBinding
 import com.app.bluelimits.model.*
 import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.showAlertDialog
@@ -22,13 +22,15 @@ import java.util.concurrent.TimeUnit
 class EditGuestAdapter() :
     RecyclerView.Adapter<EditGuestAdapter.GuestViewHolder>() {
 
-    private var _binding: ItemGuestBinding? = null
+    private var _binding: ItemEditGuestBinding? = null
     private val binding get() = _binding!!
     private val enteredData: ArrayList<Guest> = arrayListOf()
     private val guestList = ArrayList<Guest>()
     private lateinit var context: Context
+    private var paymentStatus = ""
 
-    fun setGuestList(newFamList: ArrayList<Guest>, context: Context) {
+    fun setGuestList(newFamList: ArrayList<Guest>, context: Context, paymentStatus: String) {
+        this.paymentStatus = paymentStatus
         this.context = context
         enteredData.clear()
         guestList.clear()
@@ -39,7 +41,7 @@ class EditGuestAdapter() :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuestViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        _binding = ItemGuestBinding.inflate(inflater, parent, false)
+        _binding = ItemEditGuestBinding.inflate(inflater, parent, false)
         return GuestViewHolder(binding)
     }
 
@@ -50,13 +52,16 @@ class EditGuestAdapter() :
 
         var et_name: EditText = holder.view.etGuestName
         val et_id: EditText = holder.view.etGuestId
-        val et_contact: EditText = holder.view.layoutMobile.etMobile
+        val et_contact: EditText = holder.view.etMobile
 
         val cb_male: CheckBox = holder.view.checkboxMale
         val cb_female: CheckBox = holder.view.checkboxFemale
 
         val btn_visitor: Button = holder.view.btnGuest
         btn_visitor.setText(context.getString(R.string.guest) + " " + (position + 1))
+
+        if(paymentStatus == Constants.PAID)
+            disableFormEditing(holder)
 
         et_name.textChanges()
             .debounce(2, TimeUnit.SECONDS)
@@ -96,6 +101,22 @@ class EditGuestAdapter() :
         enteredData.add(guest)
 
         setData(guest, holder)
+    }
+
+    private fun disableFormEditing(viewHolder: GuestViewHolder)
+    {
+        viewHolder.view.etGuestName.background = context.getDrawable(android.R.color.transparent)
+        viewHolder.view.etGuestName.isEnabled = false
+
+        viewHolder.view.etGuestId.background = context.getDrawable(android.R.color.transparent)
+        viewHolder.view.etGuestId.isEnabled = false
+
+        viewHolder.view.llContact.background = context.getDrawable(android.R.color.transparent)
+        viewHolder.view.etMobile.isEnabled = false
+
+        viewHolder.view.checkboxFemale.isEnabled = false
+        viewHolder.view.checkboxMale.isEnabled = false
+
     }
 
     private fun getGender(femaleChkBx: CheckBox, maleChkBx: CheckBox, guest: Guest): String {
@@ -181,7 +202,7 @@ class EditGuestAdapter() :
         holder.view.etGuestName.setText(guest.name)
         holder.view.etGuestId.setText(guest.id_no)
         if (!guest.contact_no.isNullOrEmpty())
-            holder.view.layoutMobile.etMobile.setText(guest.contact_no?.substring(4))
+            holder.view.etMobile.setText(guest.contact_no?.substring(4))
 
         if(!guest.gender.isNullOrEmpty()) {
             if (guest.gender.equals("male")) {
@@ -194,7 +215,7 @@ class EditGuestAdapter() :
         }
     }
 
-    class GuestViewHolder(val view: ItemGuestBinding) : RecyclerView.ViewHolder(view.root)
+    class GuestViewHolder(val view: ItemEditGuestBinding) : RecyclerView.ViewHolder(view.root)
 
 
 }

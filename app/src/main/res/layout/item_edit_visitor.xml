@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <Button
+        android:id="@+id/btn_visitor"
+        android:layout_width="@dimen/_275sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:background="@drawable/btn_bg"
+        android:fontFamily="@font/jura_semi_bold"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/_20sdp"
+        android:text="@string/visitor"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"></Button>
+
+    <LinearLayout
+        android:layout_width="@dimen/_278sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="@dimen/_81sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:gravity="center_vertical"
+                android:text="@string/name_visi"
+                android:fontFamily="@font/jura_demi_bold"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
+
+            <TextView
+                android:layout_width="@dimen/_81sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:gravity="center_vertical"
+                android:text="@string/id_visi"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
+
+            <TextView
+                android:layout_width="@dimen/_81sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:gravity="center_vertical"
+                android:text="@string/mobile_visi"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
+
+            <TextView
+                android:layout_width="@dimen/_81sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:gravity="center_vertical"
+                android:text="@string/gender"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
+
+            <TextView
+                android:layout_width="@dimen/_81sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:gravity="center_vertical"
+                android:text="@string/price"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/cb_sender_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/pay"
+                    android:enabled="false"
+                    android:button="@drawable/chkbox_bg"
+                    android:paddingLeft="@dimen/_7sdp"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/cb_visitor_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/chkbox_bg"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_7sdp"
+                    android:enabled="false"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:text="@string/pay_visitor"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/cb_free"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:button="@drawable/chkbox_bg"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:paddingLeft="@dimen/_7sdp"
+                    android:text="@string/free"
+                    android:enabled="false"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
+
+            </RadioGroup>
+            <!--  <CheckBox
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:buttonTint="@color/grey_text"
+                  android:fontFamily="@font/jura_demi_bold"
+                  android:paddingLeft="@dimen/_5sdp"
+                  android:layout_marginTop="10dp"
+                 />
+
+              <CheckBox
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:buttonTint="@color/grey_text"
+                  android:fontFamily="@font/jura_demi_bold"
+                  android:paddingLeft="@dimen/_5sdp"
+                  android:layout_marginTop="10dp"
+                  android:text="@string/pay_visitor"
+                  android:textColor="@color/navy_blue"
+                  android:textSize="@dimen/_10ssp"
+                  android:textStyle="bold" />
+  -->
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/et_visitors_name"
+                android:layout_width="@dimen/_163sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:inputType="text"
+                android:lines="1"
+                android:background="@android:color/transparent"
+                android:enabled="false"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
+
+            <EditText
+                android:id="@+id/et_visitors_id"
+                android:layout_width="@dimen/_163sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:enabled="false"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/jura_demi_bold"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLength="10"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
+
+            <EditText
+                android:id="@+id/et_mobile"
+                android:layout_width="@dimen/_163sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@android:color/transparent"
+                android:enabled="false"
+                android:fontFamily="@font/jura_demi_bold"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLength="8"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
+
+
+            <LinearLayout
+                android:id="@+id/ll_gender"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkbox_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/chkbox_bg"
+                    android:buttonTint="@color/grey_text"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:text="@string/male"
+                    android:enabled="false"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_12ssp" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:button="@drawable/chkbox_bg"
+                    android:buttonTint="@color/grey_text"
+                    android:checked="true"
+                    android:fontFamily="@font/jura_demi_bold"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:text="@string/female"
+                    android:enabled="false"
+                    android:textColor="@color/navy_blue"
+                    android:textSize="@dimen/_12ssp" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_pay"
+                android:layout_width="@dimen/_163sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:clickable="false"
+                android:focusable="false"
+                android:fontFamily="@font/jura_demi_bold"
+                android:inputType="number|text"
+                android:background="@android:color/transparent"
+                android:lines="1"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

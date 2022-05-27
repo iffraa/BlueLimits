@@ -86,7 +86,8 @@ class MainActivity : Activity() {
     }
 
     fun startDashboardActivity(isLogin: Boolean) {
-        val intent = Intent(this, DashboardActivity::class.java)
+        val intent = Intent(
+            this, DashboardActivity::class.java)
         intent.putExtra(Constants.IS_LOGIN, isLogin)
         startActivity(intent)
     }
@@ -100,7 +101,7 @@ class MainActivity : Activity() {
         super.onResume()
 
         loadGif()
-    //    binding.llBtns.visibility = View.VISIBLE
+     //  binding.llBtns.visibility = View.VISIBLE
 
     }
 

@@ -104,9 +104,9 @@ class VisitorEditFragment : Fragment() {
 
         data.user?.resort?.let { setLogo(it) }
 
-        /*    binding.etVisitorsTime.setOnClickListener(View.OnClickListener {
+            binding.etVisitorsTime.setOnClickListener(View.OnClickListener {
                 showDateDialog(data)
-            })*/
+            })
 
         if (fortCallBackManager == null)
             fortCallBackManager = FortCallBackManager.Factory.create()
@@ -147,13 +147,6 @@ class VisitorEditFragment : Fragment() {
             }
 
         })
-
-        /*  if (data.user?.user_type.equals(Constants.admin)) {
-              binding.spResorts.visibility = View.VISIBLE
-              binding.tvResorts.visibility = View.VISIBLE
-
-              getResorts(data)
-          }*/
 
         populateDetails()
         setHomeNavigation(context as Activity, VisitorEditFragmentDirections.actionNavToHome())
@@ -198,6 +191,9 @@ class VisitorEditFragment : Fragment() {
         binding.etVisitorsTime.setText(date)
         binding.etVisitorsNum.setText(noOfVisitors)
         binding.btnSubmit.setText("EDIT")
+
+        if(resortId.isNullOrEmpty() || resortId == "null")
+            resortId = visitorsData.resort_id!!
 
         setVisitorList()
 
@@ -287,53 +283,32 @@ class VisitorEditFragment : Fragment() {
 
     }
 
-    private fun addNewVisitors(newNoOfVisitors: Int) {
-        val oldNoOfVisitors = visitorsData.no_of_visitor?.toInt()
+    private fun showDateDialog(data: Data) {
 
-        var visitorsAdded = 0
-        if (oldNoOfVisitors!! > newNoOfVisitors)
-            visitorsAdded = oldNoOfVisitors - newNoOfVisitors
-        else
-            visitorsAdded = newNoOfVisitors - oldNoOfVisitors
+        hideKeyboard(context as Activity)
 
-        if (visitorsAdded > 0) {
-            isNewVisitor = true
-            repeat(visitorsAdded) {
-                val person = VisitorDetail(
-                    "0", "", "", "", "", "", "","",
-                    null, "", "", ""
-                )
-                visitorsData.visitors?.add(person)
-            }
-        }
+        val d = Date()
+        val dateDialog = SingleDateAndTimePickerDialog.Builder(context)
+
+        dateDialog.title(getString(R.string.select_date))
+            .titleTextColor(getResources().getColor(R.color.white))
+            .minutesStep(1).mustBeOnFuture()
+            // .minDateRange(d).mustBeOnFuture()
+            .backgroundColor(getResources().getColor(R.color.white))
+            .mainColor(getResources().getColor(R.color.blue_text))
+            .listener { date ->
+                val DATE_TIME_FORMAT = "yyyy-MM-dd   hh:mm aa"
+                val sdf = SimpleDateFormat(DATE_TIME_FORMAT)
+                val sdate = sdf.format(date)
+                binding.etVisitorsTime.setText(sdate)
+
+                getPackages()
+
+
+            }.display()
 
     }
-    /* private fun updateList() {
-         visitorListAdapter.clear()
 
-         val num = binding.etVisitorsNum.text.toString()
-         if (!num.isNullOrEmpty()) {
-             val no_of_visitors = num.toInt()
-             if (no_of_visitors > 0) {
-                 val visitors = ArrayList<Visitor>(no_of_visitors)
-                 for (i in 1..no_of_visitors) {
-                     val person = Visitor(
-                         "0", "", "", "", "",
-                         null, "", ""
-                     )
-                     visitors.add(person)
-                 }
-                 visitorListAdapter?.setVisitorList(
-                     visitors, packages
-                 )
-
-             } else {
-                 binding.rvVisitor.visibility = View.GONE
-                 binding.btnSubmit.visibility = View.GONE
-
-             }
-         }
-     }*/
 
     private fun updateList() {
         if (visitorListAdapter != null) {
@@ -410,7 +385,6 @@ class VisitorEditFragment : Fragment() {
         val customDiscount = data.user?.invite_visitor_discount_percentage
         val token = data.token
         val no_of_visitors = binding.etVisitorsNum.text.toString()
-        val resortId = data.user?.resort_id.toString()
         val visiting_date_time = binding.etVisitorsTime.text.toString()
 
         val errorMsg = visitors?.let { getErrorMsg(it) }
@@ -452,7 +426,7 @@ class VisitorEditFragment : Fragment() {
     }
 
 
-    fun observeResortVM() {
+    private fun observeResortVM() {
 
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
@@ -491,7 +465,7 @@ class VisitorEditFragment : Fragment() {
                     showAlertDialog(
                         requireActivity(),
                         getString(R.string.app_name),
-                        getString(R.string.units_loading_error)
+                        getString(R.string.loading_error)
                     )
                 }
             }
@@ -669,11 +643,7 @@ class VisitorEditFragment : Fragment() {
 
         viewModel.malePackage.observe(viewLifecycleOwner, Observer { sPackage ->
             sPackage?.let {
-
                 packages.put(Constants.MALE, sPackage)
-
-                //     viewModel.malePackage.removeObservers(viewLifecycleOwner)
-
             }
 
         })
@@ -699,12 +669,12 @@ class VisitorEditFragment : Fragment() {
 
                 packages.put(Constants.FEMALE, sPackage)
 
-                val num = binding.etVisitorsNum.text.toString()
+              /*  val num = binding.etVisitorsNum.text.toString()
 
                 if (num.isNullOrEmpty())
                     setVisitorList()
                 else
-                    updateList()
+                    updateList()*/
 
             }
 
@@ -732,22 +702,6 @@ class VisitorEditFragment : Fragment() {
 
 
     }
-
-    private fun adjustLayout() {
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.topMargin = 200
-        params.width = 300
-
-        binding.tvVisitorsLbl.layoutParams = params
-        binding.tvVisitorsLbl.textSize = 20F
-
-        val typeface = ResourcesCompat.getFont(requireContext(), R.font.jura_demi_bold)
-        binding.tvVisitorsLbl.typeface = typeface
-    }
-
     //-----------------payment methods------------------
 
     private fun payForVisitor() {

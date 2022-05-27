@@ -19,11 +19,12 @@
         android:layout_centerInParent="true"
         android:visibility="gone">
 
-        <include layout="@layout/progress_bar"
+        <include
             android:id="@+id/progressBar"
-            android:layout_centerInParent="true"
+            layout="@layout/progress_bar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></include>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"></include>
 
     </RelativeLayout>
 
@@ -54,40 +55,35 @@
             android:textSize="@dimen/_12ssp"></TextView>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/ll_dates"
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/tv_from"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_info"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="From: 2022-02-02 12:00 PM"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_12ssp"></TextView>
 
-        <TextView
-            android:id="@+id/tv_from"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/jura_demi_bold"
-            android:text="From: 2022-02-02 12:00 PM"
-            android:textColor="@color/navy_blue"
-            android:textSize="@dimen/_12ssp"></TextView>
-
-        <TextView
-            android:id="@+id/tv_to"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:fontFamily="@font/jura_demi_bold"
-            android:text="To: 2044-02-02 12:00 PM"
-            android:textColor="@color/navy_blue"
-            android:textSize="@dimen/_12ssp"></TextView>
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_from"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/jura_demi_bold"
+        android:text="To: 2044-02-02 12:00 PM"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_12ssp"></TextView>
 
 
     <RelativeLayout
         android:id="@+id/ll_days"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ll_dates"
+        android:layout_below="@id/tv_to"
         android:layout_marginTop="@dimen/_10sdp">
 
         <TextView

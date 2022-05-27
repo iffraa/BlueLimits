@@ -492,6 +492,7 @@
                 android:fontFamily="@font/jura_demi_bold"
                 android:inputType="number"
                 android:lines="1"
+                android:maxLength="2"
                 android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>

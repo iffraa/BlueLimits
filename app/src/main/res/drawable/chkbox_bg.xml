@@ -2,7 +2,8 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="true" android:state_focused="true"
-        android:drawable="@drawable/chk_box" />
+        android:drawable="@drawable/chk_box"
+        />
     <item android:state_checked="false" android:state_focused="true"
         android:drawable="@drawable/unchk_box" />
     <item android:state_checked="false"

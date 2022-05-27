@@ -18,6 +18,7 @@ class GuestSpaceDetailFragment : Fragment() {
     private lateinit var binding: FragmentSpaceDetailBinding
     private var mViewPagerAdapter: ViewPagerAdapter? = null
     private var mViewPager: ViewPager? = null
+    private var space = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,19 +29,43 @@ class GuestSpaceDetailFragment : Fragment() {
 
     }
 
+    private fun setIslandData() {
+        binding.tvBth.setText("1 Bathroom")
+        binding.tvPool.setText("Terrace")
+        binding.tvDoublebed.setText("Bedside Tables")
+        binding.tvSofa.setText("Sofa")
+
+        binding.tvDiningtbl.visibility = View.VISIBLE
+        binding.llIsland.visibility = View.VISIBLE
+
+    }
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setHomeNavigation(context as Activity, AboutUsFragmentDirections.actionNavToHome())
 
         val spaceTypeID: String? = arguments?.getString("spaceId")
+        space = arguments?.get("space").toString()
+
+        if(space!!.equals("island"))
+            setIslandData()
 
         setSliderImgs()
 
         binding.btnRsrv.setOnClickListener {
             val action = GuestSpaceDetailFragmentDirections.actionDetailToReservation(spaceTypeID!!)
-            action?.let { Navigation.findNavController(view).navigate(it) }
+            action?.let {
+                try {
+                    Navigation.findNavController(view).navigate(it)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
+
 
     }
 
@@ -69,11 +94,9 @@ class GuestSpaceDetailFragment : Fragment() {
 
 
     private fun getImages(): IntArray {
-        val space = arguments?.get("space")
 
-        if(space!!.equals("loft"))
-        {
-           return intArrayOf(
+        if (space!!.equals("loft")) {
+            return intArrayOf(
                 R.drawable.loft1,
                 R.drawable.loft2,
                 R.drawable.loft3,
@@ -81,10 +104,7 @@ class GuestSpaceDetailFragment : Fragment() {
                 R.drawable.loft5,
                 R.drawable.loft6
             )
-        }
-
-        else if(space!!.equals("villa"))
-        {
+        } else if (space!!.equals("villa")) {
             return intArrayOf(
                 R.drawable.villa1,
                 R.drawable.villa2,
@@ -94,9 +114,15 @@ class GuestSpaceDetailFragment : Fragment() {
                 R.drawable.villa6
             )
         }
-
-        else
-        {
+        else if (space!!.equals("island")) {
+            return intArrayOf(
+                R.drawable.island_1,
+                R.drawable.island_2,
+                R.drawable.island_3,
+                R.drawable.island_4
+              )
+        }
+        else {
             return intArrayOf(
                 R.drawable.suite1,
                 R.drawable.suite2,

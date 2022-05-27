@@ -74,39 +74,6 @@
                 android:layout_marginTop="@dimen/_25sdp"
                 android:background="@drawable/rectangle"></Spinner>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_pckgs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:fontFamily="@font/jura_demi_bold"
-                android:text="@string/hours"
-                android:textColor="@color/navy_blue"
-                android:textSize="@dimen/_14ssp"></TextView>
-
-            <EditText
-                android:id="@+id/et_hrs"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/rectangle"
-                android:fontFamily="@font/jura_demi_bold"
-                android:lines="1"
-                android:inputType="number"
-                android:paddingLeft="@dimen/_10sdp"
-                android:textColor="@color/navy_blue"
-                android:textSize="@dimen/_11ssp"></EditText>
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,6 +99,40 @@
                 android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/navy_blue"
                 android:textSize="@dimen/_11ssp"></EditText>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_pckgs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:fontFamily="@font/jura_demi_bold"
+                android:text="@string/hours"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_14ssp"></TextView>
+
+            <EditText
+                android:id="@+id/et_hrs"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/rectangle"
+                android:fontFamily="@font/jura_demi_bold"
+                android:lines="1"
+                android:inputType="number"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textColor="@color/navy_blue"
+                android:textSize="@dimen/_11ssp"></EditText>
+
 
             <TextView
                 android:layout_width="wrap_content"

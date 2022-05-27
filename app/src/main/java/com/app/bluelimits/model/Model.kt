@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 
 data class User(
+    val guest_house_discount_percentage_self: String?,
     val user_type: String?,
     val email: String?,
     val name: String?,
@@ -70,6 +71,7 @@ data class User(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readString(),
@@ -125,6 +127,7 @@ data class User(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(guest_house_discount_percentage_self)
         parcel.writeString(user_type)
         parcel.writeString(email)
         parcel.writeString(name)
@@ -270,11 +273,12 @@ data class Visitor(
     @SerializedName("package")
     var servicePackage: ServicePackage?,
     var who_will_pay: String,
-    //  val qr_code: String,
     var price: String,
     var discount: String,
     var total: String,
-    var payment_status: String
+    var payment_status: String,
+    var merchant_reference: String,
+    var showFreeRB: Boolean
 
 )
 
@@ -312,6 +316,7 @@ data class FamilyMember(
     val profile_image: String,
     var birth_date: String,
     var gender: String,
+    var id_no: String,
 
     )
 
@@ -408,6 +413,7 @@ data class RegisterMemberRequest(
     var office_city: String,
     var office_country: String,
     var membership_no: String,
+    var professional: String,
     var no_of_family_member: String,
     var member: ArrayList<FamilyMemberRequest>
 )
@@ -468,6 +474,7 @@ data class GHReservationRequest(
 
 data class GuestData(
     var id: String?,
+    var payment_status: String?,
     var unit_type_id: String?,
     var setup_unit_id: String?,
     var discount: String?,
@@ -501,6 +508,7 @@ data class GuestData(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
         parcel.readArrayList(GuestData::class.java.classLoader) as ArrayList<Guest>?,
         TODO("packagee"),
 
@@ -509,6 +517,7 @@ data class GuestData(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
+        parcel.writeString(payment_status)
         parcel.writeString(unit_type_id)
         parcel.writeString(setup_unit_id)
         parcel.writeString(discount)
@@ -568,6 +577,9 @@ data class TotalVisitors(
     val visitor_policy_exist: Boolean,
     val available: Int,
     val total_allow: Int,
+    val total_per_month_allow: Int,
+    val per_month_free_allow: Int,
+    val per_month_free_available: Int,
     val each_time_limit: Int,
     val male: Int,
     val female: Int,

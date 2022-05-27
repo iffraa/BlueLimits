@@ -124,8 +124,8 @@
 
             <RelativeLayout
                 android:id="@+id/rl_invites"
-                android:layout_width="@dimen/_105sdp"
-                android:layout_height="@dimen/_97sdp"
+                android:layout_width="@dimen/_108sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_weight="1"
                 android:background="@drawable/rect_round_grey">
 
@@ -171,8 +171,8 @@
 
             <RelativeLayout
                 android:id="@+id/rl_contract"
-                android:layout_width="@dimen/_105sdp"
-                android:layout_height="@dimen/_97sdp"
+                android:layout_width="@dimen/_108sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_weight="1"
                 android:background="@drawable/rect_round_blue">
@@ -251,7 +251,7 @@
         <RelativeLayout
             android:id="@+id/rl_points"
             android:layout_width="@dimen/_234sdp"
-            android:layout_height="@dimen/_85sdp"
+            android:layout_height="@dimen/_87sdp"
             android:layout_below="@+id/ll_squares"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_10sdp"

@@ -17,6 +17,8 @@ import com.app.bluelimits.databinding.ItemAddFamilyBinding
 import com.app.bluelimits.model.FamilyMember
 import com.app.bluelimits.model.FamilyMemberRequest
 import com.app.bluelimits.model.User
+import com.app.bluelimits.model.Visitor
+import com.app.bluelimits.util.Constants
 import com.app.bluelimits.util.hideKeyboard
 import com.app.bluelimits.util.isEmailValid
 import com.app.bluelimits.util.showAlertDialog
@@ -43,6 +45,13 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
         enteredData.clear()
         famList.clear()
         famList.addAll(newFamList)
+        notifyDataSetChanged()
+    }
+
+    fun clear()
+    {
+        enteredData.clear()
+        famList.clear()
         notifyDataSetChanged()
     }
 
@@ -142,11 +151,60 @@ class FamilyListAdapter(val famList: ArrayList<FamilyMemberRequest>) :
                 }
             }
 
-        person.gender = com.app.bluelimits.util.getGender(cb_female, cb_male)
+        fetchGender(cb_female, cb_male,person)
 
         enteredData.add(person)
     }
 
+
+    private fun fetchGender(
+        femaleChkBx: CheckBox,
+        maleChkBx: CheckBox,
+        person: FamilyMemberRequest,
+    ): String {
+        var gender = Constants.FEMALE
+        var isChkBoxChkd = false
+
+        femaleChkBx.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                maleChkBx.setChecked(false)
+                gender = Constants.FEMALE
+                person.gender = gender
+            }
+
+        }
+
+        maleChkBx.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                femaleChkBx.setChecked(false)
+                gender = Constants.MALE
+                person.gender = gender
+
+            }
+        }
+
+        if (!isChkBoxChkd) {
+
+            if (person.gender.isNullOrEmpty()) {
+                person.gender = gender
+            } else
+                if (person.gender.equals(Constants.MALE)) {
+                    gender = Constants.MALE
+                    femaleChkBx.setChecked(false)
+                    maleChkBx.setChecked(true)
+
+                } else if (person.gender.equals(Constants.FEMALE)) {
+                    gender = Constants.FEMALE
+                    femaleChkBx.setChecked(true)
+                    maleChkBx.setChecked(false)
+
+                }
+
+
+        }
+
+        return gender
+    }
     fun getData(): ArrayList<FamilyMemberRequest> {
         return enteredData
     }

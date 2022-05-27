@@ -67,8 +67,7 @@ class VisitorInviteFragment : Fragment() {
     private var visitorListAdapter: AddVisitorsAdapter? = null
     private lateinit var data: Data
     private var packages: HashMap<String, ServicePackage> = hashMapOf()
-
-    // private var fortCallback: FortCallBackManager? = null
+    private var freeSlots = 0
     private var paymentHelper: PaymentHelper? = null
     private var navController: NavController? = null
     private var fortCallBackManager: FortCallBackManager? = null
@@ -146,12 +145,12 @@ class VisitorInviteFragment : Fragment() {
 
         }
 
-      /*  if (data.user?.user_type.equals(Constants.admin)) {
+        if (data.user?.user_type.equals(Constants.admin)) {
             binding.spResorts.visibility = View.VISIBLE
             binding.tvResorts.visibility = View.VISIBLE
 
             getResorts(data)
-        }*/
+        }
 
     }
 
@@ -209,7 +208,7 @@ class VisitorInviteFragment : Fragment() {
             .debounce(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { textChanged ->
-                val noOfVisitors: String = binding.etVisitorsNum.text.toString()
+                val noOfVisitors: String = binding.etVisitorsNum.text.toString().replace(" ","")
                 if (!noOfVisitors.isEmpty()) {
                     activity?.let { hideKeyboard(it) }
 
@@ -222,10 +221,17 @@ class VisitorInviteFragment : Fragment() {
                         if (no_of_visitors > 0) {
                             val visitors = ArrayList<Visitor>(no_of_visitors)
                             for (i in 1..no_of_visitors) {
+                                var isFree = false
+                                if(freeSlots > 0)
+                                {
+                                    isFree = true
+                                    freeSlots --
+                                }
+
                                 val person = Visitor(
                                     "0", "", "", "", "",
                                     null, "", "", "", "",
-                                    Constants.UN_PAID
+                                    Constants.UN_PAID,"", isFree
                                 )
                                 visitors.add(person)
                             }
@@ -236,16 +242,26 @@ class VisitorInviteFragment : Fragment() {
                             )
 
                         } else {
-                            binding.rvVisitor.visibility = View.GONE
-                            binding.btnSubmit.visibility = View.GONE
-
+                            removeVisitorForm()
                         }
                     }
                 }
+                else
+                    removeVisitorForm()
+
 
             }
 
     }
+
+    private fun removeVisitorForm()
+    {
+        binding.rvVisitor.visibility = View.GONE
+        binding.btnSubmit.visibility = View.GONE
+        visitorListAdapter?.clear()
+
+    }
+
 
     private fun updateList() {
         if (!visitorListAdapter!!.getData().isNullOrEmpty()) {
@@ -310,7 +326,6 @@ class VisitorInviteFragment : Fragment() {
         val customDiscount = data.user?.invite_visitor_discount_percentage
         val token = data.token
         val no_of_visitors = binding.etVisitorsNum.text.toString()
-        val resortId = data.user?.resort_id.toString()
         val visiting_date_time = binding.etVisitorsTime.text.toString()
 
         val errorMsg = visitors?.let { getErrorMsg(it) }
@@ -350,8 +365,7 @@ class VisitorInviteFragment : Fragment() {
             isError?.let {
                 binding.progressBar.progressbar.visibility = View.GONE
                 if (it) {
-                    showAlertDialog(
-                        getString(R.string.units_loading_error)
+                    showAlertDialog("Resorts loading failed."
                     )
                 }
             }
@@ -367,7 +381,7 @@ class VisitorInviteFragment : Fragment() {
     }
 
     private fun getTotalVisitors(token: String, date: String) {
-        binding.rlInclude.visibility = View.VISIBLE
+      //  binding.rlInclude.visibility = View.VISIBLE
         viewModel.getTotalVisitors(token, date, resortId)
         observeTotalVisitorsVM()
     }
@@ -394,19 +408,21 @@ class VisitorInviteFragment : Fragment() {
                     totalVisitors = response.each_time_limit
                     val totalMale = response.male
                     val totalFemale = response.female
-                    val perDay = response.total_allow
+                    freeSlots = response.per_month_free_available
 
                     binding.tvPerDay.visibility = View.VISIBLE
                     binding.tvPerDay.setText("Per Day " + totalVisitors + " visitors are allowed")
-
-                    // adjustLayout()
 
                     binding.tvTotalVisitors.visibility = View.VISIBLE
                     binding.tvTotalVisitors.setText(
                         "Only " + totalMale.toString() + " " + Constants.MALE + " & " +
                                 totalFemale + " " + Constants.FEMALE + " are allowed"
                     )
-                }
+
+                    binding.tvFree.visibility = View.VISIBLE
+                    binding.tvFree.setText("Free Slots/Month: " + freeSlots)
+
+                     }
 
                 viewModel.totalVisitors.removeObservers(viewLifecycleOwner)
             }
@@ -496,12 +512,6 @@ class VisitorInviteFragment : Fragment() {
             }
         })
 
-        viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
-            isLoading.let {
-                binding.rlInclude.visibility = if (it) View.VISIBLE else View.GONE
-
-            }
-        })
     }
 
     private fun showDateDialog(data: Data) {
@@ -535,22 +545,22 @@ class VisitorInviteFragment : Fragment() {
 
     private fun getPackages() {
 
+        if(resortId.isNullOrEmpty())
+            resortId = data.user?.resort_id.toString()
+
         val visitingDate = binding.etVisitorsTime.text.toString()
 
         data.token?.let {
 
+            binding.rlInclude.visibility = View.VISIBLE
+
             viewModel.getFemalePackage(
                 it,
                 visitingDate,
-                data.user?.resort_id.toString(), requireContext()
+                resortId, requireContext()
             )
             observeFemalePckgVM(it)
 
-            /*  viewModel.getMalePackage(
-                  it, visitingDate,
-                  data.user?.resort_id.toString(), requireContext()
-              )
-              observeMalePckgVM()*/
 
 
         }
@@ -600,13 +610,12 @@ class VisitorInviteFragment : Fragment() {
             }
         })
 
-
         viewModel.femalePackage.observe(viewLifecycleOwner, Observer { sPackage ->
             sPackage?.let {
 
                 viewModel.getMalePackage(
                     token, binding.etVisitorsTime.text.toString(),
-                    data.user?.resort_id.toString(), requireContext()
+                    resortId, requireContext()
                 )
                 observeMalePckgVM()
 
@@ -751,8 +760,11 @@ class VisitorInviteFragment : Fragment() {
                             requestParamsMap: Map<String, Any>,
                             responseMap: Map<String, Any>
                         ) {
+                            Log.e("processing payment ", "")
                             Log.e("onCancel: ", responseMap.toString())
-                            updatePaymentStatus(false)
+                            updatePaymentStatus(false,
+                                requestParamsMap.get("merchant_reference") as String
+                            )
                             addServerVisitor()
 
                         }
@@ -761,9 +773,12 @@ class VisitorInviteFragment : Fragment() {
                             requestParamsMap: Map<String, Any>,
                             fortResponseMap: Map<String, Any>
                         ) {
+                            Log.e("processing payment ", "")
                             Log.e("onSuccess: ", requestParamsMap.toString())
                             if (requestParamsMap.size > 0) {
-                                updatePaymentStatus(true)
+                                updatePaymentStatus(true,
+                                    requestParamsMap.get("merchant_reference") as String
+                                )
                                 addServerVisitor()
 
                             }
@@ -773,8 +788,11 @@ class VisitorInviteFragment : Fragment() {
                             requestParamsMap: Map<String, Any>,
                             fortResponseMap: Map<String, Any>
                         ) {
+                            Log.e("processing payment ", "")
                             Log.e("onFailure: ", requestParamsMap.toString())
-                            updatePaymentStatus(false)
+                            updatePaymentStatus(false,
+                                requestParamsMap.get("merchant_reference") as String
+                            )
                             addServerVisitor()
 
 
@@ -785,11 +803,14 @@ class VisitorInviteFragment : Fragment() {
         }
     }
 
-    private fun updatePaymentStatus(isSuccess: Boolean) {
+    private fun updatePaymentStatus(isSuccess: Boolean, mReference: String) {
         for (visitor in visitorListAdapter!!.getData()) {
             val payment = visitor.who_will_pay
-            if (payment == "sender" && isSuccess) {
-                visitor.payment_status = Constants.PAID
+            if (payment == "sender") {
+                if(isSuccess)
+                    visitor.payment_status = Constants.PAID
+
+                visitor.merchant_reference = mReference
             }
         }
         Log.i("visitor", visitorListAdapter!!.getData().toString())
